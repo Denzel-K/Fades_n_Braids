@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <meta name="description" content="Fades n Braids Loyalty Program - Earn points with every visit and redeem exclusive rewards">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/images/fades-n-braids-logo.svg">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    {{#if customer}}
+        <link rel="stylesheet" href="/css/dashboard.css">
+    {{/if}}
+    {{#if business}}
+        <link rel="stylesheet" href="/css/dashboard.css">
+        <link rel="stylesheet" href="/css/business.css">
+        <link rel="stylesheet" href="/css/business-dashboard.css">
+    {{/if}}
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="/" class="brand-link">
+                    <img src="/images/fades-n-braids-logo.svg" alt="Fades n Braids" class="brand-logo">
+                    <span class="brand-text">Fades n Braids</span>
+                </a>
+            </div>
+
+            <div class="navbar-menu">
+                {{#if customer}}
+                    <!-- Customer Navigation -->
+                    <div class="navbar-user customer-nav">
+                        <span class="user-greeting">Hi, {{customer.firstName}}!</span>
+                        <div class="user-points">{{formatPoints (safeValue customer.availablePoints 0)}} pts</div>
+                        <a href="/customer/dashboard" class="btn btn-outline">Dashboard</a>
+                        <form action="/api/customers/logout" method="POST" class="logout-form">
+                            <button type="submit" class="btn btn-ghost">Logout</button>
+                        </form>
+                    </div>
+                {{else if business}}
+                    <!-- Business Navigation -->
+                    <div class="navbar-user business-nav">
+                        <span class="user-greeting">{{business.businessName}}</span>
+                        <a href="/business/dashboard" class="btn btn-outline">Dashboard</a>
+                        <a href="/business/checkin-codes" class="btn btn-secondary">Display Codes</a>
+                        <form action="/api/business/logout" method="POST" class="logout-form">
+                            <button type="submit" class="btn btn-ghost">Logout</button>
+                        </form>
+                    </div>
+                {{else}}
+                    <!-- Public Navigation (No Business Link) -->
+                    <div class="navbar-auth">
+                        <a href="/customer/login" class="btn btn-ghost">Login</a>
+                        <a href="/customer/register" class="btn btn-primary">Join Program</a>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {{{body}}}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="/images/fades-n-braids-logo.svg" alt="Fades n Braids" class="footer-logo">
+                    <p class="footer-description">
+                        Your premier destination for fades and braids. Join our loyalty program and earn rewards with every visit!
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/customer/register">Join Program</a></li>
+                            <li><a href="/customer/login">Customer Login</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Contact</h4>
+                        <ul>
+                            <li>Phone: (555) 123-4567</li>
+                            <li>Email: info@fadesbraids.com</li>
+                            <li>Address: 123 Style St, City, ST 12345</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Fades n Braids. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/clientSideJs/main.js"></script>
+    {{#if business}}
+    <!-- Business-specific JavaScript -->
+    <script src="/clientSideJs/business-modals.js"></script>
+    <script src="/clientSideJs/business-handlers.js"></script>
+    {{/if}}
+</body>
+</html>

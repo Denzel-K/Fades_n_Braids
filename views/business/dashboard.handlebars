@@ -1,0 +1,175 @@
+<div class="dashboard-page business-dashboard">
+    <div class="container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Business Dashboard</h1>
+            <p class="dashboard-subtitle">Manage your loyalty program and customers</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="business-stats-grid">
+            <div class="stat-card customers-card" data-animate="slide-up">
+                <div class="stat-header">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-trend positive">+12%</div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="total-customers" data-animate="counter">-</div>
+                    <div class="stat-label">Total Customers</div>
+                    <div class="stat-subtitle">Active members</div>
+                </div>
+            </div>
+            <div class="stat-card visits-card" data-animate="slide-up" data-delay="100">
+                <div class="stat-header">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-trend positive">+5</div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="today-visits" data-animate="counter">-</div>
+                    <div class="stat-label">Today's Visits</div>
+                    <div class="stat-subtitle">Check-ins today</div>
+                </div>
+            </div>
+            <div class="stat-card total-visits-card" data-animate="slide-up" data-delay="200">
+                <div class="stat-header">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-trend neutral">All time</div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="total-visits" data-animate="counter">-</div>
+                    <div class="stat-label">Total Visits</div>
+                    <div class="stat-subtitle">All check-ins</div>
+                </div>
+            </div>
+            <div class="stat-card rewards-card" data-animate="slide-up" data-delay="300">
+                <div class="stat-header">
+                    <div class="stat-icon">🎁</div>
+                    <div class="stat-trend positive">Active</div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="active-rewards" data-animate="counter">-</div>
+                    <div class="stat-label">Active Rewards</div>
+                    <div class="stat-subtitle">Available offers</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="business-dashboard-grid">
+            <!-- Check-in Codes Display -->
+            <div class="dashboard-card checkin-codes-card" data-animate="fade-in">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <span class="title-icon">📱</span>
+                        Current Check-in Codes
+                    </h3>
+                    <div class="card-actions">
+                        <button class="btn btn-small btn-outline" onclick="refreshCodes()">
+                            <span class="btn-icon">🔄</span>
+                            Refresh
+                        </button>
+                        <a href="/business/checkin-codes" class="btn btn-small btn-secondary">
+                            <span class="btn-icon">📺</span>
+                            Full Display
+                        </a>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="codes-display-compact">
+                        <div class="qr-section">
+                            <div class="qr-code-container">
+                                <img id="qr-image" src="" alt="QR Code" style="display: none;">
+                                <div class="loading" id="qr-loading">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading QR code...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="code-divider">OR</div>
+                        <div class="digit-section">
+                            <div class="digit-code-display">
+                                <span id="digit-code">------</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-info">
+                        <div class="info-item">
+                            <span class="info-icon">⏱️</span>
+                            <span>Refreshes every 5 minutes</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon">⏰</span>
+                            <span>Expires: <span id="code-expiry">--:--</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Quick Actions -->
+            <div class="dashboard-card quick-actions-card" data-animate="fade-in" data-delay="200">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <span class="title-icon">⚡</span>
+                        Quick Actions
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <div class="business-actions-grid">
+                        <button class="business-action-btn" onclick="showCustomersModal()" data-action="customers">
+                            <div class="action-icon">👥</div>
+                            <div class="action-content">
+                                <div class="action-title">Customers</div>
+                                <div class="action-subtitle">View & manage</div>
+                            </div>
+                            <div class="action-arrow">→</div>
+                        </button>
+                        <button class="business-action-btn" onclick="showRewardsModal()" data-action="rewards">
+                            <div class="action-icon">🎁</div>
+                            <div class="action-content">
+                                <div class="action-title">Rewards</div>
+                                <div class="action-subtitle">Manage catalog</div>
+                            </div>
+                            <div class="action-arrow">→</div>
+                        </button>
+                        <button class="business-action-btn" onclick="showAwardPointsModal()" data-action="points">
+                            <div class="action-icon">⭐</div>
+                            <div class="action-content">
+                                <div class="action-title">Award Points</div>
+                                <div class="action-subtitle">Manual points</div>
+                            </div>
+                            <div class="action-arrow">→</div>
+                        </button>
+                        <button class="business-action-btn" onclick="showAnalytics()" data-action="analytics">
+                            <div class="action-icon">📊</div>
+                            <div class="action-content">
+                                <div class="action-title">Analytics</div>
+                                <div class="action-subtitle">View reports</div>
+                            </div>
+                            <div class="action-arrow">→</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2 class="section-title">Recent Customer Activity</h2>
+            </div>
+            <div class="activity-table">
+                <div id="recent-visits" class="table-container">
+                    <div class="loading">Loading recent activity...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Customers -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2 class="section-title">Top Customers</h2>
+            </div>
+            <div class="customers-grid">
+                <div id="top-customers" class="loading">Loading top customers...</div>
+            </div>
+        </div>
+    </div>
+</div>

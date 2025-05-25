@@ -1,0 +1,50 @@
+<div class="checkin-codes-page">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Check-in Codes Display</h1>
+            <p class="page-description">Display this page for customers to see the current check-in codes</p>
+        </div>
+
+        <div class="codes-display">
+            <div class="codes-container">
+                <div class="qr-section">
+                    <h2>Scan QR Code</h2>
+                    <div class="qr-code-large">
+                        <img id="qr-image" src="" alt="QR Code" style="display: none;">
+                        <div class="loading" id="qr-loading">Loading QR code...</div>
+                    </div>
+                </div>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <div class="digit-section">
+                    <h2>Enter Code</h2>
+                    <div class="digit-code-large">
+                        <span id="digit-code">------</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-info">
+                <div class="refresh-timer">
+                    <p>Code refreshes in: <span id="countdown">--:--</span></p>
+                </div>
+                <div class="instructions">
+                    <h3>How to Check In:</h3>
+                    <ol>
+                        <li>Open the Fades n Braids app or website</li>
+                        <li>Go to your dashboard and click "Check In"</li>
+                        <li>Scan the QR code or enter the 6-digit code</li>
+                        <li>Earn 10 points for your visit!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="back-to-dashboard">
+            <a href="/business/dashboard" class="btn btn-outline">← Back to Dashboard</a>
+        </div>
+    </div>
+</div>

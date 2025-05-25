@@ -1,0 +1,34 @@
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card business-card">
+            <div class="auth-logo">
+                <img src="/images/fades-n-braids-logo.svg" alt="Fades n Braids">
+            </div>
+            
+            <div class="auth-header">
+                <h1 class="auth-title">Business Login</h1>
+                <p class="auth-subtitle">Access your business dashboard</p>
+            </div>
+
+            <form class="auth-form" action="/api/business/login" method="POST" data-validate>
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="admin@fadesbraids.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                </div>
+            </form>
+
+            <div class="auth-footer">
+                <p><a href="/">← Back to main site</a></p>
+            </div>
+        </div>
+    </div>
+</div>

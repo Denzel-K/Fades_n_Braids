@@ -1,0 +1,146 @@
+<div class="dashboard-page">
+    <div class="container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Welcome back, {{customer.firstName}}!</h1>
+            <p class="dashboard-subtitle">Track your points, visits, and rewards</p>
+        </div>
+
+        <!-- Points Summary Card -->
+        <div class="points-summary-card">
+            <div class="points-header">
+                <div class="points-main">
+                    <div class="points-number" data-animate="counter">{{formatPoints customer.availablePoints}}</div>
+                    <div class="points-label">Available Points</div>
+                </div>
+                <div class="points-badge">
+                    <span class="badge-icon">🎯</span>
+                </div>
+            </div>
+
+            <div class="points-stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-animate="counter">{{safeValue customer.totalVisits}}</div>
+                    <div class="stat-label">Total Visits</div>
+                    <div class="stat-icon">📅</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-animate="counter">{{formatPoints customer.totalPoints}}</div>
+                    <div class="stat-label">Points Earned</div>
+                    <div class="stat-icon">⭐</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-animate="counter">{{safeLength customer.rewards}}</div>
+                    <div class="stat-label">Rewards Used</div>
+                    <div class="stat-icon">🎁</div>
+                </div>
+            </div>
+
+            <div class="points-actions">
+                <button class="btn btn-primary btn-large" onclick="showCheckInModal()">
+                    <span class="btn-icon">📱</span>
+                    Check In Now
+                </button>
+                <button class="btn btn-outline" onclick="scrollToRewards()">
+                    <span class="btn-icon">🎁</span>
+                    Browse Rewards
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Quick Actions Card -->
+            <div class="dashboard-card quick-actions-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <span class="title-icon">⚡</span>
+                        Quick Actions
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <div class="quick-actions-grid">
+                        <button class="quick-action-btn" onclick="showCheckInModal()" data-action="checkin">
+                            <div class="action-icon">📱</div>
+                            <div class="action-content">
+                                <div class="action-title">Check In</div>
+                                <div class="action-subtitle">Earn 10 points</div>
+                            </div>
+                        </button>
+                        <button class="quick-action-btn" onclick="scrollToRewards()" data-action="rewards">
+                            <div class="action-icon">🎁</div>
+                            <div class="action-content">
+                                <div class="action-title">Rewards</div>
+                                <div class="action-subtitle">Redeem points</div>
+                            </div>
+                        </button>
+                        <button class="quick-action-btn" onclick="showVisitHistory()" data-action="history">
+                            <div class="action-icon">📊</div>
+                            <div class="action-content">
+                                <div class="action-title">History</div>
+                                <div class="action-subtitle">View visits</div>
+                            </div>
+                        </button>
+                        <button class="quick-action-btn" onclick="showProfile()" data-action="profile">
+                            <div class="action-icon">👤</div>
+                            <div class="action-content">
+                                <div class="action-title">Profile</div>
+                                <div class="action-subtitle">Edit info</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Card -->
+            <div class="dashboard-card activity-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <span class="title-icon">📈</span>
+                        Recent Activity
+                    </h3>
+                    <button class="btn btn-small btn-ghost" onclick="showVisitHistory()">View All</button>
+                </div>
+                <div class="card-content">
+                    <div id="recent-activity" class="activity-list">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            <span>Loading recent activity...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Rewards Section -->
+        <div class="dashboard-section" id="rewards">
+            <div class="section-header">
+                <h2 class="section-title">Available Rewards</h2>
+                <p class="section-subtitle">Redeem your points for exclusive rewards</p>
+            </div>
+            <div id="rewards-grid" class="rewards-grid">
+                <div class="loading">Loading available rewards...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Check-in Modal -->
+<div id="checkin-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Check In</h3>
+            <button class="modal-close" onclick="closeCheckInModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Enter the check-in code displayed in the salon:</p>
+            <form id="checkin-form">
+                <div class="form-group">
+                    <input type="text" id="checkin-code" class="form-input" placeholder="Enter 6-digit code" maxlength="6" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Check In</button>
+                    <button type="button" class="btn btn-ghost" onclick="closeCheckInModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
