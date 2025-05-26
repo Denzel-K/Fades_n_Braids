@@ -91,14 +91,14 @@
         <div class="card">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center">
-                    <div class="w-6 h-6 bg-primary-blue/20 rounded-lg flex items-center justify-center mr-2">
-                        <i class="fas fa-chart-line text-primary-blue text-sm"></i>
+                    <div class="w-8 h-8 bg-primary-blue/20 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-chart-line text-primary-blue"></i>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
                 </div>
                 <button class="btn btn-sm btn-ghost" onclick="showVisitHistory()">View All</button>
             </div>
-            <div id="recent-activity" class="max-h-48 overflow-y-auto">
+            <div id="recent-activity" class="space-y-3 max-h-48 overflow-y-auto">
                 <div class="flex items-center justify-center py-6">
                     <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-orange mr-2"></div>
                     <span class="text-sm text-gray-600">Loading activity...</span>
@@ -116,8 +116,65 @@
 
         <!-- Reward Criteria Info -->
         <div class="mb-6">
-            <div id="reward-criteria">
-                <!-- Dynamic reward criteria will be loaded here -->
+            <div class="card">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 bg-primary-blue/20 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-info-circle text-primary-blue"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">How to Earn Points</h3>
+                </div>
+                <div id="reward-criteria" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Default criteria while loading -->
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <div class="w-10 h-10 bg-primary-green/20 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-calendar-check text-primary-green"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-900">Visit Salon</p>
+                            <p class="text-sm text-gray-600">+10 points</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <div class="w-10 h-10 bg-primary-orange/20 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-user-plus text-primary-orange"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-900">First Visit</p>
+                            <p class="text-sm text-gray-600">+50 points</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <div class="w-10 h-10 bg-primary-purple/20 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-star text-primary-purple"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-900">Special Events</p>
+                            <p class="text-sm text-gray-600">Bonus points</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Rewards Preview -->
+        <div class="mb-6">
+            <div class="card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-primary-pink/20 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-gift text-primary-pink"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">Available Rewards</h3>
+                    </div>
+                    <span class="text-sm text-gray-500">You have <span class="font-bold text-primary-orange" data-customer-points="{{customer.points}}">{{customer.points}}</span> points</span>
+                </div>
+                <div id="rewards-preview" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <!-- Loading state -->
+                    <div class="flex items-center justify-center py-6 col-span-full">
+                        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-pink mr-2"></div>
+                        <span class="text-sm text-gray-600">Loading rewards...</span>
+                    </div>
+                </div>
             </div>
         </div>
 

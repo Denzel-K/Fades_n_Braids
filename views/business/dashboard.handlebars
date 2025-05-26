@@ -243,33 +243,75 @@
                     <i class="fas fa-gift text-primary-pink mr-3"></i>
                     Rewards Management
                 </h2>
-                <p class="text-gray-600">Create and manage reward offerings</p>
+                <p class="text-gray-600">Create and manage reward offerings for your loyalty program</p>
             </div>
 
+            <!-- Rewards Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Rewards</p>
+                            <p class="text-2xl font-bold text-gray-900" id="total-rewards-count">-</p>
+                        </div>
+                        <div class="w-12 h-12 bg-primary-pink/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-gift text-primary-pink text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Claims This Month</p>
+                            <p class="text-2xl font-bold text-gray-900" id="monthly-claims-count">-</p>
+                        </div>
+                        <div class="w-12 h-12 bg-primary-orange/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-trophy text-primary-orange text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Points Redeemed</p>
+                            <p class="text-2xl font-bold text-gray-900" id="points-redeemed-count">-</p>
+                        </div>
+                        <div class="w-12 h-12 bg-primary-blue/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-star text-primary-blue text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-tabs and Actions -->
             <div class="mb-6">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                    <div class="flex space-x-1 bg-gray-100 p-1 rounded-lg">
-                        <button class="rewards-tab-btn bg-white text-primary shadow-sm px-4 py-2 rounded-md transition-all font-medium" data-tab="available-rewards">
+                    <div class="flex flex-wrap gap-1 bg-gray-100 p-1 rounded-lg">
+                        <button class="rewards-tab-btn bg-white text-primary shadow-sm px-4 py-2 rounded-md transition-all font-medium whitespace-nowrap" data-tab="available-rewards">
                             <i class="fas fa-gift mr-2"></i>
-                            Available Rewards
+                            <span class="hidden sm:inline">Available </span>Rewards
                         </button>
-                        <button class="rewards-tab-btn text-gray-600 hover:text-gray-900 px-4 py-2 rounded-md transition-all font-medium" data-tab="claimed-rewards">
+                        <button class="rewards-tab-btn text-gray-600 hover:text-gray-900 px-4 py-2 rounded-md transition-all font-medium whitespace-nowrap" data-tab="claimed-rewards">
                             <i class="fas fa-history mr-2"></i>
-                            Claimed Rewards
+                            <span class="hidden sm:inline">Claimed </span>Rewards
                         </button>
-                        <button class="rewards-tab-btn text-gray-600 hover:text-gray-900 px-4 py-2 rounded-md transition-all font-medium" data-tab="reward-criteria">
+                        <button class="rewards-tab-btn text-gray-600 hover:text-gray-900 px-4 py-2 rounded-md transition-all font-medium whitespace-nowrap" data-tab="reward-criteria">
                             <i class="fas fa-cogs mr-2"></i>
-                            Reward Criteria
+                            <span class="hidden sm:inline">Point </span>Criteria
                         </button>
                     </div>
-                    <div class="flex gap-2">
+                    <div class="flex flex-wrap gap-2">
                         <button class="btn btn-primary" onclick="showAddRewardModal()">
                             <i class="fas fa-plus mr-2"></i>
-                            Add Reward
+                            <span class="hidden sm:inline">Add </span>Reward
                         </button>
                         <button class="btn btn-outline" onclick="showAwardPointsModal()">
                             <i class="fas fa-star mr-2"></i>
-                            Award Points
+                            <span class="hidden sm:inline">Award </span>Points
+                        </button>
+                        <button class="btn btn-ghost" onclick="refreshRewardsData()">
+                            <i class="fas fa-sync-alt mr-2"></i>
+                            <span class="hidden sm:inline">Refresh</span>
                         </button>
                     </div>
                 </div>
@@ -278,10 +320,20 @@
             <!-- Available Rewards -->
             <div id="available-rewards" class="rewards-tab-content">
                 <div class="card">
-                    <div id="rewards-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Available Rewards</h3>
+                        <div class="flex items-center gap-4">
+                            <span class="text-sm text-gray-500" id="rewards-count">0 rewards</span>
+                            <button class="btn btn-sm btn-outline" onclick="loadRewardsData()">
+                                <i class="fas fa-sync-alt mr-1"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div id="rewards-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         <div class="flex items-center justify-center py-12 col-span-full">
-                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-pink mr-3"></div>
-                            <span class="text-gray-600">Loading rewards...</span>
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-pink mr-3"></div>
+                            <span class="text-sm text-gray-600">Loading rewards...</span>
                         </div>
                     </div>
                 </div>
@@ -290,10 +342,28 @@
             <!-- Claimed Rewards -->
             <div id="claimed-rewards" class="rewards-tab-content hidden">
                 <div class="card">
-                    <div id="claimed-rewards-table">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Claimed Rewards</h3>
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-2">
+                                <label for="claims-filter" class="text-sm text-gray-600">Filter:</label>
+                                <select id="claims-filter" class="form-input py-1 px-2 text-sm">
+                                    <option value="all">All Time</option>
+                                    <option value="today">Today</option>
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-sm btn-outline" onclick="loadClaimedRewards()">
+                                <i class="fas fa-sync-alt mr-1"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div id="claimed-rewards-table" class="overflow-x-auto">
                         <div class="flex items-center justify-center py-12">
-                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-pink mr-3"></div>
-                            <span class="text-gray-600">Loading claimed rewards...</span>
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-orange mr-3"></div>
+                            <span class="text-sm text-gray-600">Loading claimed rewards...</span>
                         </div>
                     </div>
                 </div>
@@ -303,16 +373,19 @@
             <div id="reward-criteria" class="rewards-tab-content hidden">
                 <div class="card">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xl font-semibold text-gray-900">Point Earning Criteria</h3>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Point Earning Criteria</h3>
+                            <p class="text-sm text-gray-600 mt-1">Configure how customers earn points</p>
+                        </div>
                         <button class="btn btn-primary" onclick="showAddCriteriaModal()">
                             <i class="fas fa-plus mr-2"></i>
                             Add Criteria
                         </button>
                     </div>
-                    <div id="criteria-list">
+                    <div id="criteria-list" class="space-y-4">
                         <div class="flex items-center justify-center py-12">
-                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-pink mr-3"></div>
-                            <span class="text-gray-600">Loading criteria...</span>
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-blue mr-3"></div>
+                            <span class="text-sm text-gray-600">Loading criteria...</span>
                         </div>
                     </div>
                 </div>
@@ -326,17 +399,96 @@
                     <i class="fas fa-chart-bar text-primary-purple mr-3"></i>
                     Analytics & Reports
                 </h2>
-                <p class="text-gray-600">Track performance and customer insights</p>
+                <p class="text-gray-600">Track performance, customer insights, and business metrics</p>
+            </div>
+
+            <!-- Analytics Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Visits</p>
+                            <p class="text-2xl font-bold text-gray-900" id="total-visits-count">-</p>
+                            <p class="text-xs text-green-600" id="visits-change">+0% from last month</p>
+                        </div>
+                        <div class="w-12 h-12 bg-primary-blue/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-calendar-check text-primary-blue text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Active Customers</p>
+                            <p class="text-2xl font-bold text-gray-900" id="active-customers-count">-</p>
+                            <p class="text-xs text-green-600" id="customers-change">+0% from last month</p>
+                        </div>
+                        <div class="w-12 h-12 bg-primary-green/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-primary-green text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Points Awarded</p>
+                            <p class="text-2xl font-bold text-gray-900" id="points-awarded-count">-</p>
+                            <p class="text-xs text-blue-600" id="points-change">+0% from last month</p>
+                        </div>
+                        <div class="w-12 h-12 bg-primary-orange/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-star text-primary-orange text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Avg. Visit Value</p>
+                            <p class="text-2xl font-bold text-gray-900" id="avg-visit-value">-</p>
+                            <p class="text-xs text-purple-600" id="value-change">+0% from last month</p>
+                        </div>
+                        <div class="w-12 h-12 bg-primary-purple/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line text-primary-purple text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Filters -->
+            <div class="card mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Analytics Dashboard</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <select id="analytics-period" class="form-input py-2 px-3 text-sm">
+                            <option value="7">Last 7 days</option>
+                            <option value="30" selected>Last 30 days</option>
+                            <option value="90">Last 3 months</option>
+                            <option value="365">Last year</option>
+                        </select>
+                        <button class="btn btn-sm btn-outline" onclick="refreshAnalytics()">
+                            <i class="fas fa-sync-alt mr-1"></i>
+                            Refresh
+                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="exportAnalytics()">
+                            <i class="fas fa-download mr-1"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <!-- Recent Activity -->
                 <div class="card">
-                    <div class="flex items-center mb-4">
+                    <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                             <i class="fas fa-clock text-primary-purple mr-2"></i>
                             Recent Activity
                         </h3>
+                        <button class="btn btn-sm btn-ghost" onclick="showDashboardTab('customers')">
+                            <i class="fas fa-external-link-alt mr-1"></i>
+                            View All
+                        </button>
                     </div>
                     <div id="recent-visits" class="max-h-48 overflow-y-auto">
                         <div class="flex items-center justify-center py-6">
@@ -348,11 +500,15 @@
 
                 <!-- Recent Reward Claims -->
                 <div class="card">
-                    <div class="flex items-center mb-4">
+                    <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                             <i class="fas fa-trophy text-primary-orange mr-2"></i>
                             Recent Claims
                         </h3>
+                        <button class="btn btn-sm btn-ghost" onclick="showDashboardTab('rewards')">
+                            <i class="fas fa-external-link-alt mr-1"></i>
+                            View All
+                        </button>
                     </div>
                     <div id="recent-claims" class="max-h-48 overflow-y-auto">
                         <div class="flex items-center justify-center py-6">
@@ -363,18 +519,89 @@
                 </div>
             </div>
 
-            <!-- Top Customers -->
-            <div class="card">
-                <div class="flex items-center mb-6">
-                    <h3 class="text-xl font-semibold text-gray-900 flex items-center">
-                        <i class="fas fa-crown text-primary-pink mr-3"></i>
-                        Top Customers
-                    </h3>
+            <!-- Analytics Charts and Data -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Top Customers -->
+                <div class="card lg:col-span-2">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-crown text-primary-pink mr-3"></i>
+                            Top Customers
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <select id="top-customers-metric" class="form-input py-1 px-2 text-sm" onchange="sortTopCustomers(this.value)">
+                                <option value="visits">By Visits</option>
+                                <option value="points">By Points</option>
+                                <option value="spending">By Spending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="top-customers" class="space-y-3">
+                        <div class="flex items-center justify-center py-8">
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-pink mr-3"></div>
+                            <span class="text-sm text-gray-600">Loading top customers...</span>
+                        </div>
+                    </div>
                 </div>
-                <div id="top-customers" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="flex items-center justify-center py-8 col-span-full">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-pink mr-3"></div>
-                        <span class="text-gray-600">Loading top customers...</span>
+
+                <!-- Quick Stats -->
+                <div class="card">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Insights</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">New Customers</p>
+                                <p class="text-lg font-bold text-gray-900" id="new-customers-count">-</p>
+                            </div>
+                            <div class="w-8 h-8 bg-primary-green/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-user-plus text-primary-green"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Returning Rate</p>
+                                <p class="text-lg font-bold text-gray-900" id="returning-rate">-%</p>
+                            </div>
+                            <div class="w-8 h-8 bg-primary-blue/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-redo text-primary-blue"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Avg. Points/Visit</p>
+                                <p class="text-lg font-bold text-gray-900" id="avg-points-visit">-</p>
+                            </div>
+                            <div class="w-8 h-8 bg-primary-orange/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-star text-primary-orange"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Redemption Rate</p>
+                                <p class="text-lg font-bold text-gray-900" id="redemption-rate">-%</p>
+                            </div>
+                            <div class="w-8 h-8 bg-primary-purple/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-gift text-primary-purple"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Trends -->
+            <div class="card">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Performance Trends</h3>
+                    <div class="flex items-center gap-2">
+                        <button class="btn btn-sm btn-ghost" onclick="toggleChartView('visits')">Visits</button>
+                        <button class="btn btn-sm btn-ghost" onclick="toggleChartView('points')">Points</button>
+                        <button class="btn btn-sm btn-ghost" onclick="toggleChartView('rewards')">Rewards</button>
+                    </div>
+                </div>
+                <div id="performance-chart" class="h-64 flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-purple mx-auto mb-3"></div>
+                        <span class="text-sm text-gray-600">Loading chart data...</span>
                     </div>
                 </div>
             </div>
@@ -518,11 +745,16 @@
                 loadCustomersData();
             }
         } else if (tabName === 'rewards') {
-            if (typeof loadRewardsData === 'function') {
-                loadRewardsData();
-            }
+            // Load rewards stats first
+            loadRewardsStats();
             // Initialize rewards sub-tabs
             initializeRewardsSubTabs();
+            // Load default sub-tab content
+            if (typeof loadRewardsList === 'function') {
+                loadRewardsList();
+            } else if (typeof loadRewardsData === 'function') {
+                loadRewardsData();
+            }
         } else if (tabName === 'analytics') {
             if (typeof loadDashboardStats === 'function') {
                 loadDashboardStats();
@@ -530,6 +762,11 @@
             if (typeof loadAnalyticsData === 'function') {
                 loadAnalyticsData();
             }
+            // Load analytics-specific data
+            loadAnalyticsStats();
+            loadRecentActivity();
+            loadRecentClaims();
+            loadTopCustomers();
         }
     }
 
@@ -576,7 +813,11 @@
 
         // Load content based on sub-tab
         if (tabName === 'available-rewards') {
-            if (typeof loadRewardsData === 'function') {
+            // Update rewards count
+            updateRewardsCount();
+            if (typeof loadRewardsList === 'function') {
+                loadRewardsList();
+            } else if (typeof loadRewardsData === 'function') {
                 loadRewardsData();
             }
         } else if (tabName === 'claimed-rewards') {
@@ -588,5 +829,397 @@
                 loadRewardCriteria();
             }
         }
+    }
+
+    // Analytics helper functions
+    function loadAnalyticsStats() {
+        // Load analytics overview stats
+        fetch('/api/business/analytics/stats')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateAnalyticsStats(data.data);
+                }
+            })
+            .catch(error => console.error('Error loading analytics stats:', error));
+    }
+
+    function updateAnalyticsStats(stats) {
+        // Update analytics stat cards
+        document.getElementById('total-visits-count').textContent = stats.totalVisits || '0';
+        document.getElementById('active-customers-count').textContent = stats.activeCustomers || '0';
+        document.getElementById('points-awarded-count').textContent = stats.pointsAwarded || '0';
+        document.getElementById('avg-visit-value').textContent = stats.avgVisitValue || '0';
+
+        // Update change indicators
+        document.getElementById('visits-change').textContent = `${stats.visitsChange || 0}% from last month`;
+        document.getElementById('customers-change').textContent = `${stats.customersChange || 0}% from last month`;
+        document.getElementById('points-change').textContent = `${stats.pointsChange || 0}% from last month`;
+        document.getElementById('value-change').textContent = `${stats.valueChange || 0}% from last month`;
+
+        // Update quick insights
+        document.getElementById('new-customers-count').textContent = stats.newCustomers || '0';
+        document.getElementById('returning-rate').textContent = `${stats.returningRate || 0}%`;
+        document.getElementById('avg-points-visit').textContent = stats.avgPointsPerVisit || '0';
+        document.getElementById('redemption-rate').textContent = `${stats.redemptionRate || 0}%`;
+    }
+
+    function loadRecentActivity() {
+        const container = document.getElementById('recent-visits');
+        if (!container) return;
+
+        fetch('/api/business/analytics/recent-activity')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.visits) {
+                    displayRecentActivity(data.data.visits);
+                } else {
+                    container.innerHTML = '<div class="text-center py-4 text-gray-500">No recent activity</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading recent activity:', error);
+                container.innerHTML = '<div class="text-center py-4 text-red-500">Error loading activity</div>';
+            });
+    }
+
+    function displayRecentActivity(visits) {
+        const container = document.getElementById('recent-visits');
+        if (!visits || visits.length === 0) {
+            container.innerHTML = '<div class="text-center py-4 text-gray-500">No recent activity</div>';
+            return;
+        }
+
+        const html = visits.map(visit => `
+            <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-primary-blue/20 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-user text-primary-blue text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-900 text-sm">${visit.customerName || 'Customer'}</p>
+                        <p class="text-xs text-gray-500">${formatTimeAgo(visit.createdAt)}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-medium text-primary-green">+${visit.pointsEarned || 0} pts</p>
+                </div>
+            </div>
+        `).join('');
+
+        container.innerHTML = html;
+    }
+
+    function loadRecentClaims() {
+        const container = document.getElementById('recent-claims');
+        if (!container) return;
+
+        fetch('/api/business/analytics/recent-claims')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.claims) {
+                    displayRecentClaims(data.data.claims);
+                } else {
+                    container.innerHTML = '<div class="text-center py-4 text-gray-500">No recent claims</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading recent claims:', error);
+                container.innerHTML = '<div class="text-center py-4 text-red-500">Error loading claims</div>';
+            });
+    }
+
+    function displayRecentClaims(claims) {
+        const container = document.getElementById('recent-claims');
+        if (!claims || claims.length === 0) {
+            container.innerHTML = '<div class="text-center py-4 text-gray-500">No recent claims</div>';
+            return;
+        }
+
+        const html = claims.map(claim => `
+            <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-primary-orange/20 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-gift text-primary-orange text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-900 text-sm">${claim.rewardName || 'Reward'}</p>
+                        <p class="text-xs text-gray-500">${claim.customerName || 'Customer'} • ${formatTimeAgo(claim.claimedAt)}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-medium text-primary-orange">${claim.pointsCost || 0} pts</p>
+                </div>
+            </div>
+        `).join('');
+
+        container.innerHTML = html;
+    }
+
+    function loadTopCustomers() {
+        const container = document.getElementById('top-customers');
+        if (!container) return;
+
+        fetch('/api/business/analytics/top-customers')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.customers) {
+                    displayTopCustomers(data.data.customers);
+                } else {
+                    container.innerHTML = '<div class="text-center py-4 text-gray-500">No customer data available</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading top customers:', error);
+                container.innerHTML = '<div class="text-center py-4 text-red-500">Error loading customers</div>';
+            });
+    }
+
+    function displayTopCustomers(customers) {
+        const container = document.getElementById('top-customers');
+        if (!customers || customers.length === 0) {
+            container.innerHTML = '<div class="text-center py-8 text-gray-500">No customer data available</div>';
+            return;
+        }
+
+        // Store customers data globally for sorting
+        window.topCustomersData = customers;
+
+        const html = customers.slice(0, 10).map((customer, index) => {
+            const rankColors = [
+                'bg-gradient-to-r from-yellow-400 to-yellow-600', // Gold
+                'bg-gradient-to-r from-gray-300 to-gray-500',     // Silver
+                'bg-gradient-to-r from-orange-400 to-orange-600', // Bronze
+                'bg-gradient-to-r from-primary-pink to-primary-orange' // Default
+            ];
+            const rankColor = rankColors[index] || rankColors[3];
+
+            return `
+                <div class="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 ${rankColor} rounded-full flex items-center justify-center mr-4 shadow-sm">
+                            <span class="text-white font-bold">${index + 1}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-gray-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">${customer.firstName || 'Customer'} ${customer.lastName || ''}</p>
+                                <p class="text-sm text-gray-500">${customer.email || 'No email'}</p>
+                                <p class="text-xs text-gray-400">Member since ${formatDate(customer.createdAt)}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <p class="text-lg font-bold text-primary-blue">${customer.totalVisits || 0}</p>
+                                <p class="text-xs text-gray-500">Visits</p>
+                            </div>
+                            <div>
+                                <p class="text-lg font-bold text-primary-orange">${customer.totalPoints || 0}</p>
+                                <p class="text-xs text-gray-500">Points</p>
+                            </div>
+                            <div>
+                                <p class="text-lg font-bold text-primary-green">$${customer.totalSpending || 0}</p>
+                                <p class="text-xs text-gray-500">Spent</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        container.innerHTML = html;
+    }
+
+    function sortTopCustomers(metric) {
+        if (!window.topCustomersData) {
+            loadTopCustomers();
+            return;
+        }
+
+        const customers = [...window.topCustomersData];
+
+        customers.sort((a, b) => {
+            switch(metric) {
+                case 'visits':
+                    return (b.totalVisits || 0) - (a.totalVisits || 0);
+                case 'points':
+                    return (b.totalPoints || 0) - (a.totalPoints || 0);
+                case 'spending':
+                    return (b.totalSpending || 0) - (a.totalSpending || 0);
+                default:
+                    return (b.totalVisits || 0) - (a.totalVisits || 0);
+            }
+        });
+
+        displayTopCustomers(customers);
+    }
+
+    // Rewards helper functions
+    function refreshRewardsData() {
+        // Refresh current active sub-tab
+        const activeSubTab = document.querySelector('.rewards-tab-btn.bg-white');
+        if (activeSubTab) {
+            const tabName = activeSubTab.getAttribute('data-tab');
+            showRewardsSubTab(tabName);
+        } else {
+            // Default to available rewards
+            showRewardsSubTab('available-rewards');
+        }
+        // Update rewards stats
+        loadRewardsStats();
+    }
+
+    function loadRewardsStats() {
+        fetch('/api/business/rewards/stats')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('total-rewards-count').textContent = data.data.totalRewards || '0';
+                    document.getElementById('monthly-claims-count').textContent = data.data.monthlyClaims || '0';
+                    document.getElementById('points-redeemed-count').textContent = data.data.pointsRedeemed || '0';
+
+                    // Update rewards count in available rewards tab
+                    updateRewardsCount(data.data.totalRewards || 0);
+                }
+            })
+            .catch(error => console.error('Error loading rewards stats:', error));
+    }
+
+    function updateRewardsCount(count) {
+        const countElement = document.getElementById('rewards-count');
+        if (countElement) {
+            countElement.textContent = count ? `${count} rewards` : '0 rewards';
+        }
+    }
+
+    // Modal functions for rewards
+    function showAddRewardModal() {
+        console.log('Opening add reward modal...');
+        // This would open a modal for adding rewards
+        // For now, show a notification
+        showNotification('Add reward modal would open here', 'info');
+    }
+
+    function showAwardPointsModal() {
+        console.log('Opening award points modal...');
+        // This would open a modal for awarding points
+        // For now, show a notification
+        showNotification('Award points modal would open here', 'info');
+    }
+
+    function showAddCriteriaModal() {
+        console.log('Opening add criteria modal...');
+        // This would open a modal for adding criteria
+        // For now, show a notification
+        showNotification('Add criteria modal would open here', 'info');
+    }
+
+    // Notification helper
+    function showNotification(message, type = 'info', duration = 3000) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+
+        // Set colors based on type
+        switch(type) {
+            case 'success':
+                notification.className += ' bg-green-500 text-white';
+                break;
+            case 'error':
+                notification.className += ' bg-red-500 text-white';
+                break;
+            case 'warning':
+                notification.className += ' bg-yellow-500 text-white';
+                break;
+            default:
+                notification.className += ' bg-blue-500 text-white';
+        }
+
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : type === 'warning' ? 'exclamation' : 'info'}-circle mr-2"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+        }, 100);
+
+        // Animate out and remove
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, duration);
+    }
+
+    // Utility functions
+    function formatTimeAgo(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+
+        if (diffInSeconds < 60) return 'Just now';
+        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+        return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    }
+
+    function refreshAnalytics() {
+        loadAnalyticsStats();
+        loadRecentActivity();
+        loadRecentClaims();
+        loadTopCustomers();
+    }
+
+    function exportAnalytics() {
+        window.open('/api/business/analytics/export', '_blank');
+    }
+
+    function toggleChartView(type) {
+        console.log('Toggling chart view to:', type);
+        // Chart functionality would be implemented here
+        // This could integrate with Chart.js or similar library
+    }
+
+    function sortTopCustomers(metric) {
+        if (!window.topCustomersData) {
+            loadTopCustomers();
+            return;
+        }
+
+        const customers = [...window.topCustomersData];
+
+        customers.sort((a, b) => {
+            switch(metric) {
+                case 'visits':
+                    return (b.totalVisits || 0) - (a.totalVisits || 0);
+                case 'points':
+                    return (b.totalPoints || 0) - (a.totalPoints || 0);
+                case 'spending':
+                    return (b.totalSpending || 0) - (a.totalSpending || 0);
+                default:
+                    return (b.totalVisits || 0) - (a.totalVisits || 0);
+            }
+        });
+
+        displayTopCustomers(customers);
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return 'Unknown';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
     }
 </script>

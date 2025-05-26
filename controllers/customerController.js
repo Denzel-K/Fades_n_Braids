@@ -319,7 +319,7 @@ const getVisitHistory = async (req, res) => {
   }
 };
 
-// Get available rewards
+// Get available rewards (only ones customer can afford)
 const getAvailableRewards = async (req, res) => {
   try {
     const customer = await Customer.findById(req.customer._id);
@@ -343,6 +343,35 @@ const getAvailableRewards = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to get available rewards',
+      error: error.message
+    });
+  }
+};
+
+// Get all rewards (for customer to see what they're working toward)
+const getAllRewards = async (req, res) => {
+  try {
+    const customer = await Customer.findById(req.customer._id);
+
+    // Get ALL active rewards, not just affordable ones
+    const rewards = await Reward.find({
+      isActive: true
+    }).sort({ pointsRequired: 1 });
+
+    const allRewards = rewards.filter(reward => reward.isAvailable());
+
+    res.json({
+      success: true,
+      data: {
+        rewards: allRewards,
+        customerPoints: customer.availablePoints
+      }
+    });
+  } catch (error) {
+    console.error('Get all rewards error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to get rewards',
       error: error.message
     });
   }
@@ -451,6 +480,7 @@ module.exports = {
   checkIn,
   getVisitHistory,
   getAvailableRewards,
+  getAllRewards,
   redeemReward,
   getClaimedRewards
 };

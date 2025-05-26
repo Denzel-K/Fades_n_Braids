@@ -4,6 +4,7 @@
 function initializeDashboard() {
     loadRecentActivity();
     loadRewardCriteria();
+    loadRewardsPreview();
     initializeRewards();
     initializeCheckInModal();
     initializeDashboardTabs();
@@ -84,35 +85,47 @@ function loadRecentActivity() {
         });
 }
 
-// Display recent activity with FontAwesome icons
+// Display recent activity with modern styling
 function displayRecentActivity(visits) {
     const container = document.getElementById('recent-activity');
     if (!visits || visits.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-history"></i></div><div class="empty-state-title">No recent visits</div><div class="empty-state-description">Check in at the salon to start earning points!</div></div>';
+        container.innerHTML = `
+            <div class="text-center py-8">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-history text-gray-400 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No recent visits</h3>
+                <p class="text-gray-600">Check in at the salon to start earning points!</p>
+            </div>
+        `;
         return;
     }
 
     const html = visits.map(visit => `
-        <div class="activity-item" data-animate="fade-in">
-            <div class="activity-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="activity-content">
-                <div class="activity-title">Check-in completed</div>
-                <div class="activity-date">
-                    <i class="fas fa-clock"></i>
-                    ${Utils.formatDate(visit.visitDate)}
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors" data-animate="fade-in">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-primary-green/20 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-check-circle text-primary-green"></i>
+                </div>
+                <div>
+                    <p class="font-medium text-gray-900">Salon Visit</p>
+                    <p class="text-sm text-gray-500 flex items-center">
+                        <i class="fas fa-clock mr-1"></i>
+                        ${formatTimeAgo(visit.visitDate)}
+                    </p>
                 </div>
             </div>
-            <div class="activity-points">
-                <i class="fas fa-plus"></i>
-                ${visit.pointsEarned}
+            <div class="text-right">
+                <p class="font-bold text-primary-orange">+${visit.pointsEarned}</p>
+                <p class="text-xs text-gray-500">points</p>
             </div>
         </div>
     `).join('');
 
     container.innerHTML = html;
-    Animations.initializeAnimations();
+    if (typeof Animations !== 'undefined') {
+        Animations.initializeAnimations();
+    }
 }
 
 // Load detailed activity for activity tab
@@ -316,50 +329,43 @@ function scrollToRewards() {
     }
 }
 
-// Load reward criteria for customers
+// Load reward criteria for customers (static data since it's basic info)
 function loadRewardCriteria() {
     const container = document.getElementById('reward-criteria');
     if (!container) return;
 
-    Utils.apiRequest('/api/business/criteria')
-        .then(data => {
-            if (data.success && data.data.criteria && data.data.criteria.length > 0) {
-                displayRewardCriteria(data.data.criteria);
-            } else {
-                container.innerHTML = `
-                    <div class="criteria-info-card">
-                        <div class="criteria-header">
-                            <h3><i class="fas fa-star"></i> How to Earn Points</h3>
-                        </div>
-                        <div class="criteria-content">
-                            <div class="criteria-item">
-                                <div class="criteria-icon">
-                                    <i class="fas fa-mobile-alt"></i>
-                                </div>
-                                <div class="criteria-details">
-                                    <h4>Check In</h4>
-                                    <p>Visit the salon and check in to earn points</p>
-                                </div>
-                                <div class="criteria-points">+10 pts</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        })
-        .catch(error => {
-            console.error('Error loading reward criteria:', error);
-            container.innerHTML = `
-                <div class="criteria-info-card">
-                    <div class="criteria-header">
-                        <h3><i class="fas fa-star"></i> How to Earn Points</h3>
-                    </div>
-                    <div class="criteria-content">
-                        <p>Check in at the salon to start earning points!</p>
-                    </div>
-                </div>
-            `;
-        });
+    // Display static criteria since this is basic information
+    const criteriaHtml = `
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+            <div class="w-10 h-10 bg-primary-green/20 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-calendar-check text-primary-green"></i>
+            </div>
+            <div>
+                <p class="font-medium text-gray-900">Visit Salon</p>
+                <p class="text-sm text-gray-600">+10 points</p>
+            </div>
+        </div>
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+            <div class="w-10 h-10 bg-primary-orange/20 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-user-plus text-primary-orange"></i>
+            </div>
+            <div>
+                <p class="font-medium text-gray-900">First Visit</p>
+                <p class="text-sm text-gray-600">+50 points</p>
+            </div>
+        </div>
+        <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+            <div class="w-10 h-10 bg-primary-purple/20 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-star text-primary-purple"></i>
+            </div>
+            <div>
+                <p class="font-medium text-gray-900">Special Events</p>
+                <p class="text-sm text-gray-600">Bonus points</p>
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = criteriaHtml;
 }
 
 // Display reward criteria for customers
@@ -406,11 +412,129 @@ function updatePointsDisplay(newPoints) {
     }
 }
 
+// Load rewards preview for customer dashboard
+function loadRewardsPreview() {
+    const container = document.getElementById('rewards-preview');
+    if (!container) return;
+
+    // Get ALL rewards so customer can see what they're working toward
+    fetch('/api/customers/rewards/all', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data.rewards) {
+                displayRewardsPreview(data.data.rewards, data.data.customerPoints);
+            } else {
+                container.innerHTML = `
+                    <div class="text-center py-6 col-span-full">
+                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-gift text-gray-400"></i>
+                        </div>
+                        <p class="text-gray-600">No rewards available yet</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error loading rewards preview:', error);
+            container.innerHTML = `
+                <div class="text-center py-6 col-span-full">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-exclamation-triangle text-red-400"></i>
+                    </div>
+                    <p class="text-red-600">Error loading rewards</p>
+                </div>
+            `;
+        });
+}
+
+// Display rewards preview with compact cards
+function displayRewardsPreview(rewards, customerPoints) {
+    const container = document.getElementById('rewards-preview');
+    if (!rewards || rewards.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-6 col-span-full">
+                <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-gift text-gray-400"></i>
+                </div>
+                <p class="text-gray-600">No rewards available yet</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Get customer points from parameter or from the page
+    if (!customerPoints) {
+        customerPoints = parseInt(document.querySelector('[data-customer-points]')?.dataset.customerPoints) || 0;
+    }
+
+    // Sort rewards by points required (lowest first) and show only active rewards
+    const activeRewards = rewards.filter(reward => reward.isActive).sort((a, b) => a.pointsRequired - b.pointsRequired);
+
+    const html = activeRewards.slice(0, 6).map(reward => {
+        const canClaim = customerPoints >= reward.pointsRequired;
+        const progressPercent = Math.min((customerPoints / reward.pointsRequired) * 100, 100);
+        const pointsNeeded = Math.max(0, reward.pointsRequired - customerPoints);
+
+        return `
+            <div class="relative p-4 bg-white border-2 ${canClaim ? 'border-primary-green shadow-lg' : 'border-gray-200'} rounded-lg hover:shadow-md transition-all">
+                ${canClaim ? '<div class="absolute -top-2 -right-2 w-6 h-6 bg-primary-green rounded-full flex items-center justify-center"><i class="fas fa-check text-white text-xs"></i></div>' : ''}
+
+                <div class="flex items-center mb-3">
+                    <div class="w-10 h-10 bg-primary-pink/20 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-gift text-primary-pink"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-gray-900 text-sm">${reward.title}</h4>
+                        <p class="text-xs text-gray-500 capitalize">${reward.category.replace('_', ' ')}</p>
+                        <p class="text-xs font-medium text-primary-orange">${reward.value}</p>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs text-gray-600">Progress</span>
+                        <span class="text-xs font-bold ${canClaim ? 'text-primary-green' : 'text-gray-600'}">${customerPoints}/${reward.pointsRequired}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="h-2 rounded-full transition-all ${canClaim ? 'bg-primary-green' : 'bg-primary-orange'}" style="width: ${progressPercent}%"></div>
+                    </div>
+                </div>
+
+                <button class="w-full btn ${canClaim ? 'btn-primary' : 'btn-outline'} btn-sm" ${canClaim ? `onclick="redeemReward('${reward._id}')"` : 'disabled'}>
+                    ${canClaim ? 'Claim Now' : pointsNeeded > 0 ? `Need ${pointsNeeded} more` : 'Available'}
+                </button>
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = html;
+}
+
+// Helper function to format time ago
+function formatTimeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    return date.toLocaleDateString();
+}
+
 // Export dashboard functions
 window.Dashboard = {
     initializeDashboard,
     switchDashboardTab,
     loadRecentActivity,
+    loadRewardsPreview,
     handleCheckIn,
     showCheckInModal,
     closeCheckInModal,
@@ -424,3 +548,4 @@ window.showCheckInModal = showCheckInModal;
 window.closeCheckInModal = closeCheckInModal;
 window.scrollToRewards = scrollToRewards;
 window.handleCheckIn = handleCheckIn;
+window.loadRewardsPreview = loadRewardsPreview;

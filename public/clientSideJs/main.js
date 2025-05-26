@@ -131,11 +131,11 @@ function loadAvailableRewards() {
         container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><span>Loading rewards...</span></div>';
     }
 
-    fetch('/api/customers/rewards/available')
+    fetch('/api/customers/rewards/all')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                displayAvailableRewards(data.data.rewards);
+                displayAvailableRewards(data.data.rewards, data.data.customerPoints);
                 displayRewardCriteria();
             } else {
                 if (container) {
@@ -258,7 +258,7 @@ function initializeMobileNavigation() {
 }
 
 // Customer rewards functions
-function displayAvailableRewards(rewards) {
+function displayAvailableRewards(rewards, customerPoints) {
     const container = document.getElementById('rewards-grid');
     if (!container) return;
 
@@ -267,20 +267,38 @@ function displayAvailableRewards(rewards) {
         return;
     }
 
-    const html = rewards.map(reward => `
-        <div class="reward-card">
-            <div class="reward-header">
-                <span class="reward-category">${reward.category.replace('_', ' ')}</span>
-                <span class="reward-points">${reward.pointsRequired} pts</span>
+    // Get customer points from the data or from the page
+    if (!customerPoints) {
+        customerPoints = parseInt(document.querySelector('[data-customer-points]')?.dataset.customerPoints) || 0;
+    }
+
+    const html = rewards.map(reward => {
+        const canClaim = customerPoints >= reward.pointsRequired;
+        const pointsNeeded = Math.max(0, reward.pointsRequired - customerPoints);
+
+        return `
+            <div class="reward-card ${canClaim ? 'claimable' : 'not-claimable'}">
+                <div class="reward-header">
+                    <span class="reward-category">${reward.category.replace('_', ' ')}</span>
+                    <span class="reward-points">${reward.pointsRequired} pts</span>
+                    ${canClaim ? '<span class="claimable-badge">✓ Available</span>' : ''}
+                </div>
+                <h4 class="reward-title">${reward.title}</h4>
+                <p class="reward-description">${reward.description}</p>
+                <div class="reward-value">Value: ${reward.value}</div>
+                <div class="reward-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${Math.min((customerPoints / reward.pointsRequired) * 100, 100)}%"></div>
+                    </div>
+                    <span class="progress-text">${customerPoints}/${reward.pointsRequired} points</span>
+                </div>
+                <button class="btn ${canClaim ? 'btn-primary' : 'btn-outline'} reward-btn"
+                        ${canClaim ? `onclick="redeemReward('${reward._id}')"` : 'disabled'}>
+                    ${canClaim ? 'Redeem Now' : `Need ${pointsNeeded} more points`}
+                </button>
             </div>
-            <h4 class="reward-title">${reward.title}</h4>
-            <p class="reward-description">${reward.description}</p>
-            <div class="reward-value">Value: ${reward.value}</div>
-            <button class="btn btn-primary reward-btn" onclick="redeemReward('${reward._id}')">
-                Redeem Now
-            </button>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
     container.innerHTML = html;
 }

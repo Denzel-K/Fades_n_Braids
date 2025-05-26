@@ -11,6 +11,7 @@ const {
   checkIn,
   getVisitHistory,
   getAvailableRewards,
+  getAllRewards,
   redeemReward,
   getClaimedRewards
 } = require('../controllers/customerController');
@@ -80,6 +81,7 @@ router.put('/profile', updateProfileValidation, updateProfile);
 router.post('/checkin', checkIn);
 router.get('/visits', getVisitHistory);
 router.get('/rewards', getAvailableRewards);
+router.get('/rewards/all', getAllRewards);
 router.get('/rewards/claimed', getClaimedRewards);
 router.post('/rewards/:rewardId/redeem', redeemReward);
 
