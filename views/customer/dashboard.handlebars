@@ -13,7 +13,7 @@
                     <div class="points-label">Available Points</div>
                 </div>
                 <div class="points-badge">
-                    <span class="badge-icon">🎯</span>
+                    <span class="badge-icon"><i class="fas fa-bullseye"></i></span>
                 </div>
             </div>
 
@@ -21,27 +21,27 @@
                 <div class="stat-item">
                     <div class="stat-number" data-animate="counter">{{safeValue customer.totalVisits}}</div>
                     <div class="stat-label">Total Visits</div>
-                    <div class="stat-icon">📅</div>
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" data-animate="counter">{{formatPoints customer.totalPoints}}</div>
                     <div class="stat-label">Points Earned</div>
-                    <div class="stat-icon">⭐</div>
+                    <div class="stat-icon"><i class="fas fa-star"></i></div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" data-animate="counter">{{safeLength customer.rewards}}</div>
                     <div class="stat-label">Rewards Used</div>
-                    <div class="stat-icon">🎁</div>
+                    <div class="stat-icon"><i class="fas fa-gift"></i></div>
                 </div>
             </div>
 
             <div class="points-actions">
                 <button class="btn btn-primary btn-large" onclick="showCheckInModal()">
-                    <span class="btn-icon">📱</span>
+                    <span class="btn-icon"><i class="fas fa-mobile-alt"></i></span>
                     Check In Now
                 </button>
                 <button class="btn btn-outline" onclick="scrollToRewards()">
-                    <span class="btn-icon">🎁</span>
+                    <span class="btn-icon"><i class="fas fa-gift"></i></span>
                     Browse Rewards
                 </button>
             </div>
@@ -52,35 +52,35 @@
             <div class="dashboard-card quick-actions-card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <span class="title-icon">⚡</span>
+                        <span class="title-icon"><i class="fas fa-bolt"></i></span>
                         Quick Actions
                     </h3>
                 </div>
                 <div class="card-content">
                     <div class="quick-actions-grid">
                         <button class="quick-action-btn" onclick="showCheckInModal()" data-action="checkin">
-                            <div class="action-icon">📱</div>
+                            <div class="action-icon"><i class="fas fa-mobile-alt"></i></div>
                             <div class="action-content">
                                 <div class="action-title">Check In</div>
                                 <div class="action-subtitle">Earn 10 points</div>
                             </div>
                         </button>
                         <button class="quick-action-btn" onclick="scrollToRewards()" data-action="rewards">
-                            <div class="action-icon">🎁</div>
+                            <div class="action-icon"><i class="fas fa-gift"></i></div>
                             <div class="action-content">
                                 <div class="action-title">Rewards</div>
                                 <div class="action-subtitle">Redeem points</div>
                             </div>
                         </button>
                         <button class="quick-action-btn" onclick="showVisitHistory()" data-action="history">
-                            <div class="action-icon">📊</div>
+                            <div class="action-icon"><i class="fas fa-chart-line"></i></div>
                             <div class="action-content">
                                 <div class="action-title">History</div>
                                 <div class="action-subtitle">View visits</div>
                             </div>
                         </button>
                         <button class="quick-action-btn" onclick="showProfile()" data-action="profile">
-                            <div class="action-icon">👤</div>
+                            <div class="action-icon"><i class="fas fa-user"></i></div>
                             <div class="action-content">
                                 <div class="action-title">Profile</div>
                                 <div class="action-subtitle">Edit info</div>
@@ -94,7 +94,7 @@
             <div class="dashboard-card activity-card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <span class="title-icon">📈</span>
+                        <span class="title-icon"><i class="fas fa-chart-line"></i></span>
                         Recent Activity
                     </h3>
                     <button class="btn btn-small btn-ghost" onclick="showVisitHistory()">View All</button>
@@ -110,14 +110,62 @@
             </div>
         </div>
 
-        <!-- Available Rewards Section -->
+        <!-- Rewards Tabs Section -->
         <div class="dashboard-section" id="rewards">
             <div class="section-header">
-                <h2 class="section-title">Available Rewards</h2>
-                <p class="section-subtitle">Redeem your points for exclusive rewards</p>
+                <h2 class="section-title">Rewards</h2>
+                <p class="section-subtitle">Redeem your points and track your claimed rewards</p>
             </div>
-            <div id="rewards-grid" class="rewards-grid">
-                <div class="loading">Loading available rewards...</div>
+
+            <!-- Reward Criteria Info -->
+            <div class="reward-criteria-info">
+                <div class="criteria-card">
+                    <div class="criteria-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h4>How to Earn Points</h4>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criteria-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Check-in at salon: <strong>10 points</strong></span>
+                        </div>
+                        <div class="criteria-item">
+                            <i class="fas fa-gift"></i>
+                            <span>Welcome bonus: <strong>50 points</strong></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-small btn-outline" onclick="showRewardCriteria()">
+                        <i class="fas fa-question-circle"></i>
+                        Learn More
+                    </button>
+                </div>
+            </div>
+
+            <!-- Rewards Tabs -->
+            <div class="rewards-tabs">
+                <button class="tab-btn active" onclick="showRewardsTab('available')" id="available-tab">
+                    <i class="fas fa-gift"></i>
+                    Available Rewards
+                </button>
+                <button class="tab-btn" onclick="showRewardsTab('claimed')" id="claimed-tab">
+                    <i class="fas fa-check-circle"></i>
+                    Claimed Rewards
+                    <span class="tab-badge" id="claimed-count">{{safeLength customer.rewards}}</span>
+                </button>
+            </div>
+
+            <!-- Available Rewards Tab -->
+            <div id="available-rewards-tab" class="tab-content active">
+                <div id="rewards-grid" class="rewards-grid">
+                    <div class="loading">Loading available rewards...</div>
+                </div>
+            </div>
+
+            <!-- Claimed Rewards Tab -->
+            <div id="claimed-rewards-tab" class="tab-content">
+                <div id="claimed-rewards-grid" class="claimed-rewards-grid">
+                    <div class="loading">Loading claimed rewards...</div>
+                </div>
             </div>
         </div>
     </div>

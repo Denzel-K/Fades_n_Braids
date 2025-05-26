@@ -1,174 +1,359 @@
 <div class="dashboard-page business-dashboard">
     <div class="container">
+        <!-- Dashboard Header -->
         <div class="dashboard-header">
-            <h1 class="dashboard-title">Business Dashboard</h1>
-            <p class="dashboard-subtitle">Manage your loyalty program and customers</p>
-        </div>
-
-        <!-- Stats Overview -->
-        <div class="business-stats-grid">
-            <div class="stat-card customers-card" data-animate="slide-up">
-                <div class="stat-header">
-                    <div class="stat-icon">👥</div>
-                    <div class="stat-trend positive">+12%</div>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number" id="total-customers" data-animate="counter">-</div>
-                    <div class="stat-label">Total Customers</div>
-                    <div class="stat-subtitle">Active members</div>
-                </div>
+            <div class="header-content">
+                <h1 class="dashboard-title">
+                    <i class="fas fa-chart-pie"></i>
+                    <span class="title-text">Business Dashboard</span>
+                </h1>
+                <p class="dashboard-subtitle">
+                    <i class="fas fa-info-circle"></i>
+                    Manage your loyalty program and track performance
+                </p>
             </div>
-            <div class="stat-card visits-card" data-animate="slide-up" data-delay="100">
-                <div class="stat-header">
-                    <div class="stat-icon">📅</div>
-                    <div class="stat-trend positive">+5</div>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number" id="today-visits" data-animate="counter">-</div>
-                    <div class="stat-label">Today's Visits</div>
-                    <div class="stat-subtitle">Check-ins today</div>
-                </div>
-            </div>
-            <div class="stat-card total-visits-card" data-animate="slide-up" data-delay="200">
-                <div class="stat-header">
-                    <div class="stat-icon">🎯</div>
-                    <div class="stat-trend neutral">All time</div>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number" id="total-visits" data-animate="counter">-</div>
-                    <div class="stat-label">Total Visits</div>
-                    <div class="stat-subtitle">All check-ins</div>
-                </div>
-            </div>
-            <div class="stat-card rewards-card" data-animate="slide-up" data-delay="300">
-                <div class="stat-header">
-                    <div class="stat-icon">🎁</div>
-                    <div class="stat-trend positive">Active</div>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number" id="active-rewards" data-animate="counter">-</div>
-                    <div class="stat-label">Active Rewards</div>
-                    <div class="stat-subtitle">Available offers</div>
+            <div class="header-actions">
+                <button class="btn btn-outline btn-small" onclick="refreshDashboard()" id="refresh-btn">
+                    <i class="fas fa-sync-alt"></i>
+                    <span class="btn-text">Refresh</span>
+                </button>
+                <div class="auto-refresh-indicator">
+                    <span class="indicator-dot"></span>
+                    <span class="indicator-text">Auto-refresh: 30s</span>
                 </div>
             </div>
         </div>
 
-        <div class="business-dashboard-grid">
-            <!-- Check-in Codes Display -->
-            <div class="dashboard-card checkin-codes-card" data-animate="fade-in">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <span class="title-icon">📱</span>
-                        Current Check-in Codes
-                    </h3>
-                    <div class="card-actions">
-                        <button class="btn btn-small btn-outline" onclick="refreshCodes()">
-                            <span class="btn-icon">🔄</span>
-                            Refresh
-                        </button>
-                        <a href="/business/checkin-codes" class="btn btn-small btn-secondary">
-                            <span class="btn-icon">📺</span>
-                            Full Display
-                        </a>
+        <!-- Dashboard Tabs -->
+        <div class="dashboard-tabs">
+            <button class="tab-btn active" onclick="showDashboardTab('overview')" id="overview-tab">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="tab-text">Overview</span>
+            </button>
+            <button class="tab-btn" onclick="showDashboardTab('customers')" id="customers-tab">
+                <i class="fas fa-users"></i>
+                <span class="tab-text">Customers</span>
+            </button>
+            <button class="tab-btn" onclick="showDashboardTab('rewards')" id="rewards-tab">
+                <i class="fas fa-gift"></i>
+                <span class="tab-text">Rewards</span>
+            </button>
+            <button class="tab-btn" onclick="showDashboardTab('analytics')" id="analytics-tab">
+                <i class="fas fa-chart-bar"></i>
+                <span class="tab-text">Analytics</span>
+            </button>
+            <button class="tab-btn" onclick="showDashboardTab('tools')" id="tools-tab">
+                <i class="fas fa-tools"></i>
+                <span class="tab-text">Tools</span>
+            </button>
+        </div>
+
+        <!-- Tab Content Container -->
+        <div class="tab-content-container">
+
+            <!-- Overview Tab -->
+            <div id="overview-content" class="tab-content active">
+                <!-- Stats Overview -->
+                <div class="business-stats-grid">
+                    <div class="stat-card customers-card" data-animate="slide-up">
+                        <div class="stat-header">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <div class="stat-trend positive"><i class="fas fa-arrow-up"></i> +12%</div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="total-customers" data-animate="counter">-</div>
+                            <div class="stat-label">Total Customers</div>
+                            <div class="stat-subtitle">Active members</div>
+                        </div>
+                    </div>
+                    <div class="stat-card visits-card" data-animate="slide-up" data-delay="100">
+                        <div class="stat-header">
+                            <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                            <div class="stat-trend positive"><i class="fas fa-plus"></i> 5</div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="today-visits" data-animate="counter">-</div>
+                            <div class="stat-label">Today's Visits</div>
+                            <div class="stat-subtitle">Check-ins today</div>
+                        </div>
+                    </div>
+                    <div class="stat-card total-visits-card" data-animate="slide-up" data-delay="200">
+                        <div class="stat-header">
+                            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="stat-trend neutral"><i class="fas fa-clock"></i> All time</div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="total-visits" data-animate="counter">-</div>
+                            <div class="stat-label">Total Visits</div>
+                            <div class="stat-subtitle">All check-ins</div>
+                        </div>
+                    </div>
+                    <div class="stat-card rewards-card" data-animate="slide-up" data-delay="300">
+                        <div class="stat-header">
+                            <div class="stat-icon"><i class="fas fa-gift"></i></div>
+                            <div class="stat-trend positive"><i class="fas fa-check-circle"></i> Active</div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="active-rewards" data-animate="counter">-</div>
+                            <div class="stat-label">Active Rewards</div>
+                            <div class="stat-subtitle">Available offers</div>
+                        </div>
                     </div>
                 </div>
-                <div class="card-content">
-                    <div class="codes-display-compact">
-                        <div class="qr-section">
-                            <div class="qr-code-container">
-                                <img id="qr-image" src="" alt="QR Code" style="display: none;">
-                                <div class="loading" id="qr-loading">
-                                    <div class="loading-spinner"></div>
-                                    <span>Loading QR code...</span>
+
+                <!-- Overview Content Grid -->
+                <div class="overview-grid">
+                    <!-- Check-in Codes Display -->
+                    <div class="dashboard-card checkin-codes-card" data-animate="fade-in">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span class="card-title-text">Check-in Codes</span>
+                            </h3>
+                            <div class="card-actions">
+                                <button class="btn btn-small btn-outline" onclick="refreshCodes()">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span class="btn-text">Refresh</span>
+                                </button>
+                                <a href="/business/checkin-codes" class="btn btn-small btn-secondary">
+                                    <i class="fas fa-tv"></i>
+                                    <span class="btn-text">Display</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="codes-display-compact">
+                                <div class="qr-section">
+                                    <div class="qr-code-container">
+                                        <img id="qr-image" src="" alt="QR Code" style="display: none;">
+                                        <div class="loading" id="qr-loading">
+                                            <div class="loading-spinner"></div>
+                                            <span>Loading QR code...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="code-divider">OR</div>
+                                <div class="digit-section">
+                                    <div class="digit-code-display">
+                                        <span id="digit-code">------</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="code-info">
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span class="info-text">Refreshes every 5 minutes</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-stopwatch"></i>
+                                    <span class="info-text">Expires: <span id="code-expiry">--:--</span></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="code-divider">OR</div>
-                        <div class="digit-section">
-                            <div class="digit-code-display">
-                                <span id="digit-code">------</span>
-                            </div>
-                        </div>
                     </div>
-                    <div class="code-info">
-                        <div class="info-item">
-                            <span class="info-icon">⏱️</span>
-                            <span>Refreshes every 5 minutes</span>
+
+                    <!-- Recent Activity Summary -->
+                    <div class="dashboard-card activity-summary-card" data-animate="fade-in" data-delay="200">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-line"></i>
+                                <span class="card-title-text">Recent Activity</span>
+                            </h3>
+                            <button class="btn btn-small btn-ghost" onclick="showDashboardTab('analytics')">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span class="btn-text">View All</span>
+                            </button>
                         </div>
-                        <div class="info-item">
-                            <span class="info-icon">⏰</span>
-                            <span>Expires: <span id="code-expiry">--:--</span></span>
+                        <div class="card-content">
+                            <div id="recent-visits-summary" class="activity-summary">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading activity...</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Business Quick Actions -->
-            <div class="dashboard-card quick-actions-card" data-animate="fade-in" data-delay="200">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <span class="title-icon">⚡</span>
-                        Quick Actions
-                    </h3>
+            <!-- Customers Tab -->
+            <div id="customers-content" class="tab-content">
+                <div class="tab-header">
+                    <h2 class="tab-title">
+                        <i class="fas fa-users"></i>
+                        Customer Management
+                    </h2>
+                    <p class="tab-subtitle">View and manage your loyalty program members</p>
                 </div>
-                <div class="card-content">
-                    <div class="business-actions-grid">
-                        <button class="business-action-btn" onclick="showCustomersModal()" data-action="customers">
-                            <div class="action-icon">👥</div>
-                            <div class="action-content">
-                                <div class="action-title">Customers</div>
-                                <div class="action-subtitle">View & manage</div>
-                            </div>
-                            <div class="action-arrow">→</div>
+
+                <div class="customers-section">
+                    <div class="section-actions">
+                        <button class="btn btn-primary" onclick="showAddCustomerForm()">
+                            <i class="fas fa-user-plus"></i>
+                            <span class="btn-text">Add Customer</span>
                         </button>
-                        <button class="business-action-btn" onclick="showRewardsModal()" data-action="rewards">
-                            <div class="action-icon">🎁</div>
-                            <div class="action-content">
-                                <div class="action-title">Rewards</div>
-                                <div class="action-subtitle">Manage catalog</div>
-                            </div>
-                            <div class="action-arrow">→</div>
+                        <button class="btn btn-outline" onclick="exportCustomers()">
+                            <i class="fas fa-download"></i>
+                            <span class="btn-text">Export</span>
                         </button>
-                        <button class="business-action-btn" onclick="showAwardPointsModal()" data-action="points">
-                            <div class="action-icon">⭐</div>
-                            <div class="action-content">
-                                <div class="action-title">Award Points</div>
-                                <div class="action-subtitle">Manual points</div>
-                            </div>
-                            <div class="action-arrow">→</div>
-                        </button>
-                        <button class="business-action-btn" onclick="showAnalytics()" data-action="analytics">
-                            <div class="action-icon">📊</div>
-                            <div class="action-content">
-                                <div class="action-title">Analytics</div>
-                                <div class="action-subtitle">View reports</div>
-                            </div>
-                            <div class="action-arrow">→</div>
-                        </button>
+                    </div>
+
+                    <div class="customers-grid">
+                        <div id="customers-list" class="loading">
+                            <div class="loading-spinner"></div>
+                            <span>Loading customers...</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Recent Activity -->
-        <div class="dashboard-section">
-            <div class="section-header">
-                <h2 class="section-title">Recent Customer Activity</h2>
-            </div>
-            <div class="activity-table">
-                <div id="recent-visits" class="table-container">
-                    <div class="loading">Loading recent activity...</div>
+            <!-- Rewards Tab -->
+            <div id="rewards-content" class="tab-content">
+                <div class="tab-header">
+                    <h2 class="tab-title">
+                        <i class="fas fa-gift"></i>
+                        Rewards Management
+                    </h2>
+                    <p class="tab-subtitle">Create and manage reward offerings</p>
+                </div>
+
+                <div class="rewards-section">
+                    <div class="section-actions">
+                        <button class="btn btn-primary" onclick="showAddRewardForm()">
+                            <i class="fas fa-plus"></i>
+                            <span class="btn-text">Add Reward</span>
+                        </button>
+                        <button class="btn btn-outline" onclick="showAwardPointsForm()">
+                            <i class="fas fa-star"></i>
+                            <span class="btn-text">Award Points</span>
+                        </button>
+                    </div>
+
+                    <div class="rewards-grid">
+                        <div id="rewards-list" class="loading">
+                            <div class="loading-spinner"></div>
+                            <span>Loading rewards...</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Top Customers -->
-        <div class="dashboard-section">
-            <div class="section-header">
-                <h2 class="section-title">Top Customers</h2>
+            <!-- Analytics Tab -->
+            <div id="analytics-content" class="tab-content">
+                <div class="tab-header">
+                    <h2 class="tab-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Analytics & Reports
+                    </h2>
+                    <p class="tab-subtitle">Track performance and customer insights</p>
+                </div>
+
+                <div class="analytics-section">
+                    <!-- Recent Activity -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-clock"></i>
+                                Recent Customer Activity
+                            </h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="recent-visits" class="table-container">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading recent activity...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Reward Claims -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-trophy"></i>
+                                Recent Reward Claims
+                            </h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="recent-claims" class="reward-claims-grid">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading recent claims...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Customers -->
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-crown"></i>
+                                Top Customers
+                            </h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="top-customers" class="customers-grid">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading top customers...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="customers-grid">
-                <div id="top-customers" class="loading">Loading top customers...</div>
+
+            <!-- Tools Tab -->
+            <div id="tools-content" class="tab-content">
+                <div class="tab-header">
+                    <h2 class="tab-title">
+                        <i class="fas fa-tools"></i>
+                        Business Tools
+                    </h2>
+                    <p class="tab-subtitle">Utilities and administrative functions</p>
+                </div>
+
+                <div class="tools-section">
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <h3 class="tool-title">Check-in Display</h3>
+                            <p class="tool-description">Show QR codes and digit codes for customer check-ins</p>
+                            <a href="/business/checkin-codes" class="btn btn-outline btn-full">
+                                <i class="fas fa-tv"></i>
+                                Open Display
+                            </a>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <h3 class="tool-title">Export Data</h3>
+                            <p class="tool-description">Download customer and transaction data</p>
+                            <button class="btn btn-outline btn-full" onclick="exportAllData()">
+                                <i class="fas fa-file-export"></i>
+                                Export All
+                            </button>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <h3 class="tool-title">Settings</h3>
+                            <p class="tool-description">Configure business and program settings</p>
+                            <button class="btn btn-outline btn-full" onclick="showSettings()">
+                                <i class="fas fa-sliders-h"></i>
+                                Open Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

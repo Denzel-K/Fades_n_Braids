@@ -26,6 +26,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    {{!-- Icons --}}
+    <script src="https://kit.fontawesome.com/d857a2c174.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -38,32 +41,78 @@
                 </a>
             </div>
 
-            <div class="navbar-menu">
+            <!-- Mobile Menu Toggle -->
+            <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <div class="navbar-menu" id="navbar-menu">
                 {{#if customer}}
                     <!-- Customer Navigation -->
                     <div class="navbar-user customer-nav">
-                        <span class="user-greeting">Hi, {{customer.firstName}}!</span>
-                        <div class="user-points">{{formatPoints (safeValue customer.availablePoints 0)}} pts</div>
-                        <a href="/customer/dashboard" class="btn btn-outline">Dashboard</a>
-                        <form action="/api/customers/logout" method="POST" class="logout-form">
-                            <button type="submit" class="btn btn-ghost">Logout</button>
-                        </form>
+                        <div class="user-info">
+                            <span class="user-greeting">
+                                <i class="fas fa-user-circle"></i>
+                                <span class="greeting-text">Hi, {{customer.firstName}}!</span>
+                            </span>
+                            <div class="user-points">
+                                <i class="fas fa-coins"></i>
+                                <span class="points-value">{{formatPoints (safeValue customer.availablePoints 0)}}</span>
+                                <span class="points-label">pts</span>
+                            </div>
+                        </div>
+                        <div class="nav-actions">
+                            <a href="/customer/dashboard" class="nav-btn btn-outline" title="Dashboard">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span class="btn-text">Dashboard</span>
+                            </a>
+                            <form action="/api/customers/logout" method="POST" class="logout-form">
+                                <button type="submit" class="nav-btn btn-ghost" title="Logout">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span class="btn-text">Logout</span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 {{else if business}}
                     <!-- Business Navigation -->
                     <div class="navbar-user business-nav">
-                        <span class="user-greeting">{{business.businessName}}</span>
-                        <a href="/business/dashboard" class="btn btn-outline">Dashboard</a>
-                        <a href="/business/checkin-codes" class="btn btn-secondary">Display Codes</a>
-                        <form action="/api/business/logout" method="POST" class="logout-form">
-                            <button type="submit" class="btn btn-ghost">Logout</button>
-                        </form>
+                        <div class="user-info">
+                            <span class="user-greeting">
+                                <i class="fas fa-building"></i>
+                                <span class="greeting-text">{{business.businessName}}</span>
+                            </span>
+                        </div>
+                        <div class="nav-actions">
+                            <a href="/business/dashboard" class="nav-btn btn-outline" title="Dashboard">
+                                <i class="fas fa-chart-pie"></i>
+                                <span class="btn-text">Dashboard</span>
+                            </a>
+                            <a href="/business/checkin-codes" class="nav-btn btn-secondary" title="Display Codes">
+                                <i class="fas fa-qrcode"></i>
+                                <span class="btn-text">Codes</span>
+                            </a>
+                            <form action="/api/business/logout" method="POST" class="logout-form">
+                                <button type="submit" class="nav-btn btn-ghost" title="Logout">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span class="btn-text">Logout</span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 {{else}}
-                    <!-- Public Navigation (No Business Link) -->
+                    <!-- Public Navigation -->
                     <div class="navbar-auth">
-                        <a href="/customer/login" class="btn btn-ghost">Login</a>
-                        <a href="/customer/register" class="btn btn-primary">Join Program</a>
+                        <a href="/customer/login" class="nav-btn btn-ghost" title="Login">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span class="btn-text">Login</span>
+                        </a>
+                        <a href="/customer/register" class="nav-btn btn-primary" title="Join Program">
+                            <i class="fas fa-user-plus"></i>
+                            <span class="btn-text">Join Program</span>
+                        </a>
                     </div>
                 {{/if}}
             </div>
@@ -113,12 +162,26 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <script src="/clientSideJs/main.js"></script>
+    <!-- JavaScript Modules -->
+    <!-- Core utilities and helpers -->
+    <script src="/clientSideJs/utils.js"></script>
+    <script src="/clientSideJs/notifications.js"></script>
+    <script src="/clientSideJs/animations.js"></script>
+    <script src="/clientSideJs/auth.js"></script>
+
+    <!-- Feature-specific modules -->
+    {{#if customer}}
+    <script src="/clientSideJs/dashboard.js"></script>
+    <script src="/clientSideJs/rewards.js"></script>
+    {{/if}}
+
     {{#if business}}
-    <!-- Business-specific JavaScript -->
+    <script src="/clientSideJs/business-dashboard.js"></script>
     <script src="/clientSideJs/business-modals.js"></script>
     <script src="/clientSideJs/business-handlers.js"></script>
     {{/if}}
+
+    <!-- Main coordinator (must be last) -->
+    <script src="/clientSideJs/main.js"></script>
 </body>
 </html>

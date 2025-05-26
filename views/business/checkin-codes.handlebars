@@ -1,8 +1,26 @@
 <div class="checkin-codes-page">
     <div class="container">
         <div class="page-header">
-            <h1 class="page-title">Check-in Codes Display</h1>
-            <p class="page-description">Display this page for customers to see the current check-in codes</p>
+            <div class="header-content">
+                <h1 class="page-title">
+                    <i class="fas fa-qrcode"></i>
+                    <span class="title-text">Check-in Codes</span>
+                </h1>
+                <p class="page-description">
+                    <i class="fas fa-info-circle"></i>
+                    Display this page for customers to see the current check-in codes
+                </p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-outline btn-small" onclick="window.location.reload()">
+                    <i class="fas fa-sync-alt"></i>
+                    <span class="btn-text">Refresh</span>
+                </button>
+                <a href="/business/dashboard" class="btn btn-secondary btn-small">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="btn-text">Dashboard</span>
+                </a>
+            </div>
         </div>
 
         <div class="codes-display">
@@ -44,7 +62,10 @@
         </div>
 
         <div class="back-to-dashboard">
-            <a href="/business/dashboard" class="btn btn-outline">← Back to Dashboard</a>
+            <a href="/business/dashboard" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i>
+                <span class="btn-text">Back to Dashboard</span>
+            </a>
         </div>
     </div>
 </div>

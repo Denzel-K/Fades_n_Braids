@@ -404,6 +404,41 @@ const redeemReward = async (req, res) => {
   }
 };
 
+// Get claimed rewards
+const getClaimedRewards = async (req, res) => {
+  try {
+    const customer = await Customer.findById(req.customer._id)
+      .populate('rewards.rewardId', 'title description value category pointsRequired')
+      .select('rewards');
+
+    // Filter out any rewards where the rewardId is null (deleted rewards)
+    const claimedRewards = customer.rewards
+      .filter(reward => reward.rewardId)
+      .map(reward => ({
+        ...reward.rewardId.toObject(),
+        redeemedAt: reward.redeemedAt,
+        pointsUsed: reward.pointsUsed,
+        claimedId: reward._id
+      }))
+      .sort((a, b) => new Date(b.redeemedAt) - new Date(a.redeemedAt));
+
+    res.json({
+      success: true,
+      data: {
+        claimedRewards,
+        totalClaimed: claimedRewards.length
+      }
+    });
+  } catch (error) {
+    console.error('Get claimed rewards error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to get claimed rewards',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   registerCustomer,
   loginCustomer,
@@ -413,5 +448,6 @@ module.exports = {
   checkIn,
   getVisitHistory,
   getAvailableRewards,
-  redeemReward
+  redeemReward,
+  getClaimedRewards
 };

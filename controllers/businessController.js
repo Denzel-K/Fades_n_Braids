@@ -120,6 +120,28 @@ const getDashboard = async (req, res) => {
     // Get current check-in code
     const currentCode = await CheckInCode.getCurrentCode();
 
+    // Get recent reward claims
+    const recentClaims = await Customer.find({ 'rewards.0': { $exists: true } })
+      .populate('rewards.rewardId', 'title value pointsRequired')
+      .sort({ 'rewards.redeemedAt': -1 })
+      .limit(5)
+      .select('firstName lastName phone rewards');
+
+    // Format recent claims data
+    const formattedClaims = recentClaims.map(customer => {
+      const latestReward = customer.rewards[0];
+      return {
+        customer: {
+          firstName: customer.firstName,
+          lastName: customer.lastName,
+          phone: customer.phone
+        },
+        reward: latestReward.rewardId,
+        redeemedAt: latestReward.redeemedAt,
+        pointsUsed: latestReward.pointsUsed
+      };
+    }).filter(claim => claim.reward); // Filter out claims where reward was deleted
+
     res.json({
       success: true,
       data: {
@@ -131,6 +153,7 @@ const getDashboard = async (req, res) => {
         },
         recentVisits,
         topCustomers,
+        recentClaims: formattedClaims,
         currentCode
       }
     });

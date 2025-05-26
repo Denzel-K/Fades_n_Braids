@@ -11,7 +11,8 @@ const {
   checkIn,
   getVisitHistory,
   getAvailableRewards,
-  redeemReward
+  redeemReward,
+  getClaimedRewards
 } = require('../controllers/customerController');
 
 const { authenticateCustomer } = require('../middleware/authMiddleware');
@@ -79,6 +80,7 @@ router.put('/profile', updateProfileValidation, updateProfile);
 router.post('/checkin', checkIn);
 router.get('/visits', getVisitHistory);
 router.get('/rewards', getAvailableRewards);
+router.get('/rewards/claimed', getClaimedRewards);
 router.post('/rewards/:rewardId/redeem', redeemReward);
 
 module.exports = router;
