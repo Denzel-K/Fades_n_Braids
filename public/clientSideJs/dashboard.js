@@ -241,12 +241,19 @@ function handleCheckIn() {
 function showCheckInModal() {
     const modal = document.getElementById('checkin-modal');
     if (modal) {
-        modal.classList.add('show');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
         const content = modal.querySelector('.modal-content');
         if (content) {
-            content.classList.add('scale-in');
+            content.classList.add('animate-scale-in');
         }
-        document.getElementById('checkin-code').focus();
+        // Focus on the input after a short delay to ensure modal is visible
+        setTimeout(() => {
+            const codeInput = document.getElementById('checkin-code');
+            if (codeInput) {
+                codeInput.focus();
+            }
+        }, 100);
         document.body.style.overflow = 'hidden';
     }
 }
@@ -257,14 +264,18 @@ function closeCheckInModal() {
     if (modal) {
         const content = modal.querySelector('.modal-content');
         if (content) {
-            content.classList.add('scale-out');
+            content.classList.add('animate-scale-out');
         }
         setTimeout(() => {
-            modal.classList.remove('show');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
             if (content) {
-                content.classList.remove('scale-in', 'scale-out');
+                content.classList.remove('animate-scale-in', 'animate-scale-out');
             }
-            document.getElementById('checkin-form').reset();
+            const form = document.getElementById('checkin-form');
+            if (form) {
+                form.reset();
+            }
             document.body.style.overflow = '';
         }, 300);
     }

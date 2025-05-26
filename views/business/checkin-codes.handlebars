@@ -1,70 +1,111 @@
-<div class="checkin-codes-page">
-    <div class="container">
-        <div class="page-header">
-            <div class="header-content">
-                <h1 class="page-title">
-                    <i class="fas fa-qrcode"></i>
-                    <span class="title-text">Check-in Codes</span>
+<div class="min-h-screen bg-gradient-to-br from-primary-orange/10 via-primary-pink/10 to-primary-purple/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
+            <div class="mb-4 lg:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 flex items-center mb-2">
+                    <i class="fas fa-qrcode text-primary-blue mr-4"></i>
+                    Check-in Codes
                 </h1>
-                <p class="page-description">
-                    <i class="fas fa-info-circle"></i>
+                <p class="text-xl text-gray-600 flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i>
                     Display this page for customers to see the current check-in codes
                 </p>
             </div>
-            <div class="header-actions">
-                <button class="btn btn-outline btn-small" onclick="window.location.reload()">
-                    <i class="fas fa-sync-alt"></i>
-                    <span class="btn-text">Refresh</span>
+            <div class="flex gap-3">
+                <button class="btn btn-outline" onclick="window.location.reload()">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    Refresh
                 </button>
-                <a href="/business/dashboard" class="btn btn-secondary btn-small">
-                    <i class="fas fa-arrow-left"></i>
-                    <span class="btn-text">Dashboard</span>
+                <a href="/business/dashboard" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Dashboard
                 </a>
             </div>
         </div>
 
-        <div class="codes-display">
-            <div class="codes-container">
-                <div class="qr-section">
-                    <h2>Scan QR Code</h2>
-                    <div class="qr-code-large">
-                        <img id="qr-image" src="" alt="QR Code" style="display: none;">
-                        <div class="loading" id="qr-loading">Loading QR code...</div>
+        <!-- Main Codes Display -->
+        <div class="bg-white rounded-3xl shadow-2xl p-8 lg:p-12 mb-12">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+                <!-- QR Code Section -->
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Scan QR Code</h2>
+                    <div class="w-64 h-64 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center mb-6 shadow-inner">
+                        <img id="qr-image" src="" alt="QR Code" class="w-full h-full object-contain rounded-2xl hidden">
+                        <div id="qr-loading" class="flex flex-col items-center">
+                            <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-primary-blue mb-4"></div>
+                            <span class="text-gray-600 font-medium">Loading QR code...</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">Point your camera at the QR code</p>
+                </div>
+
+                <!-- Divider -->
+                <div class="flex items-center justify-center">
+                    <div class="bg-gradient-to-r from-primary-orange to-primary-pink text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg">
+                        OR
                     </div>
                 </div>
 
-                <div class="divider">
-                    <span>OR</span>
-                </div>
-
-                <div class="digit-section">
-                    <h2>Enter Code</h2>
-                    <div class="digit-code-large">
-                        <span id="digit-code">------</span>
+                <!-- Digit Code Section -->
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Enter Code</h2>
+                    <div class="bg-gradient-to-br from-primary-orange to-primary-pink rounded-2xl p-8 mb-6 shadow-lg">
+                        <span id="digit-code" class="text-6xl font-mono font-bold text-white tracking-wider">------</span>
                     </div>
-                </div>
-            </div>
-
-            <div class="code-info">
-                <div class="refresh-timer">
-                    <p>Code refreshes in: <span id="countdown">--:--</span></p>
-                </div>
-                <div class="instructions">
-                    <h3>How to Check In:</h3>
-                    <ol>
-                        <li>Open the Fades n Braids app or website</li>
-                        <li>Go to your dashboard and click "Check In"</li>
-                        <li>Scan the QR code or enter the 6-digit code</li>
-                        <li>Earn 10 points for your visit!</li>
-                    </ol>
+                    <p class="text-gray-600">Type this 6-digit code</p>
                 </div>
             </div>
         </div>
 
-        <div class="back-to-dashboard">
-            <a href="/business/dashboard" class="btn btn-outline">
-                <i class="fas fa-arrow-left"></i>
-                <span class="btn-text">Back to Dashboard</span>
+        <!-- Information Cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- Timer Card -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-primary-orange/20 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-clock text-primary-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900">Code Timer</h3>
+                </div>
+                <p class="text-gray-600 mb-2">Code refreshes in:</p>
+                <p class="text-3xl font-bold text-primary-orange" id="countdown">--:--</p>
+            </div>
+
+            <!-- Instructions Card -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-primary-blue/20 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-list-ol text-primary-blue text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900">How to Check In</h3>
+                </div>
+                <ol class="space-y-3 text-gray-600">
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-primary-blue text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">1</span>
+                        Open the Fades n Braids app or website
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-primary-blue text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">2</span>
+                        Go to your dashboard and click "Check In"
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-primary-blue text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">3</span>
+                        Scan the QR code or enter the 6-digit code
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-primary-blue text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">4</span>
+                        Earn 10 points for your visit!
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="text-center">
+            <a href="/business/dashboard" class="btn btn-outline btn-lg">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Dashboard
             </a>
         </div>
     </div>

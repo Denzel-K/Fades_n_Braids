@@ -44,14 +44,16 @@ function handleLogoutForms() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showNotification('Logged out successfully', 'success');
+                    showNotification('Logged out successfully', 'success', 1000);
                     logoutButton.innerHTML = '<i class="fas fa-check"></i> <span class="btn-text">Success!</span>';
 
                     // Use server-provided redirect URL if available, otherwise use fallback
                     const finalRedirectUrl = data.redirectUrl || redirectUrl;
+
+                    // Redirect immediately
                     setTimeout(() => {
                         window.location.href = finalRedirectUrl;
-                    }, 1000);
+                    }, 300);
                 } else {
                     showNotification('Logout failed', 'error');
                     // Restore button state on failure
@@ -75,7 +77,8 @@ function handleLogoutForms() {
 
 // Handle authentication forms
 function handleAuthForms() {
-    const authForms = document.querySelectorAll('.auth-form');
+    const authForms = document.querySelectorAll('form[data-validate]');
+    console.log(`Found ${authForms.length} auth forms with data-validate`);
     authForms.forEach(form => {
         form.addEventListener('submit', handleAuthFormSubmit);
 
@@ -133,9 +136,6 @@ function handleAuthFormSubmit(e) {
             // Add success state
             form.classList.add('success');
 
-            // Show success message
-            showNotification(result.message, 'success');
-
             // Add success state to all inputs
             form.querySelectorAll('.form-input').forEach(input => {
                 input.classList.add('success');
@@ -144,16 +144,19 @@ function handleAuthFormSubmit(e) {
             // Update button to show success
             submitButton.innerHTML = '<i class="fas fa-check"></i> Success! Redirecting...';
 
-            // Determine redirect URL based on form action
-            let redirectUrl = '/customer/dashboard';
+            // Determine redirect URL based on form action or server response
+            let redirectUrl = result.redirectUrl || '/customer/dashboard';
             if (form.action.includes('/business/')) {
-                redirectUrl = '/business/dashboard';
+                redirectUrl = result.redirectUrl || '/business/dashboard';
             }
 
-            // Redirect after a short delay to show the success message
+            // Show brief success message and redirect immediately
+            showNotification(result.message, 'success', 1000);
+
+            // Redirect immediately without delay
             setTimeout(() => {
                 window.location.href = redirectUrl;
-            }, 1500);
+            }, 500);
         } else {
             // Show error message
             showNotification(result.message || 'Authentication failed', 'error');

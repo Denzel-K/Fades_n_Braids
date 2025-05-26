@@ -1,33 +1,30 @@
-<div class="auth-page">
-    <div class="auth-container">
-        <div class="auth-card business-card">
-            <div class="auth-logo">
-                <img src="/images/fades-n-braids-logo.svg" alt="Fades n Braids">
-            </div>
-            
-            <div class="auth-header">
-                <h1 class="auth-title">Business Login</h1>
-                <p class="auth-subtitle">Access your business dashboard</p>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div class="bg-white rounded-xl shadow-lg p-8 border-t-4 border-primary-blue">
+            <div class="text-center mb-8">
+                <img src="/images/fades-n-braids-logo.svg" alt="Fades n Braids" class="h-12 w-12 mx-auto mb-4">
+                <h1 class="text-3xl font-bold text-gray-900">Business Login</h1>
+                <p class="text-gray-600 mt-2">Access your business dashboard</p>
             </div>
 
-            <form class="auth-form" action="/api/business/login" method="POST" data-validate>
-                <div class="form-group">
+            <form action="/api/business/login" method="POST" data-validate class="space-y-6">
+                <div>
                     <label for="email" class="form-label">Email Address</label>
                     <input type="email" id="email" name="email" class="form-input" placeholder="admin@fadesbraids.com" required>
                 </div>
 
-                <div class="form-group">
+                <div>
                     <label for="password" class="form-label">Password</label>
                     <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
                 </div>
 
-                <div class="form-actions">
+                <div>
                     <button type="submit" class="btn btn-primary btn-full">Sign In</button>
                 </div>
             </form>
 
-            <div class="auth-footer">
-                <p><a href="/">← Back to main site</a></p>
+            <div class="text-center mt-6">
+                <p class="text-gray-600"><a href="/" class="text-primary hover:text-primary-orange font-medium">← Back to main site</a></p>
             </div>
         </div>
     </div>

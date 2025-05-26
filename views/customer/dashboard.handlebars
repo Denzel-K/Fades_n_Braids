@@ -1,153 +1,155 @@
-<div class="dashboard-page">
-    <div class="container">
-        <div class="dashboard-header">
-            <h1 class="dashboard-title">Welcome back, {{customer.firstName}}!</h1>
-            <p class="dashboard-subtitle">Track your points, visits, and rewards</p>
-        </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Welcome back, {{customer.firstName}}!</h1>
+        <p class="text-gray-600">Track your points, visits, and rewards</p>
+    </div>
 
-        <!-- Points Summary Card -->
-        <div class="points-summary-card">
-            <div class="points-header">
-                <div class="points-main">
-                    <div class="points-number" data-animate="counter">{{formatPoints customer.availablePoints}}</div>
-                    <div class="points-label">Available Points</div>
-                </div>
-                <div class="points-badge">
-                    <span class="badge-icon"><i class="fas fa-bullseye"></i></span>
-                </div>
+    <!-- Points Summary Card -->
+    <div class="bg-gradient-to-br from-primary-orange to-primary-pink rounded-2xl p-8 text-white mb-8 shadow-xl">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <div class="text-4xl md:text-5xl font-bold mb-2" data-animate="counter">{{formatPoints customer.availablePoints}}</div>
+                <div class="text-white/90 text-lg">Available Points</div>
             </div>
-
-            <div class="points-stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" data-animate="counter">{{safeValue customer.totalVisits}}</div>
-                    <div class="stat-label">Total Visits</div>
-                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-animate="counter">{{formatPoints customer.totalPoints}}</div>
-                    <div class="stat-label">Points Earned</div>
-                    <div class="stat-icon"><i class="fas fa-star"></i></div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-animate="counter">{{safeLength customer.rewards}}</div>
-                    <div class="stat-label">Rewards Used</div>
-                    <div class="stat-icon"><i class="fas fa-gift"></i></div>
-                </div>
-            </div>
-
-            <div class="points-actions">
-                <button class="btn btn-primary btn-large" onclick="showCheckInModal()">
-                    <span class="btn-icon"><i class="fas fa-mobile-alt"></i></span>
-                    Check In Now
-                </button>
-                <button class="btn btn-outline" onclick="scrollToRewards()">
-                    <span class="btn-icon"><i class="fas fa-gift"></i></span>
-                    Browse Rewards
-                </button>
+            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-bullseye text-2xl"></i>
             </div>
         </div>
 
-        <div class="dashboard-content">
-            <!-- Quick Actions Card -->
-            <div class="dashboard-card quick-actions-card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <span class="title-icon"><i class="fas fa-bolt"></i></span>
-                        Quick Actions
-                    </h3>
+        <div class="grid grid-cols-3 gap-6 mb-8">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-1" data-animate="counter">{{safeValue customer.totalVisits}}</div>
+                <div class="text-white/80 text-sm">Total Visits</div>
+                <div class="mt-2"><i class="fas fa-calendar-check text-white/60"></i></div>
+            </div>
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-1" data-animate="counter">{{formatPoints customer.totalPoints}}</div>
+                <div class="text-white/80 text-sm">Points Earned</div>
+                <div class="mt-2"><i class="fas fa-star text-white/60"></i></div>
+            </div>
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-1" data-animate="counter">{{safeLength customer.rewards}}</div>
+                <div class="text-white/80 text-sm">Rewards Used</div>
+                <div class="mt-2"><i class="fas fa-gift text-white/60"></i></div>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button class="btn bg-white text-primary-orange hover:bg-gray-100 btn-lg flex-1" onclick="showCheckInModal()">
+                <i class="fas fa-mobile-alt mr-2"></i>
+                Check In Now
+            </button>
+            <button class="btn bg-white/20 text-white hover:bg-white/30 border-white/30 btn-lg flex-1" onclick="scrollToRewards()">
+                <i class="fas fa-gift mr-2"></i>
+                Browse Rewards
+            </button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Quick Actions Card -->
+        <div class="card">
+            <div class="flex items-center mb-6">
+                <div class="w-8 h-8 bg-primary-orange/20 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-bolt text-primary-orange"></i>
                 </div>
-                <div class="card-content">
-                    <div class="quick-actions-grid">
-                        <button class="quick-action-btn" onclick="showCheckInModal()" data-action="checkin">
-                            <div class="action-icon"><i class="fas fa-mobile-alt"></i></div>
-                            <div class="action-content">
-                                <div class="action-title">Check In</div>
-                                <div class="action-subtitle">Earn 10 points</div>
-                            </div>
-                        </button>
-                        <button class="quick-action-btn" onclick="scrollToRewards()" data-action="rewards">
-                            <div class="action-icon"><i class="fas fa-gift"></i></div>
-                            <div class="action-content">
-                                <div class="action-title">Rewards</div>
-                                <div class="action-subtitle">Redeem points</div>
-                            </div>
-                        </button>
-                        <button class="quick-action-btn" onclick="showVisitHistory()" data-action="history">
-                            <div class="action-icon"><i class="fas fa-chart-line"></i></div>
-                            <div class="action-content">
-                                <div class="action-title">History</div>
-                                <div class="action-subtitle">View visits</div>
-                            </div>
-                        </button>
-                        <button class="quick-action-btn" onclick="showProfile()" data-action="profile">
-                            <div class="action-icon"><i class="fas fa-user"></i></div>
-                            <div class="action-content">
-                                <div class="action-title">Profile</div>
-                                <div class="action-subtitle">Edit info</div>
-                            </div>
-                        </button>
+                <h3 class="text-xl font-semibold text-gray-900">Quick Actions</h3>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <button class="p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors text-left" onclick="showCheckInModal()" data-action="checkin">
+                    <div class="w-10 h-10 bg-primary-orange/20 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-mobile-alt text-primary-orange"></i>
                     </div>
+                    <div class="font-medium text-gray-900">Check In</div>
+                    <div class="text-sm text-gray-600">Earn 10 points</div>
+                </button>
+                <button class="p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors text-left" onclick="scrollToRewards()" data-action="rewards">
+                    <div class="w-10 h-10 bg-primary-pink/20 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-gift text-primary-pink"></i>
+                    </div>
+                    <div class="font-medium text-gray-900">Rewards</div>
+                    <div class="text-sm text-gray-600">Redeem points</div>
+                </button>
+                <button class="p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors text-left" onclick="showVisitHistory()" data-action="history">
+                    <div class="w-10 h-10 bg-primary-purple/20 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-chart-line text-primary-purple"></i>
+                    </div>
+                    <div class="font-medium text-gray-900">History</div>
+                    <div class="text-sm text-gray-600">View visits</div>
+                </button>
+                <button class="p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors text-left" onclick="showProfile()" data-action="profile">
+                    <div class="w-10 h-10 bg-primary-blue/20 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-user text-primary-blue"></i>
+                    </div>
+                    <div class="font-medium text-gray-900">Profile</div>
+                    <div class="text-sm text-gray-600">Edit info</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Activity Card -->
+        <div class="card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <div class="w-6 h-6 bg-primary-blue/20 rounded-lg flex items-center justify-center mr-2">
+                        <i class="fas fa-chart-line text-primary-blue text-sm"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+                </div>
+                <button class="btn btn-sm btn-ghost" onclick="showVisitHistory()">View All</button>
+            </div>
+            <div id="recent-activity" class="max-h-48 overflow-y-auto">
+                <div class="flex items-center justify-center py-6">
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-orange mr-2"></div>
+                    <span class="text-sm text-gray-600">Loading activity...</span>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Recent Activity Card -->
-            <div class="dashboard-card activity-card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <span class="title-icon"><i class="fas fa-chart-line"></i></span>
-                        Recent Activity
-                    </h3>
-                    <button class="btn btn-small btn-ghost" onclick="showVisitHistory()">View All</button>
-                </div>
-                <div class="card-content">
-                    <div id="recent-activity" class="activity-list">
-                        <div class="loading">
-                            <div class="loading-spinner"></div>
-                            <span>Loading recent activity...</span>
-                        </div>
-                    </div>
+    <!-- Rewards Tabs Section -->
+    <div id="rewards" class="mb-8">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Rewards</h2>
+            <p class="text-gray-600">Redeem your points and track your claimed rewards</p>
+        </div>
+
+        <!-- Reward Criteria Info -->
+        <div class="mb-6">
+            <div id="reward-criteria">
+                <!-- Dynamic reward criteria will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Rewards Tabs -->
+        <div class="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg">
+            <button class="tab-btn active flex-1 py-3 px-4 rounded-md transition-all" onclick="showRewardsTab('available')" id="available-tab">
+                <i class="fas fa-gift mr-2"></i>
+                Available Rewards
+            </button>
+            <button class="tab-btn flex-1 py-3 px-4 rounded-md transition-all" onclick="showRewardsTab('claimed')" id="claimed-tab">
+                <i class="fas fa-check-circle mr-2"></i>
+                Claimed Rewards
+                <span class="ml-2 bg-primary-orange text-white text-xs px-2 py-1 rounded-full" id="claimed-count">{{safeLength customer.rewards}}</span>
+            </button>
+        </div>
+
+        <!-- Available Rewards Tab -->
+        <div id="available-rewards-tab" class="tab-content">
+            <div id="rewards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flex items-center justify-center py-12 col-span-full">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-orange mr-3"></div>
+                    <span class="text-gray-600">Loading available rewards...</span>
                 </div>
             </div>
         </div>
 
-        <!-- Rewards Tabs Section -->
-        <div class="dashboard-section" id="rewards">
-            <div class="section-header">
-                <h2 class="section-title">Rewards</h2>
-                <p class="section-subtitle">Redeem your points and track your claimed rewards</p>
-            </div>
-
-            <!-- Reward Criteria Info -->
-            <div class="reward-criteria-info">
-                <div id="reward-criteria">
-                    <!-- Dynamic reward criteria will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Rewards Tabs -->
-            <div class="rewards-tabs">
-                <button class="tab-btn active" onclick="showRewardsTab('available')" id="available-tab">
-                    <i class="fas fa-gift"></i>
-                    Available Rewards
-                </button>
-                <button class="tab-btn" onclick="showRewardsTab('claimed')" id="claimed-tab">
-                    <i class="fas fa-check-circle"></i>
-                    Claimed Rewards
-                    <span class="tab-badge" id="claimed-count">{{safeLength customer.rewards}}</span>
-                </button>
-            </div>
-
-            <!-- Available Rewards Tab -->
-            <div id="available-rewards-tab" class="tab-content active">
-                <div id="rewards-grid" class="customer-rewards-grid">
-                    <div class="loading">Loading available rewards...</div>
-                </div>
-            </div>
-
-            <!-- Claimed Rewards Tab -->
-            <div id="claimed-rewards-tab" class="tab-content">
-                <div id="claimed-rewards-grid" class="claimed-rewards-grid">
-                    <div class="loading">Loading claimed rewards...</div>
+        <!-- Claimed Rewards Tab -->
+        <div id="claimed-rewards-tab" class="tab-content hidden">
+            <div id="claimed-rewards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flex items-center justify-center py-12 col-span-full">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-orange mr-3"></div>
+                    <span class="text-gray-600">Loading claimed rewards...</span>
                 </div>
             </div>
         </div>
@@ -155,23 +157,35 @@
 </div>
 
 <!-- Check-in Modal -->
-<div id="checkin-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Check In</h3>
-            <button class="modal-close" onclick="closeCheckInModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p>Enter the check-in code displayed in the salon:</p>
-            <form id="checkin-form">
-                <div class="form-group">
-                    <input type="text" id="checkin-code" class="form-input" placeholder="Enter 6-digit code" maxlength="6" required>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Check In</button>
-                    <button type="button" class="btn btn-ghost" onclick="closeCheckInModal()">Cancel</button>
-                </div>
-            </form>
+<div id="checkin-modal" class="modal fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="modal-content relative bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Check In</h3>
+                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeCheckInModal()">&times;</button>
+            </div>
+            <div>
+                <p class="text-gray-600 mb-4">Enter the check-in code displayed in the salon:</p>
+                <form id="checkin-form" class="space-y-4">
+                    <div>
+                        <input type="text" id="checkin-code" class="form-input text-center text-2xl font-mono tracking-widest" placeholder="000000" maxlength="6" required>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button type="submit" class="btn btn-primary flex-1">Check In</button>
+                        <button type="button" class="btn btn-ghost flex-1" onclick="closeCheckInModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Initialize customer dashboard when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof initializeDashboard === 'function') {
+            initializeDashboard();
+        }
+    });
+</script>

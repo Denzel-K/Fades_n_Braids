@@ -353,22 +353,8 @@ function showRewardsTab(tabName) {
     }
 }
 
-// Customer action functions
-function showCheckInModal() {
-    const modal = document.getElementById('checkin-modal');
-    if (modal) {
-        modal.classList.add('show');
-        document.getElementById('checkin-code').focus();
-    }
-}
-
-function closeCheckInModal() {
-    const modal = document.getElementById('checkin-modal');
-    if (modal) {
-        modal.classList.remove('show');
-        document.getElementById('checkin-form').reset();
-    }
-}
+// Customer action functions - these are handled by dashboard.js
+// Removed duplicate functions to avoid conflicts
 
 function redeemReward(rewardId) {
     if (confirm('Are you sure you want to redeem this reward?')) {
@@ -395,40 +381,7 @@ function redeemReward(rewardId) {
     }
 }
 
-// Check-in form handler
-document.addEventListener('DOMContentLoaded', function() {
-    const checkinForm = document.getElementById('checkin-form');
-    if (checkinForm) {
-        checkinForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const code = document.getElementById('checkin-code').value;
-
-            fetch('/api/customers/checkin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({ code })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showNotification(data.message, 'success');
-                    closeCheckInModal();
-                    // Refresh page to update points
-                    setTimeout(() => window.location.reload(), 1500);
-                } else {
-                    showNotification(data.message, 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error during check-in:', error);
-                showNotification('Check-in failed', 'error');
-            });
-        });
-    }
-});
+// Check-in form handler is now handled in dashboard.js to avoid conflicts
 
 // Business Dashboard Functions
 function initializeBusinessDashboard() {
@@ -710,32 +663,64 @@ function refreshCodes() {
 
 // Load customers data for business dashboard
 function loadCustomersData() {
-    const container = document.getElementById('customers-list');
+    const container = document.getElementById('customers-table');
     if (!container) return;
 
-    container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><span>Loading customers...</span></div>';
+    container.innerHTML = `
+        <div class="flex items-center justify-center py-12">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-blue mr-3"></div>
+            <span class="text-gray-600">Loading customers...</span>
+        </div>
+    `;
 
     fetch('/api/business/customers')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                displayCustomers(data.data.customers);
+                // Use the business dashboard function instead
+                if (typeof displayCustomersData === 'function') {
+                    displayCustomersData(data.data.customers);
+                } else {
+                    displayCustomers(data.data.customers);
+                }
             } else {
-                container.innerHTML = '<p class="text-center">Failed to load customers</p>';
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="empty-state-title">Failed to load customers</div>
+                    </div>
+                `;
             }
         })
         .catch(error => {
             console.error('Error loading customers:', error);
-            container.innerHTML = '<p class="text-center">Error loading customers</p>';
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="empty-state-title">Error loading customers</div>
+                </div>
+            `;
         });
 }
 
 function displayCustomers(customers) {
-    const container = document.getElementById('customers-list');
+    const container = document.getElementById('customers-table');
     if (!container) return;
 
     if (!customers || customers.length === 0) {
-        container.innerHTML = '<p class="text-center">No customers found</p>';
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="empty-state-title">No customers found</div>
+                <div class="empty-state-description">No customers match your current filters.</div>
+            </div>
+        `;
         return;
     }
 

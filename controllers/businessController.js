@@ -60,6 +60,7 @@ const loginBusiness = async (req, res) => {
     res.json({
       success: true,
       message: 'Login successful',
+      redirectUrl: '/business/dashboard',
       data: {
         business: business.toJSON(),
         token

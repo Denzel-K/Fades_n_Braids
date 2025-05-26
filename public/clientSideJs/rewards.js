@@ -31,7 +31,15 @@ function loadRewards() {
 function displayRewards(rewards) {
     const container = document.getElementById('rewards-grid');
     if (!rewards || rewards.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-gift"></i></div><div class="empty-state-title">No rewards available</div><div class="empty-state-description">You don\'t have enough points for any rewards yet. Keep earning!</div></div>';
+        container.innerHTML = `
+            <div class="empty-state col-span-full">
+                <div class="empty-state-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="empty-state-title">No rewards available</div>
+                <div class="empty-state-description">You don't have enough points for any rewards yet. Keep earning!</div>
+            </div>
+        `;
         return;
     }
 
@@ -43,25 +51,26 @@ function displayRewards(rewards) {
     };
 
     const html = rewards.map(reward => `
-        <div class="customer-reward-card" data-animate="fade-in">
-            <div class="customer-reward-header">
-                <span class="customer-reward-category">
-                    <i class="${categoryIcons[reward.category] || 'fas fa-gift'}"></i>
+        <div class="bg-white rounded-xl border-2 border-gray-200 p-6 transition-all duration-200 hover:border-primary hover:shadow-lg hover:-translate-y-1 relative overflow-hidden" data-animate="fade-in">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-orange to-primary-pink"></div>
+            <div class="flex justify-between items-center mb-4">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                    <i class="${categoryIcons[reward.category] || 'fas fa-gift'} mr-1"></i>
                     ${reward.category.replace('_', ' ')}
                 </span>
-                <span class="customer-reward-points">
-                    <i class="fas fa-coins"></i>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-primary text-white">
+                    <i class="fas fa-coins mr-1"></i>
                     ${reward.pointsRequired} pts
                 </span>
             </div>
-            <h3 class="customer-reward-title">${reward.title}</h3>
-            <p class="customer-reward-description">${reward.description}</p>
-            <div class="customer-reward-value">
-                <i class="fas fa-tag"></i>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">${reward.title}</h3>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">${reward.description}</p>
+            <div class="flex items-center text-success font-semibold mb-6">
+                <i class="fas fa-tag mr-2"></i>
                 ${reward.value}
             </div>
-            <button class="btn btn-primary customer-reward-btn" onclick="redeemReward('${reward._id}')" data-reward-id="${reward._id}">
-                <i class="fas fa-hand-holding-heart"></i>
+            <button class="btn btn-primary btn-full" onclick="redeemReward('${reward._id}')" data-reward-id="${reward._id}">
+                <i class="fas fa-hand-holding-heart mr-2"></i>
                 Redeem Now
             </button>
         </div>
@@ -223,26 +232,28 @@ function displayClaimedRewards(claimedRewards) {
     }
 
     const html = claimedRewards.map(reward => `
-        <div class="claimed-reward-card" data-animate="fade-in">
-            <div class="claimed-reward-header">
-                <div class="claimed-reward-status">
-                    <i class="fas fa-check-circle"></i>
+        <div class="bg-white rounded-xl border border-gray-200 p-6 relative" data-animate="fade-in">
+            <div class="absolute top-4 right-4">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <i class="fas fa-check-circle mr-1"></i>
                     Claimed
+                </span>
+            </div>
+            <div class="mb-4">
+                <div class="flex items-center text-gray-500 text-sm">
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    Claimed on ${Utils.formatDateOnly(reward.redeemedAt)}
                 </div>
             </div>
-            <div class="claimed-reward-date">
-                <i class="fas fa-calendar-alt"></i>
-                Claimed on ${Utils.formatDateOnly(reward.redeemedAt)}
-            </div>
-            <h3 class="claimed-reward-title">${reward.title}</h3>
-            <p class="claimed-reward-description">${reward.description}</p>
-            <div class="claimed-reward-details">
-                <div class="claimed-reward-value">
-                    <i class="fas fa-tag"></i>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">${reward.title}</h3>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">${reward.description}</p>
+            <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                <div class="flex items-center text-success font-semibold">
+                    <i class="fas fa-tag mr-2"></i>
                     ${reward.value}
                 </div>
-                <div class="claimed-reward-points">
-                    <i class="fas fa-coins"></i>
+                <div class="flex items-center text-primary-orange font-semibold">
+                    <i class="fas fa-coins mr-2"></i>
                     ${reward.pointsUsed} points used
                 </div>
             </div>

@@ -61,6 +61,7 @@ const registerCustomer = async (req, res) => {
     res.status(201).json({
       success: true,
       message: `Welcome to Fades n Braids! You've earned ${welcomeBonus} welcome points!`,
+      redirectUrl: '/customer/dashboard',
       data: {
         customer: customer.toJSON(),
         token
@@ -129,6 +130,7 @@ const loginCustomer = async (req, res) => {
     res.json({
       success: true,
       message: 'Login successful',
+      redirectUrl: '/customer/dashboard',
       data: {
         customer: customer.toJSON(),
         token

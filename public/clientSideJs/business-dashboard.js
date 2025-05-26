@@ -695,57 +695,57 @@ function displayRewardsList(rewards) {
     }
 
     const html = rewards.map(reward => `
-        <div class="business-reward-card" data-animate="fade-in">
-            <div class="reward-card-header">
-                <div class="reward-icon">
-                    <i class="fas fa-gift"></i>
+        <div class="bg-white rounded-xl border-2 border-gray-200 transition-all duration-200 hover:border-primary hover:shadow-lg hover:-translate-y-1 overflow-hidden" data-animate="fade-in">
+            <div class="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                <div class="w-12 h-12 bg-gradient-to-br from-primary-orange to-primary-pink rounded-full flex items-center justify-center text-white">
+                    <i class="fas fa-gift text-xl"></i>
                 </div>
-                <div class="reward-status-badge ${reward.isActive ? 'active' : 'inactive'}">
-                    <i class="fas fa-${reward.isActive ? 'check-circle' : 'pause-circle'}"></i>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${reward.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}">
+                    <i class="fas fa-${reward.isActive ? 'check-circle' : 'pause-circle'} mr-1"></i>
                     ${reward.isActive ? 'Active' : 'Inactive'}
-                </div>
+                </span>
             </div>
 
-            <div class="reward-card-content">
-                <h3 class="reward-title">${reward.title}</h3>
-                <p class="reward-description">${reward.description}</p>
+            <div class="p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">${reward.title}</h3>
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">${reward.description}</p>
 
-                <div class="reward-details">
-                    <div class="reward-detail-item">
-                        <span class="detail-label">Category</span>
-                        <span class="detail-value">
-                            <i class="fas fa-tag"></i>
+                <div class="space-y-3 mb-6">
+                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                        <span class="text-sm text-gray-500 font-medium">Category</span>
+                        <span class="flex items-center text-sm text-gray-700 font-semibold">
+                            <i class="fas fa-tag mr-2"></i>
                             ${reward.category.replace('_', ' ')}
                         </span>
                     </div>
-                    <div class="reward-detail-item">
-                        <span class="detail-label">Value</span>
-                        <span class="detail-value">
-                            <i class="fas fa-dollar-sign"></i>
+                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                        <span class="text-sm text-gray-500 font-medium">Value</span>
+                        <span class="flex items-center text-sm text-gray-700 font-semibold">
+                            <i class="fas fa-dollar-sign mr-2"></i>
                             ${reward.value}
                         </span>
                     </div>
-                    <div class="reward-detail-item">
-                        <span class="detail-label">Points Required</span>
-                        <span class="detail-value points-required">
-                            <i class="fas fa-coins"></i>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-sm text-gray-500 font-medium">Points Required</span>
+                        <span class="flex items-center text-sm text-primary font-bold">
+                            <i class="fas fa-coins mr-2"></i>
                             ${reward.pointsRequired} pts
                         </span>
                     </div>
                 </div>
             </div>
 
-            <div class="reward-card-actions">
-                <button class="btn btn-outline btn-sm" onclick="editReward('${reward._id}')" title="Edit Reward">
-                    <i class="fas fa-edit"></i>
+            <div class="flex gap-2 p-4 bg-gray-50 border-t border-gray-200">
+                <button class="btn btn-outline btn-sm flex-1" onclick="editReward('${reward._id}')" title="Edit Reward">
+                    <i class="fas fa-edit mr-1"></i>
                     Edit
                 </button>
-                <button class="btn btn-outline btn-sm" onclick="toggleRewardStatus('${reward._id}')" title="Toggle Status">
-                    <i class="fas fa-${reward.isActive ? 'pause' : 'play'}"></i>
+                <button class="btn btn-outline btn-sm flex-1" onclick="toggleRewardStatus('${reward._id}')" title="Toggle Status">
+                    <i class="fas fa-${reward.isActive ? 'pause' : 'play'} mr-1"></i>
                     ${reward.isActive ? 'Deactivate' : 'Activate'}
                 </button>
-                <button class="btn btn-outline btn-sm delete-btn" onclick="deleteReward('${reward._id}')" title="Delete Reward">
-                    <i class="fas fa-trash"></i>
+                <button class="btn btn-outline btn-sm flex-1 hover:bg-red-600 hover:border-red-600 hover:text-white" onclick="deleteReward('${reward._id}')" title="Delete Reward">
+                    <i class="fas fa-trash mr-1"></i>
                     Delete
                 </button>
             </div>
@@ -779,63 +779,93 @@ function loadCustomersData() {
 
 // Display customers data with claimed rewards info
 function displayCustomersData(customers) {
-    const container = document.getElementById('customers-data');
+    const container = document.getElementById('customers-table');
+
+    if (!container) {
+        console.error('customers-table container not found');
+        return;
+    }
 
     if (!customers || customers.length === 0) {
         container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-users"></i></div><div class="empty-state-title">No customers yet</div></div>';
         return;
     }
 
-    const html = customers.map(customer => `
-        <div class="customer-detail-card" data-animate="fade-in">
-            <div class="customer-header">
-                <div class="customer-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="customer-basic-info">
-                    <h4>${customer.firstName} ${customer.lastName}</h4>
-                    <p><i class="fas fa-phone"></i> ${customer.phone}</p>
-                    <p><i class="fas fa-calendar-plus"></i> Joined ${Utils.formatDateOnly(customer.joinDate)}</p>
-                </div>
-            </div>
-            <div class="customer-stats-grid">
-                <div class="stat-item">
-                    <i class="fas fa-coins"></i>
-                    <span class="stat-value">${Utils.formatPoints(customer.totalPoints)}</span>
-                    <span class="stat-label">Total Points</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-wallet"></i>
-                    <span class="stat-value">${Utils.formatPoints(customer.availablePoints)}</span>
-                    <span class="stat-label">Available</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-calendar-check"></i>
-                    <span class="stat-value">${customer.totalVisits}</span>
-                    <span class="stat-label">Visits</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-gift"></i>
-                    <span class="stat-value">${Utils.safeLength(customer.rewards)}</span>
-                    <span class="stat-label">Rewards Claimed</span>
-                </div>
-            </div>
-            ${customer.rewards && customer.rewards.length > 0 ? `
-                <div class="customer-rewards">
-                    <h5><i class="fas fa-trophy"></i> Recent Rewards</h5>
-                    <div class="rewards-list">
-                        ${customer.rewards.slice(0, 3).map(reward => `
-                            <div class="reward-item">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Claimed reward (${reward.pointsUsed} pts)</span>
-                                <small>${Utils.formatDateOnly(reward.redeemedAt)}</small>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            ` : ''}
+    const html = `
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Contact</th>
+                        <th>Points</th>
+                        <th>Visits</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${customers.map(customer => `
+                        <tr class="hover:bg-gray-50 transition-colors" data-animate="fade-in">
+                            <td>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-primary-orange/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user text-primary-orange"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">${customer.firstName} ${customer.lastName}</div>
+                                        <div class="text-sm text-gray-500">Joined ${Utils.formatDateOnly(customer.joinDate)}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-sm">
+                                    <div class="flex items-center text-gray-900">
+                                        <i class="fas fa-phone mr-2 text-gray-400"></i>
+                                        ${customer.phone}
+                                    </div>
+                                    ${customer.email ? `
+                                        <div class="flex items-center text-gray-500 mt-1">
+                                            <i class="fas fa-envelope mr-2 text-gray-400"></i>
+                                            ${customer.email}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-sm">
+                                    <div class="font-semibold text-primary">${Utils.formatPoints(customer.availablePoints)} available</div>
+                                    <div class="text-gray-500">${Utils.formatPoints(customer.totalPoints)} total</div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <i class="fas fa-calendar-check mr-1"></i>
+                                    ${customer.totalVisits}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${customer.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}">
+                                    <i class="fas fa-${customer.isActive ? 'check-circle' : 'pause-circle'} mr-1"></i>
+                                    ${customer.isActive ? 'Active' : 'Inactive'}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="flex space-x-2">
+                                    <button class="btn btn-outline btn-sm" onclick="viewCustomerDetails('${customer._id}')" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" onclick="awardPointsToCustomer('${customer._id}', '${customer.firstName} ${customer.lastName}')" title="Award Points">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
         </div>
-    `).join('');
+    `;
 
     container.innerHTML = html;
     Animations.initializeAnimations();

@@ -1,420 +1,592 @@
-<div class="dashboard-page business-dashboard">
-    <div class="container">
-        <!-- Dashboard Header -->
-        <div class="dashboard-header">
-            <div class="header-content">
-                <h1 class="dashboard-title">
-                    <i class="fas fa-chart-pie"></i>
-                    <span class="title-text">Business Dashboard</span>
-                </h1>
-                <p class="dashboard-subtitle">
-                    <i class="fas fa-info-circle"></i>
-                    Manage your loyalty program and track performance
-                </p>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-outline btn-small" onclick="refreshDashboard()" id="refresh-btn">
-                    <i class="fas fa-sync-alt"></i>
-                    <span class="btn-text">Refresh</span>
-                </button>
-                <div class="auto-refresh-indicator">
-                    <span class="indicator-dot"></span>
-                    <span class="indicator-text">Auto-refresh: 30s</span>
-                </div>
-            </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Dashboard Header -->
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+        <div class="mb-4 lg:mb-0">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 flex items-center mb-2">
+                <i class="fas fa-chart-pie text-primary-blue mr-3"></i>
+                Business Dashboard
+            </h1>
+            <p class="text-gray-600 flex items-center">
+                <i class="fas fa-info-circle mr-2"></i>
+                Manage your loyalty program and track performance
+            </p>
         </div>
-
-        <!-- Dashboard Tabs -->
-        <div class="dashboard-tabs">
-            <button class="tab-btn active" onclick="showDashboardTab('overview')" id="overview-tab">
-                <i class="fas fa-tachometer-alt"></i>
-                <span class="tab-text">Overview</span>
+        <div class="flex items-center space-x-4">
+            <button class="btn btn-outline btn-sm" onclick="refreshDashboard()" id="refresh-btn">
+                <i class="fas fa-sync-alt mr-2"></i>
+                Refresh
             </button>
-            <button class="tab-btn" onclick="showDashboardTab('customers')" id="customers-tab">
-                <i class="fas fa-users"></i>
-                <span class="tab-text">Customers</span>
-            </button>
-            <button class="tab-btn" onclick="showDashboardTab('rewards')" id="rewards-tab">
-                <i class="fas fa-gift"></i>
-                <span class="tab-text">Rewards</span>
-            </button>
-            <button class="tab-btn" onclick="showDashboardTab('analytics')" id="analytics-tab">
-                <i class="fas fa-chart-bar"></i>
-                <span class="tab-text">Analytics</span>
-            </button>
-            <button class="tab-btn" onclick="showDashboardTab('tools')" id="tools-tab">
-                <i class="fas fa-tools"></i>
-                <span class="tab-text">Tools</span>
-            </button>
-        </div>
-
-        <!-- Tab Content Container -->
-        <div class="tab-content-container">
-
-            <!-- Overview Tab -->
-            <div id="overview-content" class="tab-content active">
-                <!-- Stats Overview -->
-                <div class="business-stats-grid">
-                    <div class="stat-card customers-card" data-animate="slide-up">
-                        <div class="stat-header">
-                            <div class="stat-icon"><i class="fas fa-users"></i></div>
-                            <div class="stat-trend positive"><i class="fas fa-arrow-up"></i> +12%</div>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-number" id="total-customers" data-animate="counter">-</div>
-                            <div class="stat-label">Total Customers</div>
-                            <div class="stat-subtitle">Active members</div>
-                        </div>
-                    </div>
-                    <div class="stat-card visits-card" data-animate="slide-up" data-delay="100">
-                        <div class="stat-header">
-                            <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
-                            <div class="stat-trend positive"><i class="fas fa-plus"></i> 5</div>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-number" id="today-visits" data-animate="counter">-</div>
-                            <div class="stat-label">Today's Visits</div>
-                            <div class="stat-subtitle">Check-ins today</div>
-                        </div>
-                    </div>
-                    <div class="stat-card total-visits-card" data-animate="slide-up" data-delay="200">
-                        <div class="stat-header">
-                            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-                            <div class="stat-trend neutral"><i class="fas fa-clock"></i> All time</div>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-number" id="total-visits" data-animate="counter">-</div>
-                            <div class="stat-label">Total Visits</div>
-                            <div class="stat-subtitle">All check-ins</div>
-                        </div>
-                    </div>
-                    <div class="stat-card rewards-card" data-animate="slide-up" data-delay="300">
-                        <div class="stat-header">
-                            <div class="stat-icon"><i class="fas fa-gift"></i></div>
-                            <div class="stat-trend positive"><i class="fas fa-check-circle"></i> Active</div>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-number" id="active-rewards" data-animate="counter">-</div>
-                            <div class="stat-label">Active Rewards</div>
-                            <div class="stat-subtitle">Available offers</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Overview Content Grid -->
-                <div class="overview-grid">
-                    <!-- Check-in Codes Display -->
-                    <div class="dashboard-card checkin-codes-card" data-animate="fade-in">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-mobile-alt"></i>
-                                <span class="card-title-text">Check-in Codes</span>
-                            </h3>
-                            <div class="card-actions">
-                                <button class="btn btn-small btn-outline" onclick="refreshCodes()">
-                                    <i class="fas fa-sync-alt"></i>
-                                    <span class="btn-text">Refresh</span>
-                                </button>
-                                <a href="/business/checkin-codes" class="btn btn-small btn-secondary">
-                                    <i class="fas fa-tv"></i>
-                                    <span class="btn-text">Display</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="codes-display-compact">
-                                <div class="qr-section">
-                                    <div class="qr-code-container">
-                                        <img id="qr-image" src="" alt="QR Code" style="display: none;">
-                                        <div class="loading" id="qr-loading">
-                                            <div class="loading-spinner"></div>
-                                            <span>Loading QR code...</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="code-divider">OR</div>
-                                <div class="digit-section">
-                                    <div class="digit-code-display">
-                                        <span id="digit-code">------</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="code-info">
-                                <div class="info-item">
-                                    <i class="fas fa-clock"></i>
-                                    <span class="info-text">Refreshes every 5 minutes</span>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-stopwatch"></i>
-                                    <span class="info-text">Expires: <span id="code-expiry">--:--</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Activity Summary -->
-                    <div class="dashboard-card activity-summary-card" data-animate="fade-in" data-delay="200">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-chart-line"></i>
-                                <span class="card-title-text">Recent Activity</span>
-                            </h3>
-                            <button class="btn btn-small btn-ghost" onclick="showDashboardTab('analytics')">
-                                <i class="fas fa-external-link-alt"></i>
-                                <span class="btn-text">View All</span>
-                            </button>
-                        </div>
-                        <div class="card-content">
-                            <div id="recent-visits-summary" class="activity-summary">
-                                <div class="loading">
-                                    <div class="loading-spinner"></div>
-                                    <span>Loading activity...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Customers Tab -->
-            <div id="customers-content" class="tab-content">
-                <div class="tab-header">
-                    <h2 class="tab-title">
-                        <i class="fas fa-users"></i>
-                        Customer Management
-                    </h2>
-                    <p class="tab-subtitle">View and manage your loyalty program members</p>
-                </div>
-
-                <div class="customers-section">
-                    <div class="section-actions">
-                        <div class="search-controls">
-                            <div class="search-box">
-                                <i class="fas fa-search"></i>
-                                <input type="text" id="customer-search" placeholder="Search customers..." class="form-input">
-                            </div>
-                            <select id="customer-filter" class="form-select">
-                                <option value="all">All Customers</option>
-                                <option value="active">Active Only</option>
-                                <option value="inactive">Inactive Only</option>
-                            </select>
-                        </div>
-                        <div class="action-buttons">
-                            <button class="btn btn-primary" onclick="showAddCustomerModal()">
-                                <i class="fas fa-user-plus"></i>
-                                <span class="btn-text">Add Customer</span>
-                            </button>
-                            <button class="btn btn-outline" onclick="exportCustomers()">
-                                <i class="fas fa-download"></i>
-                                <span class="btn-text">Export</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="customers-table-container">
-                        <div id="customers-table" class="loading">
-                            <div class="loading-spinner"></div>
-                            <span>Loading customers...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rewards Tab -->
-            <div id="rewards-content" class="tab-content">
-                <div class="tab-header">
-                    <h2 class="tab-title">
-                        <i class="fas fa-gift"></i>
-                        Rewards Management
-                    </h2>
-                    <p class="tab-subtitle">Create and manage reward offerings</p>
-                </div>
-
-                <div class="rewards-section">
-                    <!-- Rewards Management Actions -->
-                    <div class="section-actions">
-                        <div class="rewards-tabs">
-                            <button class="tab-btn active" data-tab="available-rewards">
-                                <i class="fas fa-gift"></i>
-                                Available Rewards
-                            </button>
-                            <button class="tab-btn" data-tab="claimed-rewards">
-                                <i class="fas fa-history"></i>
-                                Claimed Rewards
-                            </button>
-                            <button class="tab-btn" data-tab="reward-criteria">
-                                <i class="fas fa-cogs"></i>
-                                Reward Criteria
-                            </button>
-                        </div>
-                        <div class="action-buttons">
-                            <button class="btn btn-primary" onclick="showAddRewardModal()">
-                                <i class="fas fa-plus"></i>
-                                <span class="btn-text">Add Reward</span>
-                            </button>
-                            <button class="btn btn-outline" onclick="showAwardPointsModal()">
-                                <i class="fas fa-star"></i>
-                                <span class="btn-text">Award Points</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Available Rewards -->
-                    <div id="available-rewards" class="rewards-tab-content active">
-                        <div class="rewards-grid">
-                            <div id="rewards-list" class="loading">
-                                <div class="loading-spinner"></div>
-                                <span>Loading rewards...</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Claimed Rewards -->
-                    <div id="claimed-rewards" class="rewards-tab-content">
-                        <div class="claimed-rewards-table-container">
-                            <div id="claimed-rewards-table" class="loading">
-                                <div class="loading-spinner"></div>
-                                <span>Loading claimed rewards...</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Reward Criteria -->
-                    <div id="reward-criteria" class="rewards-tab-content">
-                        <div class="criteria-section">
-                            <div class="criteria-header">
-                                <h3>Point Earning Criteria</h3>
-                                <button class="btn btn-primary" onclick="showAddCriteriaModal()">
-                                    <i class="fas fa-plus"></i>
-                                    Add Criteria
-                                </button>
-                            </div>
-                            <div id="criteria-list" class="loading">
-                                <div class="loading-spinner"></div>
-                                <span>Loading criteria...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Analytics Tab -->
-            <div id="analytics-content" class="tab-content">
-                <div class="tab-header">
-                    <h2 class="tab-title">
-                        <i class="fas fa-chart-bar"></i>
-                        Analytics & Reports
-                    </h2>
-                    <p class="tab-subtitle">Track performance and customer insights</p>
-                </div>
-
-                <div class="analytics-section">
-                    <!-- Recent Activity -->
-                    <div class="analytics-card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-clock"></i>
-                                Recent Customer Activity
-                            </h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="recent-visits" class="table-container">
-                                <div class="loading">
-                                    <div class="loading-spinner"></div>
-                                    <span>Loading recent activity...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Reward Claims -->
-                    <div class="analytics-card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-trophy"></i>
-                                Recent Reward Claims
-                            </h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="recent-claims" class="reward-claims-grid">
-                                <div class="loading">
-                                    <div class="loading-spinner"></div>
-                                    <span>Loading recent claims...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Top Customers -->
-                    <div class="analytics-card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-crown"></i>
-                                Top Customers
-                            </h3>
-                        </div>
-                        <div class="card-content">
-                            <div id="top-customers" class="customers-grid">
-                                <div class="loading">
-                                    <div class="loading-spinner"></div>
-                                    <span>Loading top customers...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tools Tab -->
-            <div id="tools-content" class="tab-content">
-                <div class="tab-header">
-                    <h2 class="tab-title">
-                        <i class="fas fa-tools"></i>
-                        Business Tools
-                    </h2>
-                    <p class="tab-subtitle">Utilities and administrative functions</p>
-                </div>
-
-                <div class="tools-section">
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <div class="tool-icon">
-                                <i class="fas fa-qrcode"></i>
-                            </div>
-                            <h3 class="tool-title">Check-in Display</h3>
-                            <p class="tool-description">Show QR codes and digit codes for customer check-ins</p>
-                            <a href="/business/checkin-codes" class="btn btn-outline btn-full">
-                                <i class="fas fa-tv"></i>
-                                Open Display
-                            </a>
-                        </div>
-
-                        <div class="tool-card">
-                            <div class="tool-icon">
-                                <i class="fas fa-download"></i>
-                            </div>
-                            <h3 class="tool-title">Export Data</h3>
-                            <p class="tool-description">Download customer and transaction data</p>
-                            <button class="btn btn-outline btn-full" onclick="exportAllData()">
-                                <i class="fas fa-file-export"></i>
-                                Export All
-                            </button>
-                        </div>
-
-                        <div class="tool-card">
-                            <div class="tool-icon">
-                                <i class="fas fa-cog"></i>
-                            </div>
-                            <h3 class="tool-title">Settings</h3>
-                            <p class="tool-description">Configure business and program settings</p>
-                            <button class="btn btn-outline btn-full" onclick="showSettings()">
-                                <i class="fas fa-sliders-h"></i>
-                                Open Settings
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex items-center text-sm text-gray-500">
+                <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                Auto-refresh: 30s
             </div>
         </div>
     </div>
+
+    <!-- Dashboard Tabs -->
+    <div class="dashboard-tabs flex flex-wrap gap-2 mb-8 bg-gray-100 p-1 rounded-lg">
+        <button class="tab-btn bg-white text-primary shadow-sm flex-1 sm:flex-none py-3 px-4 rounded-md transition-all font-medium" onclick="showDashboardTab('overview')" id="overview-tab">
+            <i class="fas fa-tachometer-alt mr-2"></i>
+            <span class="hidden sm:inline">Overview</span>
+        </button>
+        <button class="tab-btn text-gray-600 hover:text-gray-900 flex-1 sm:flex-none py-3 px-4 rounded-md transition-all font-medium" onclick="showDashboardTab('customers')" id="customers-tab">
+            <i class="fas fa-users mr-2"></i>
+            <span class="hidden sm:inline">Customers</span>
+        </button>
+        <button class="tab-btn text-gray-600 hover:text-gray-900 flex-1 sm:flex-none py-3 px-4 rounded-md transition-all font-medium" onclick="showDashboardTab('rewards')" id="rewards-tab">
+            <i class="fas fa-gift mr-2"></i>
+            <span class="hidden sm:inline">Rewards</span>
+        </button>
+        <button class="tab-btn text-gray-600 hover:text-gray-900 flex-1 sm:flex-none py-3 px-4 rounded-md transition-all font-medium" onclick="showDashboardTab('analytics')" id="analytics-tab">
+            <i class="fas fa-chart-bar mr-2"></i>
+            <span class="hidden sm:inline">Analytics</span>
+        </button>
+        <button class="tab-btn text-gray-600 hover:text-gray-900 flex-1 sm:flex-none py-3 px-4 rounded-md transition-all font-medium" onclick="showDashboardTab('tools')" id="tools-tab">
+            <i class="fas fa-tools mr-2"></i>
+            <span class="hidden sm:inline">Tools</span>
+        </button>
+    </div>
+
+    <!-- Tab Content Container -->
+    <div>
+        <!-- Overview Tab -->
+        <div id="overview-content" class="tab-content">
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="card p-6" data-animate="slide-up">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-blue-600 text-xl"></i>
+                        </div>
+                        <div class="flex items-center text-green-600 text-sm font-medium">
+                            <i class="fas fa-arrow-up mr-1"></i> +12%
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-gray-900 mb-1" id="total-customers" data-animate="counter">-</div>
+                        <div class="text-gray-900 font-medium">Total Customers</div>
+                        <div class="text-gray-500 text-sm">Active members</div>
+                    </div>
+                </div>
+                <div class="card p-6" data-animate="slide-up" data-delay="100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-calendar-day text-green-600 text-xl"></i>
+                        </div>
+                        <div class="flex items-center text-green-600 text-sm font-medium">
+                            <i class="fas fa-plus mr-1"></i> 5
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-gray-900 mb-1" id="today-visits" data-animate="counter">-</div>
+                        <div class="text-gray-900 font-medium">Today's Visits</div>
+                        <div class="text-gray-500 text-sm">Check-ins today</div>
+                    </div>
+                </div>
+                <div class="card p-6" data-animate="slide-up" data-delay="200">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                        </div>
+                        <div class="flex items-center text-gray-600 text-sm font-medium">
+                            <i class="fas fa-clock mr-1"></i> All time
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-gray-900 mb-1" id="total-visits" data-animate="counter">-</div>
+                        <div class="text-gray-900 font-medium">Total Visits</div>
+                        <div class="text-gray-500 text-sm">All check-ins</div>
+                    </div>
+                </div>
+                <div class="card p-6" data-animate="slide-up" data-delay="300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-gift text-orange-600 text-xl"></i>
+                        </div>
+                        <div class="flex items-center text-green-600 text-sm font-medium">
+                            <i class="fas fa-check-circle mr-1"></i> Active
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-gray-900 mb-1" id="active-rewards" data-animate="counter">-</div>
+                        <div class="text-gray-900 font-medium">Active Rewards</div>
+                        <div class="text-gray-500 text-sm">Available offers</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Check-in Codes Display -->
+                <div class="card" data-animate="fade-in">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-mobile-alt text-primary-blue mr-3"></i>
+                            Check-in Codes
+                        </h3>
+                        <div class="flex space-x-2">
+                            <button class="btn btn-outline btn-sm" onclick="refreshCodes()">
+                                <i class="fas fa-sync-alt mr-1"></i>
+                                Refresh
+                            </button>
+                            <a href="/business/checkin-codes" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-tv mr-1"></i>
+                                Display
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center space-x-8 mb-6">
+                        <div class="text-center">
+                            <div class="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center mb-3">
+                                <img id="qr-image" src="" alt="QR Code" class="w-full h-full object-contain rounded-lg hidden">
+                                <div id="qr-loading" class="flex flex-col items-center">
+                                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-blue mb-2"></div>
+                                    <span class="text-sm text-gray-500">Loading QR code...</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600">Scan QR Code</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-gray-400 font-medium mb-2">OR</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-gray-100 rounded-lg p-4 mb-3">
+                                <span id="digit-code" class="text-3xl font-mono font-bold text-primary-blue">------</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Enter Code</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-500 pt-4 border-t border-gray-200">
+                        <div class="flex items-center">
+                            <i class="fas fa-clock mr-2"></i>
+                            Refreshes every 5 minutes
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-stopwatch mr-2"></i>
+                            Expires: <span id="code-expiry">--:--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Summary -->
+                <div class="card" data-animate="fade-in" data-delay="200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-chart-line text-primary-green mr-2"></i>
+                            Recent Activity
+                        </h3>
+                        <button class="btn btn-ghost btn-sm" onclick="showDashboardTab('analytics')">
+                            <i class="fas fa-external-link-alt mr-1"></i>
+                            View All
+                        </button>
+                    </div>
+                    <div id="recent-visits-summary" class="space-y-2 max-h-48 overflow-y-auto">
+                        <div class="flex items-center justify-center py-6">
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-green mr-2"></div>
+                            <span class="text-sm text-gray-600">Loading activity...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customers Tab -->
+        <div id="customers-content" class="tab-content hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 flex items-center mb-2">
+                    <i class="fas fa-users text-primary-blue mr-3"></i>
+                    Customer Management
+                </h2>
+                <p class="text-gray-600">View and manage your loyalty program members</p>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="customer-search" placeholder="Search customers..." class="form-input pl-10">
+                        </div>
+                        <select id="customer-filter" class="form-input">
+                            <option value="all">All Customers</option>
+                            <option value="active">Active Only</option>
+                            <option value="inactive">Inactive Only</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-primary" onclick="showAddCustomerModal()">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            Add Customer
+                        </button>
+                        <button class="btn btn-outline" onclick="exportCustomers()">
+                            <i class="fas fa-download mr-2"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div id="customers-table">
+                    <div class="flex items-center justify-center py-12">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-blue mr-3"></div>
+                        <span class="text-gray-600">Loading customers...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rewards Tab -->
+        <div id="rewards-content" class="tab-content hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 flex items-center mb-2">
+                    <i class="fas fa-gift text-primary-pink mr-3"></i>
+                    Rewards Management
+                </h2>
+                <p class="text-gray-600">Create and manage reward offerings</p>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <div class="flex space-x-1 bg-gray-100 p-1 rounded-lg">
+                        <button class="rewards-tab-btn bg-white text-primary shadow-sm px-4 py-2 rounded-md transition-all font-medium" data-tab="available-rewards">
+                            <i class="fas fa-gift mr-2"></i>
+                            Available Rewards
+                        </button>
+                        <button class="rewards-tab-btn text-gray-600 hover:text-gray-900 px-4 py-2 rounded-md transition-all font-medium" data-tab="claimed-rewards">
+                            <i class="fas fa-history mr-2"></i>
+                            Claimed Rewards
+                        </button>
+                        <button class="rewards-tab-btn text-gray-600 hover:text-gray-900 px-4 py-2 rounded-md transition-all font-medium" data-tab="reward-criteria">
+                            <i class="fas fa-cogs mr-2"></i>
+                            Reward Criteria
+                        </button>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-primary" onclick="showAddRewardModal()">
+                            <i class="fas fa-plus mr-2"></i>
+                            Add Reward
+                        </button>
+                        <button class="btn btn-outline" onclick="showAwardPointsModal()">
+                            <i class="fas fa-star mr-2"></i>
+                            Award Points
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Rewards -->
+            <div id="available-rewards" class="rewards-tab-content">
+                <div class="card">
+                    <div id="rewards-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="flex items-center justify-center py-12 col-span-full">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-pink mr-3"></div>
+                            <span class="text-gray-600">Loading rewards...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Claimed Rewards -->
+            <div id="claimed-rewards" class="rewards-tab-content hidden">
+                <div class="card">
+                    <div id="claimed-rewards-table">
+                        <div class="flex items-center justify-center py-12">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-pink mr-3"></div>
+                            <span class="text-gray-600">Loading claimed rewards...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reward Criteria -->
+            <div id="reward-criteria" class="rewards-tab-content hidden">
+                <div class="card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Point Earning Criteria</h3>
+                        <button class="btn btn-primary" onclick="showAddCriteriaModal()">
+                            <i class="fas fa-plus mr-2"></i>
+                            Add Criteria
+                        </button>
+                    </div>
+                    <div id="criteria-list">
+                        <div class="flex items-center justify-center py-12">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-pink mr-3"></div>
+                            <span class="text-gray-600">Loading criteria...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics-content" class="tab-content hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 flex items-center mb-2">
+                    <i class="fas fa-chart-bar text-primary-purple mr-3"></i>
+                    Analytics & Reports
+                </h2>
+                <p class="text-gray-600">Track performance and customer insights</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-clock text-primary-purple mr-2"></i>
+                            Recent Activity
+                        </h3>
+                    </div>
+                    <div id="recent-visits" class="max-h-48 overflow-y-auto">
+                        <div class="flex items-center justify-center py-6">
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-purple mr-2"></div>
+                            <span class="text-sm text-gray-600">Loading activity...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Reward Claims -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-trophy text-primary-orange mr-2"></i>
+                            Recent Claims
+                        </h3>
+                    </div>
+                    <div id="recent-claims" class="max-h-48 overflow-y-auto">
+                        <div class="flex items-center justify-center py-6">
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-orange mr-2"></div>
+                            <span class="text-sm text-gray-600">Loading claims...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Customers -->
+            <div class="card">
+                <div class="flex items-center mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-crown text-primary-pink mr-3"></i>
+                        Top Customers
+                    </h3>
+                </div>
+                <div id="top-customers" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex items-center justify-center py-8 col-span-full">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-pink mr-3"></div>
+                        <span class="text-gray-600">Loading top customers...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools Tab -->
+        <div id="tools-content" class="tab-content hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 flex items-center mb-2">
+                    <i class="fas fa-tools text-primary-blue mr-3"></i>
+                    Business Tools
+                </h2>
+                <p class="text-gray-600">Utilities and administrative functions</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-primary-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-qrcode text-primary-blue text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Check-in Display</h3>
+                    <p class="text-gray-600 mb-6">Show QR codes and digit codes for customer check-ins</p>
+                    <a href="/business/checkin-codes" class="btn btn-outline btn-full">
+                        <i class="fas fa-tv mr-2"></i>
+                        Open Display
+                    </a>
+                </div>
+
+                <div class="card text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-primary-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-download text-primary-green text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Export Data</h3>
+                    <p class="text-gray-600 mb-6">Download customer and transaction data</p>
+                    <button class="btn btn-outline btn-full" onclick="exportAllData()">
+                        <i class="fas fa-file-export mr-2"></i>
+                        Export All
+                    </button>
+                </div>
+
+                <div class="card text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-primary-purple/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cog text-primary-purple text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Settings</h3>
+                    <p class="text-gray-600 mb-6">Configure business and program settings</p>
+                    <button class="btn btn-outline btn-full" onclick="showSettings()">
+                        <i class="fas fa-sliders-h mr-2"></i>
+                        Open Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Initialize business dashboard when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof initializeBusinessDashboard === 'function') {
+            initializeBusinessDashboard();
+        }
+
+        // Initialize tab functionality
+        initializeBusinessTabs();
+
+        // Show overview tab by default
+        showDashboardTab('overview');
+    });
+
+    // Business tab functionality with Tailwind classes
+    function initializeBusinessTabs() {
+        const tabButtons = document.querySelectorAll('.dashboard-tabs .tab-btn');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const onclickAttr = this.getAttribute('onclick');
+                let tabName = '';
+
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/showDashboardTab\('([^']+)'\)/);
+                    if (match) {
+                        tabName = match[1];
+                    }
+                }
+
+                if (!tabName && this.id) {
+                    tabName = this.id.replace('-tab', '');
+                }
+
+                if (tabName) {
+                    showDashboardTab(tabName);
+                }
+            });
+        });
+    }
+
+    function showDashboardTab(tabName) {
+        console.log('Switching to business tab:', tabName);
+
+        // Remove active class from all tabs and buttons
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.add('hidden');
+            tab.classList.remove('block');
+        });
+        document.querySelectorAll('.dashboard-tabs .tab-btn').forEach(btn => {
+            btn.classList.remove('active', 'bg-white', 'text-primary', 'shadow-sm');
+            btn.classList.add('text-gray-600', 'hover:text-gray-900');
+        });
+
+        // Add active class to selected tab and button
+        const activeTab = document.getElementById(`${tabName}-content`);
+        const activeButton = document.getElementById(`${tabName}-tab`);
+
+        if (activeTab) {
+            activeTab.classList.remove('hidden');
+            activeTab.classList.add('block');
+            console.log('Activated tab content:', `${tabName}-content`);
+        } else {
+            console.warn('Tab content not found:', `${tabName}-content`);
+        }
+
+        if (activeButton) {
+            activeButton.classList.add('active', 'bg-white', 'text-primary', 'shadow-sm');
+            activeButton.classList.remove('text-gray-600', 'hover:text-gray-900');
+            console.log('Activated tab button:', `${tabName}-tab`);
+        } else {
+            console.warn('Tab button not found:', `${tabName}-tab`);
+        }
+
+        // Load content based on tab
+        if (tabName === 'overview') {
+            if (typeof loadDashboardStats === 'function') {
+                loadDashboardStats();
+            }
+            if (typeof loadCheckInCodes === 'function') {
+                loadCheckInCodes();
+            }
+        } else if (tabName === 'customers') {
+            if (typeof loadCustomersData === 'function') {
+                loadCustomersData();
+            }
+        } else if (tabName === 'rewards') {
+            if (typeof loadRewardsData === 'function') {
+                loadRewardsData();
+            }
+            // Initialize rewards sub-tabs
+            initializeRewardsSubTabs();
+        } else if (tabName === 'analytics') {
+            if (typeof loadDashboardStats === 'function') {
+                loadDashboardStats();
+            }
+            if (typeof loadAnalyticsData === 'function') {
+                loadAnalyticsData();
+            }
+        }
+    }
+
+    // Initialize rewards sub-tabs
+    function initializeRewardsSubTabs() {
+        const rewardsTabButtons = document.querySelectorAll('.rewards-tab-btn');
+        rewardsTabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                showRewardsSubTab(tabName);
+            });
+        });
+
+        // Show available rewards by default
+        showRewardsSubTab('available-rewards');
+    }
+
+    function showRewardsSubTab(tabName) {
+        console.log('Switching to rewards sub-tab:', tabName);
+
+        // Remove active class from all sub-tab buttons
+        document.querySelectorAll('.rewards-tab-btn').forEach(btn => {
+            btn.classList.remove('bg-white', 'text-primary', 'shadow-sm');
+            btn.classList.add('text-gray-600', 'hover:text-gray-900');
+        });
+
+        // Hide all sub-tab content
+        document.querySelectorAll('.rewards-tab-content').forEach(content => {
+            content.classList.add('hidden');
+        });
+
+        // Show selected sub-tab content
+        const activeContent = document.getElementById(tabName);
+        const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+
+        if (activeContent) {
+            activeContent.classList.remove('hidden');
+        }
+
+        if (activeButton) {
+            activeButton.classList.add('bg-white', 'text-primary', 'shadow-sm');
+            activeButton.classList.remove('text-gray-600', 'hover:text-gray-900');
+        }
+
+        // Load content based on sub-tab
+        if (tabName === 'available-rewards') {
+            if (typeof loadRewardsData === 'function') {
+                loadRewardsData();
+            }
+        } else if (tabName === 'claimed-rewards') {
+            if (typeof loadClaimedRewards === 'function') {
+                loadClaimedRewards();
+            }
+        } else if (tabName === 'reward-criteria') {
+            if (typeof loadRewardCriteria === 'function') {
+                loadRewardCriteria();
+            }
+        }
+    }
+</script>
