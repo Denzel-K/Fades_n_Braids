@@ -230,7 +230,12 @@ function showRewardsTab(tabName) {
         loadClaimedRewards();
     } else if (tabName === 'available') {
         console.log('Loading available rewards...');
-        loadRewards();
+        // Use the function from main.js that shows ALL rewards for motivation
+        if (typeof loadAvailableRewards === 'function') {
+            loadAvailableRewards();
+        } else {
+            loadRewards();
+        }
     }
 }
 
@@ -326,10 +331,23 @@ function displayClaimedRewards(claimedRewards) {
 
     console.log('Processing', claimedRewards.length, 'claimed rewards for display');
 
+    const categoryIcons = {
+        discount: 'fas fa-percentage',
+        free_service: 'fas fa-cut',
+        product: 'fas fa-box',
+        special_offer: 'fas fa-star'
+    };
+
     const html = claimedRewards.map((reward, index) => {
         console.log(`Processing reward ${index}:`, reward);
+
+        // The API flattens the rewardId properties to the top level
+        const categoryDisplay = reward.category ? reward.category.replace('_', ' ') : 'General';
+        const categoryIcon = categoryIcons[reward.category] || 'fas fa-gift';
+
         return `
         <div class="bg-white rounded-xl border border-gray-200 p-6 relative hover:shadow-md transition-shadow" data-animate="fade-in" data-delay="${index * 100}">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-green-600"></div>
             <div class="absolute top-4 right-4">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                     <i class="fas fa-check-circle mr-1"></i>
@@ -337,27 +355,31 @@ function displayClaimedRewards(claimedRewards) {
                 </span>
             </div>
             <div class="mb-4">
-                <div class="flex items-center text-gray-500 text-sm">
-                    <i class="fas fa-calendar-alt mr-2"></i>
-                    Claimed on ${Utils.formatDateOnly(reward.redeemedAt)}
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                        <i class="${categoryIcon} mr-1"></i>
+                        ${categoryDisplay}
+                    </span>
+                    <div class="flex items-center text-gray-500 text-sm">
+                        <i class="fas fa-calendar-alt mr-2"></i>
+                        ${Utils.formatDateOnly(reward.redeemedAt)}
+                    </div>
                 </div>
             </div>
             <h3 class="text-xl font-semibold text-gray-900 mb-3">${reward.title}</h3>
             <p class="text-gray-600 text-sm leading-relaxed mb-4">${reward.description}</p>
+            <div class="flex items-center text-success font-semibold mb-4">
+                <i class="fas fa-tag mr-2"></i>
+                ${reward.value}
+            </div>
             <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                 <div class="flex items-center text-gray-600">
-                    <i class="fas fa-tag mr-2 text-gray-400"></i>
-                    <span class="text-sm font-medium">${reward.category ? reward.category.replace('_', ' ') : 'General'}</span>
+                    <i class="fas fa-coins mr-2 text-gray-400"></i>
+                    <span class="text-sm font-medium">${reward.pointsUsed} points used</span>
                 </div>
                 <div class="flex items-center text-primary-orange font-semibold">
-                    <i class="fas fa-coins mr-2"></i>
-                    ${reward.pointsUsed} points used
-                </div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-100">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-500">Reward Value:</span>
-                    <span class="text-lg font-bold text-green-600">${reward.value}</span>
+                    <i class="fas fa-clock mr-2"></i>
+                    <span class="text-sm">Required: ${reward.pointsRequired} pts</span>
                 </div>
             </div>
         </div>
@@ -473,6 +495,7 @@ window.Rewards = {
 
 // Make functions globally available
 window.loadRewards = loadRewards;
+window.loadClaimedRewards = loadClaimedRewards;
 window.redeemReward = redeemReward;
 window.showRewardsTab = showRewardsTab;
 window.showRewardCriteria = showRewardCriteria;

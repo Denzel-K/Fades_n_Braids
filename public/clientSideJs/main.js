@@ -303,42 +303,8 @@ function displayAvailableRewards(rewards, customerPoints) {
     container.innerHTML = html;
 }
 
-function loadClaimedRewards() {
-    fetch('/api/customers/rewards/claimed')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                displayClaimedRewards(data.data.rewards);
-            }
-        })
-        .catch(error => {
-            console.error('Error loading claimed rewards:', error);
-        });
-}
-
-function displayClaimedRewards(rewards) {
-    const container = document.getElementById('claimed-rewards-grid');
-    if (!container) return;
-
-    if (!rewards || rewards.length === 0) {
-        container.innerHTML = '<p class="text-center">No rewards claimed yet</p>';
-        return;
-    }
-
-    const html = rewards.map(reward => `
-        <div class="claimed-reward-card">
-            <div class="reward-header">
-                <span class="reward-category">${reward.rewardId.category.replace('_', ' ')}</span>
-                <span class="reward-date">${formatDate(reward.redeemedAt)}</span>
-            </div>
-            <h4 class="reward-title">${reward.rewardId.title}</h4>
-            <p class="reward-description">${reward.rewardId.description}</p>
-            <div class="reward-points-used">Used: ${reward.pointsUsed} points</div>
-        </div>
-    `).join('');
-
-    container.innerHTML = html;
-}
+// Removed duplicate loadClaimedRewards and displayClaimedRewards functions
+// These are now handled properly in rewards.js
 
 // Customer tab functionality
 function initializeCustomerTabs() {
@@ -351,25 +317,8 @@ function initializeCustomerTabs() {
     });
 }
 
-function showRewardsTab(tabName) {
-    // Remove active class from all tabs and buttons
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-    // Add active class to selected tab and button
-    const activeTab = document.getElementById(`${tabName}-rewards-tab`);
-    const activeButton = document.getElementById(`${tabName}-tab`);
-
-    if (activeTab) activeTab.classList.add('active');
-    if (activeButton) activeButton.classList.add('active');
-
-    // Load content based on tab
-    if (tabName === 'available') {
-        loadAvailableRewards();
-    } else if (tabName === 'claimed') {
-        loadClaimedRewards();
-    }
-}
+// Removed duplicate showRewardsTab function - handled in rewards.js
+// This ensures the correct function with proper claimed rewards handling is used
 
 // Customer action functions - these are handled by dashboard.js
 // Removed duplicate functions to avoid conflicts
@@ -982,10 +931,10 @@ function refreshDashboard() {
 }
 
 // Export functions for global access
-window.showRewardsTab = showRewardsTab;
+// Note: showRewardsTab and redeemReward are now handled in rewards.js
+window.loadAvailableRewards = loadAvailableRewards;
 window.showCheckInModal = showCheckInModal;
 window.closeCheckInModal = closeCheckInModal;
-window.redeemReward = redeemReward;
 window.showDashboardTab = showDashboardTab;
 window.refreshCodes = refreshCodes;
 window.refreshDashboard = refreshDashboard;

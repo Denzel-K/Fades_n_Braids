@@ -337,3 +337,166 @@
     font-size: 0.6875rem;
   }
 }
+
+/* Mobile Navigation Styles */
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: var(--gray-700);
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-nav-link:hover {
+  background-color: var(--gray-100);
+  color: var(--primary);
+}
+
+.mobile-nav-link i {
+  width: 1.25rem;
+  margin-right: 0.75rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Mobile menu toggle animations */
+#navbar-toggle.active .hamburger-line {
+  display: none;
+}
+
+#navbar-toggle.active .close-line {
+  display: block;
+}
+
+#navbar-toggle .close-line {
+  display: none;
+}
+
+/* Mobile menu slide animation */
+#mobile-menu {
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 45; /* Above backdrop (40) but below header (1000) */
+}
+
+#mobile-menu.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Ensure mobile menu is properly positioned */
+#mobile-menu.hidden {
+  display: none;
+}
+
+#mobile-menu:not(.hidden) {
+  display: block;
+}
+
+/* Mobile menu backdrop */
+.mobile-menu-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 30; /* Lower than mobile menu */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none; /* Allow clicks to pass through when hidden */
+}
+
+.mobile-menu-backdrop.show {
+  pointer-events: auto; /* Enable clicks when shown */
+}
+
+.mobile-menu-backdrop.show {
+  opacity: 1;
+}
+
+/* Improve mobile navigation spacing */
+@media (max-width: 768px) {
+  .mobile-nav-link {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .mobile-nav-link i {
+    width: 1.5rem;
+    margin-right: 1rem;
+    font-size: 1.125rem;
+  }
+
+  /* Hide desktop quick action buttons on mobile */
+  .btn.hidden.lg\:flex {
+    display: none !important;
+  }
+}
+
+/* Desktop navigation improvements */
+@media (min-width: 1024px) {
+  /* Show quick action buttons on desktop */
+  .btn.hidden.lg\:flex {
+    display: flex !important;
+  }
+}
+
+/* Navigation button improvements */
+.btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Mobile menu animation improvements */
+#mobile-menu {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Smooth scrolling for navigation actions */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+.mobile-nav-link:focus,
+.btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Loading state for navigation buttons */
+.btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.btn.loading i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
