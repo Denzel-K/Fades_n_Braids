@@ -11,7 +11,7 @@ function createCustomersModal() {
             <div id="customers-tab" class="tab-content active">
                 <div class="customers-controls">
                     <input type="text" id="customer-search" placeholder="Search customers..." class="form-input">
-                    <button class="btn btn-primary" onclick="loadCustomers()">Refresh</button>
+                    <button class="btn btn-primary" onclick="loadCustomersModal()">Refresh</button>
                 </div>
                 <div id="customers-list" class="customers-list">
                     <div class="loading">Loading customers...</div>
@@ -19,7 +19,7 @@ function createCustomersModal() {
             </div>
         </div>
     `);
-    
+
     document.body.appendChild(modal);
     modal.classList.add('show');
     loadCustomers();
@@ -81,11 +81,11 @@ function createRewardsModal() {
             </div>
         </div>
     `);
-    
+
     document.body.appendChild(modal);
     modal.classList.add('show');
     loadRewards();
-    
+
     // Handle form submission
     const form = modal.querySelector('#create-reward-form');
     form.addEventListener('submit', handleCreateReward);
@@ -121,14 +121,14 @@ function createAwardPointsModal() {
             </div>
         </form>
     `);
-    
+
     document.body.appendChild(modal);
     modal.classList.add('show');
-    
+
     // Handle form submission
     const form = modal.querySelector('#award-points-form');
     form.addEventListener('submit', handleAwardPoints);
-    
+
     // Handle customer search
     const searchInput = modal.querySelector('#customer-search-award');
     searchInput.addEventListener('input', debounce(searchCustomersForAward, 300));
@@ -165,7 +165,7 @@ function createAnalyticsModal() {
             </div>
         </div>
     `);
-    
+
     document.body.appendChild(modal);
     modal.classList.add('show');
     loadAnalytics();
@@ -224,7 +224,7 @@ function switchTab(activeTabId) {
     // Remove active class from all tabs and buttons
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    
+
     // Add active class to selected tab
     const activeTab = document.getElementById(activeTabId);
     if (activeTab) {

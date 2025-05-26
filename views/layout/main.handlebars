@@ -70,7 +70,7 @@
                                 <i class="fas fa-tachometer-alt"></i>
                                 <span class="btn-text">Dashboard</span>
                             </a>
-                            <form action="/api/customers/logout" method="POST" class="logout-form">
+                            <form action="/api/customers/logout" method="POST" class="logout-form" onsubmit="return handleLogoutFallback(this, '/customer/login')">
                                 <button type="submit" class="nav-btn btn-ghost" title="Logout">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span class="btn-text">Logout</span>
@@ -96,7 +96,7 @@
                                 <i class="fas fa-qrcode"></i>
                                 <span class="btn-text">Codes</span>
                             </a>
-                            <form action="/api/business/logout" method="POST" class="logout-form">
+                            <form action="/api/business/logout" method="POST" class="logout-form" onsubmit="return handleLogoutFallback(this, '/business/login')">
                                 <button type="submit" class="nav-btn btn-ghost" title="Logout">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span class="btn-text">Logout</span>
@@ -185,5 +185,58 @@
 
     <!-- Main coordinator (must be last) -->
     <script src="/clientSideJs/main.js"></script>
+
+    <script>
+        // Fallback logout handler for when auth.js isn't loaded
+        function handleLogoutFallback(form, redirectUrl) {
+            // If the main auth handler exists, let it handle the logout
+            if (typeof handleLogoutForms === 'function') {
+                return false; // Let the main handler take over
+            }
+
+            // Fallback implementation
+            const button = form.querySelector('button[type="submit"]');
+            if (button) {
+                button.disabled = true;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span class="btn-text">Logging out...</span>';
+            }
+
+            fetch(form.action, {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (typeof showNotification === 'function') {
+                        showNotification('Logged out successfully', 'success');
+                    }
+                    setTimeout(() => {
+                        window.location.href = data.redirectUrl || redirectUrl;
+                    }, 1000);
+                } else {
+                    if (typeof showNotification === 'function') {
+                        showNotification('Logout failed', 'error');
+                    }
+                    if (button) {
+                        button.disabled = false;
+                        button.innerHTML = '<i class="fas fa-sign-out-alt"></i> <span class="btn-text">Logout</span>';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Logout error:', error);
+                if (typeof showNotification === 'function') {
+                    showNotification('Network error during logout', 'error');
+                }
+                // Redirect anyway after error
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000);
+            });
+
+            return false; // Prevent default form submission
+        }
+    </script>
 </body>
 </html>

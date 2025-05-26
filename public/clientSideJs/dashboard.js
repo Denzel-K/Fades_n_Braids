@@ -3,6 +3,7 @@
 // Initialize customer dashboard
 function initializeDashboard() {
     loadRecentActivity();
+    loadRewardCriteria();
     initializeRewards();
     initializeCheckInModal();
     initializeDashboardTabs();
@@ -17,7 +18,7 @@ function initializeDashboardTabs() {
             switchDashboardTab(tabName);
         });
     });
-    
+
     // Load default tab content
     const activeTab = document.querySelector('.dashboard-tabs .tab-btn.active');
     if (activeTab) {
@@ -200,7 +201,7 @@ function handleCheckIn() {
 
     const submitButton = document.querySelector('#checkin-form button[type="submit"]');
     const originalText = submitButton.innerHTML;
-    
+
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking in...';
     submitButton.disabled = true;
 
@@ -212,7 +213,7 @@ function handleCheckIn() {
         if (data.success) {
             showNotification(data.message, 'success');
             closeCheckInModal();
-            
+
             // Refresh dashboard data
             setTimeout(() => {
                 loadRecentActivity();
@@ -302,6 +303,82 @@ function scrollToRewards() {
         // If using tabs, switch to rewards tab
         switchDashboardTab('rewards');
     }
+}
+
+// Load reward criteria for customers
+function loadRewardCriteria() {
+    const container = document.getElementById('reward-criteria');
+    if (!container) return;
+
+    Utils.apiRequest('/api/business/criteria')
+        .then(data => {
+            if (data.success && data.data.criteria && data.data.criteria.length > 0) {
+                displayRewardCriteria(data.data.criteria);
+            } else {
+                container.innerHTML = `
+                    <div class="criteria-info-card">
+                        <div class="criteria-header">
+                            <h3><i class="fas fa-star"></i> How to Earn Points</h3>
+                        </div>
+                        <div class="criteria-content">
+                            <div class="criteria-item">
+                                <div class="criteria-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div class="criteria-details">
+                                    <h4>Check In</h4>
+                                    <p>Visit the salon and check in to earn points</p>
+                                </div>
+                                <div class="criteria-points">+10 pts</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error loading reward criteria:', error);
+            container.innerHTML = `
+                <div class="criteria-info-card">
+                    <div class="criteria-header">
+                        <h3><i class="fas fa-star"></i> How to Earn Points</h3>
+                    </div>
+                    <div class="criteria-content">
+                        <p>Check in at the salon to start earning points!</p>
+                    </div>
+                </div>
+            `;
+        });
+}
+
+// Display reward criteria for customers
+function displayRewardCriteria(criteria) {
+    const container = document.getElementById('reward-criteria');
+
+    const html = `
+        <div class="criteria-info-card">
+            <div class="criteria-header">
+                <h3><i class="fas fa-star"></i> How to Earn Points</h3>
+                <p>Complete these activities to earn points and unlock rewards</p>
+            </div>
+            <div class="criteria-content">
+                ${criteria.map(criterion => `
+                    <div class="criteria-item">
+                        <div class="criteria-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="criteria-details">
+                            <h4>${criterion.name}</h4>
+                            <p>${criterion.description}</p>
+                        </div>
+                        <div class="criteria-points">+${criterion.points} pts</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = html;
 }
 
 // Update points display

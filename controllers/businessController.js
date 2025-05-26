@@ -80,7 +80,8 @@ const logoutBusiness = (req, res) => {
   res.clearCookie('businessToken');
   res.json({
     success: true,
-    message: 'Logout successful'
+    message: 'Logout successful',
+    redirectUrl: '/business/login'
   });
 };
 

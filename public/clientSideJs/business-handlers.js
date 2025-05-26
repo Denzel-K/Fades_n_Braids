@@ -1,19 +1,19 @@
 // Business Dashboard Handlers
 
-// Load customers for the customers modal
-function loadCustomers() {
+// Load customers for the customers modal (different from main dashboard)
+function loadCustomersModal() {
     const container = document.getElementById('customers-list');
     if (!container) return;
-    
+
     const search = document.getElementById('customer-search')?.value || '';
-    
+
     showLoading(container, 'Loading customers...');
-    
+
     fetch(`/api/business/customers?search=${encodeURIComponent(search)}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                displayCustomersList(data.data.customers);
+                displayCustomersModalList(data.data.customers);
             } else {
                 container.innerHTML = '<p class="text-center">Failed to load customers</p>';
             }
@@ -24,13 +24,13 @@ function loadCustomers() {
         });
 }
 
-function displayCustomersList(customers) {
+function displayCustomersModalList(customers) {
     const container = document.getElementById('customers-list');
     if (!customers || customers.length === 0) {
         container.innerHTML = '<p class="text-center">No customers found</p>';
         return;
     }
-    
+
     const html = `
         <div class="customers-table">
             <table class="data-table">
@@ -66,7 +66,7 @@ function displayCustomersList(customers) {
             </table>
         </div>
     `;
-    
+
     container.innerHTML = html;
 }
 
@@ -74,9 +74,9 @@ function displayCustomersList(customers) {
 function loadRewards() {
     const container = document.getElementById('rewards-list');
     if (!container) return;
-    
+
     showLoading(container, 'Loading rewards...');
-    
+
     fetch('/api/business/rewards')
         .then(response => response.json())
         .then(data => {
@@ -98,7 +98,7 @@ function displayRewardsList(rewards) {
         container.innerHTML = '<p class="text-center">No rewards found</p>';
         return;
     }
-    
+
     const html = `
         <div class="rewards-grid">
             ${rewards.map(reward => `
@@ -129,7 +129,7 @@ function displayRewardsList(rewards) {
                         <button class="btn btn-small btn-outline" onclick="editReward('${reward._id}')">
                             Edit
                         </button>
-                        <button class="btn btn-small ${reward.isActive ? 'btn-warning' : 'btn-success'}" 
+                        <button class="btn btn-small ${reward.isActive ? 'btn-warning' : 'btn-success'}"
                                 onclick="toggleReward('${reward._id}', ${!reward.isActive})">
                             ${reward.isActive ? 'Deactivate' : 'Activate'}
                         </button>
@@ -141,25 +141,25 @@ function displayRewardsList(rewards) {
             `).join('')}
         </div>
     `;
-    
+
     container.innerHTML = html;
 }
 
 // Handle create reward form submission
 function handleCreateReward(e) {
     e.preventDefault();
-    
+
     const form = e.target;
     const formData = new FormData(form);
     const data = {};
     formData.forEach((value, key) => {
         data[key] = value;
     });
-    
+
     // Convert numeric fields
     data.pointsRequired = parseInt(data.pointsRequired);
     data.quantityAvailable = parseInt(data.quantityAvailable);
-    
+
     fetch('/api/business/rewards', {
         method: 'POST',
         headers: {
@@ -188,21 +188,21 @@ function handleCreateReward(e) {
 // Handle award points form submission
 function handleAwardPoints(e) {
     e.preventDefault();
-    
+
     const form = e.target;
     const formData = new FormData(form);
     const data = {};
     formData.forEach((value, key) => {
         data[key] = value;
     });
-    
+
     if (!data.customerId) {
         showNotification('Please select a customer', 'error');
         return;
     }
-    
+
     data.points = parseInt(data.points);
-    
+
     fetch('/api/business/award-points', {
         method: 'POST',
         headers: {
@@ -233,12 +233,12 @@ function searchCustomersForAward() {
     const searchInput = document.getElementById('customer-search-award');
     const suggestionsContainer = document.getElementById('customer-suggestions');
     const query = searchInput.value.trim();
-    
+
     if (query.length < 2) {
         suggestionsContainer.innerHTML = '';
         return;
     }
-    
+
     fetch(`/api/business/customers?search=${encodeURIComponent(query)}&limit=5`)
         .then(response => response.json())
         .then(data => {
@@ -253,12 +253,12 @@ function searchCustomersForAward() {
 
 function displayCustomerSuggestions(customers) {
     const container = document.getElementById('customer-suggestions');
-    
+
     if (!customers || customers.length === 0) {
         container.innerHTML = '<div class="suggestion-item">No customers found</div>';
         return;
     }
-    
+
     const html = customers.map(customer => `
         <div class="suggestion-item" onclick="selectCustomerForAward('${customer._id}', '${customer.firstName} ${customer.lastName}', '${customer.phone}')">
             <div class="customer-name">${customer.firstName} ${customer.lastName}</div>
@@ -266,7 +266,7 @@ function displayCustomerSuggestions(customers) {
             <div class="customer-points">${customer.totalPoints} points</div>
         </div>
     `).join('');
-    
+
     container.innerHTML = html;
 }
 
@@ -290,7 +290,7 @@ function loadAnalytics() {
         document.getElementById('monthly-visits').textContent = '127';
         document.getElementById('avg-points').textContent = '245';
         document.getElementById('top-reward').textContent = '20% Off';
-        
+
         const chartContainer = document.getElementById('activity-chart');
         chartContainer.innerHTML = `
             <div class="simple-chart">

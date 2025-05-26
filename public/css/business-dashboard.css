@@ -485,18 +485,29 @@
 }
 
 /* Business Reward Cards */
-.rewards-list {
+.rewards-grid {
   display: grid;
-  gap: var(--spacing-4);
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-6);
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  margin-top: var(--spacing-4);
+}
+
+/* Add missing CSS variables */
+:root {
+  --success-light: rgba(34, 197, 94, 0.1);
+  --red-600: #dc2626;
+  --blue-600: #2563eb;
+  --gray-25: #fafafa;
 }
 
 .business-reward-card {
   background: var(--white);
   border: 2px solid var(--gray-200);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-5);
+  padding: 0;
   transition: all var(--transition-normal);
+  overflow: hidden;
+  position: relative;
 }
 
 .business-reward-card:hover {
@@ -505,30 +516,127 @@
   transform: translateY(-2px);
 }
 
-.business-reward-card .reward-header {
+.reward-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-3);
+  padding: var(--spacing-4);
+  background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+  border-bottom: 1px solid var(--gray-200);
 }
 
-.reward-status {
+.reward-icon {
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-pink) 100%);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 1.25rem;
+}
+
+.reward-status-badge {
   padding: var(--spacing-1) var(--spacing-3);
   border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
 }
 
-.reward-status.active {
-  background: var(--success-light);
-  color: var(--success);
+.reward-status-badge.active {
+  background: rgba(34, 197, 94, 0.1);
+  color: rgb(34, 197, 94);
 }
 
-.reward-status.inactive {
-  background: var(--gray-100);
+.reward-status-badge.inactive {
+  background: rgba(156, 163, 175, 0.1);
+  color: rgb(156, 163, 175);
+}
+
+.reward-card-content {
+  padding: var(--spacing-5);
+}
+
+.reward-title {
+  margin: 0 0 var(--spacing-2) 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.reward-description {
+  margin: 0 0 var(--spacing-4) 0;
   color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
+
+.reward-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.reward-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-2) 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.reward-detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+.detail-value {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  font-weight: 600;
+}
+
+.detail-value.points-required {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.reward-card-actions {
+  display: flex;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4);
+  background: var(--gray-50);
+  border-top: 1px solid var(--gray-200);
+}
+
+.reward-card-actions .btn {
+  flex: 1;
+  justify-content: center;
+  font-size: 0.75rem;
+  padding: var(--spacing-2) var(--spacing-3);
+}
+
+.reward-card-actions .delete-btn:hover {
+  background: var(--red-600);
+  border-color: var(--red-600);
+  color: var(--white);
+}
+
+/* Removed duplicate styles - using reward-card-header and reward-status-badge instead */
 
 .reward-details {
   background: var(--gray-50);
@@ -1424,121 +1532,7 @@
   color: var(--primary);
 }
 
-/* Reward List Styles */
-.reward-list-card {
-  background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-4);
-  transition: all var(--transition-normal);
-  margin-bottom: var(--spacing-4);
-}
-
-.reward-list-card:hover {
-  border-color: var(--primary);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.reward-list-header {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-4);
-}
-
-.reward-list-icon {
-  width: 3rem;
-  height: 3rem;
-  background: var(--success-light);
-  color: var(--success);
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  flex-shrink: 0;
-}
-
-.reward-list-info {
-  flex: 1;
-}
-
-.reward-list-info h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--gray-900);
-  margin-bottom: var(--spacing-1);
-}
-
-.reward-description {
-  font-size: 0.875rem;
-  color: var(--gray-600);
-  margin-bottom: var(--spacing-2);
-  line-height: 1.4;
-}
-
-.reward-meta {
-  display: flex;
-  gap: var(--spacing-3);
-  flex-wrap: wrap;
-}
-
-.reward-category,
-.reward-value {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  font-size: 0.75rem;
-  color: var(--gray-500);
-}
-
-.reward-category i,
-.reward-value i {
-  color: var(--gray-400);
-}
-
-.reward-list-points {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  align-items: flex-end;
-}
-
-.points-badge {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  padding: var(--spacing-2) var(--spacing-3);
-  background: var(--primary);
-  color: var(--white);
-  border-radius: var(--radius-full);
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.points-badge i {
-  color: var(--warning);
-}
-
-.reward-status {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.reward-status.active {
-  background: var(--success-light);
-  color: var(--success);
-}
-
-.reward-status.inactive {
-  background: var(--gray-100);
-  color: var(--gray-600);
-}
+/* Consolidated Business Rewards Styles - All rewards use business-reward-card */
 
 /* Mobile Responsive Adjustments for New Components */
 @media (max-width: 768px) {
@@ -1555,18 +1549,7 @@
     justify-content: space-between;
   }
 
-  .reward-list-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-3);
-  }
-
-  .reward-list-points {
-    flex-direction: row;
-    align-items: center;
-    align-self: stretch;
-    justify-content: space-between;
-  }
+  /* Reward card mobile styles handled by business-reward-card */
 
   .activity-summary-item {
     padding: var(--spacing-2);
@@ -1585,5 +1568,452 @@
 
   .activity-summary-time {
     font-size: 0.7rem;
+  }
+}
+
+/* Search and Filter Controls */
+.search-controls {
+  display: flex;
+  gap: var(--spacing-4);
+  flex: 1;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-box i {
+  position: absolute;
+  left: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  font-size: 0.875rem;
+}
+
+.search-box .form-input {
+  padding-left: var(--spacing-10);
+  margin: 0;
+}
+
+.form-select {
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-family);
+  font-size: 0.875rem;
+  background: var(--white);
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 150px;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(238, 117, 42, 0.1);
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-3);
+  align-items: center;
+}
+
+/* Section Actions Layout */
+.section-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  padding: var(--spacing-4);
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-100);
+}
+
+/* Customers Table */
+.customers-table-container {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-100);
+  overflow: hidden;
+}
+
+.customers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.customers-table th,
+.customers-table td {
+  padding: var(--spacing-4);
+  text-align: left;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.customers-table th {
+  background: var(--gray-50);
+  font-weight: 600;
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.customers-table td {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+}
+
+.customers-table tbody tr:hover {
+  background: var(--gray-25);
+}
+
+.customer-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.customer-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-pink) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.customer-details h4 {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.customer-details p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--gray-500);
+}
+
+.status-badge {
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-badge.active {
+  background: rgba(34, 197, 94, 0.1);
+  color: rgb(34, 197, 94);
+}
+
+.status-badge.inactive {
+  background: rgba(156, 163, 175, 0.1);
+  color: rgb(156, 163, 175);
+}
+
+.points-display {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.action-btn {
+  padding: var(--spacing-2);
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--gray-400);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 0.875rem;
+}
+
+.action-btn:hover {
+  background: var(--gray-100);
+  color: var(--primary);
+}
+
+.action-btn.edit:hover {
+  color: var(--blue-600);
+}
+
+.action-btn.delete:hover {
+  color: var(--red-600);
+}
+
+/* Rewards Tab Styles */
+.rewards-tabs {
+  display: flex;
+  gap: var(--spacing-2);
+  background: var(--gray-100);
+  padding: var(--spacing-1);
+  border-radius: var(--radius-lg);
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4);
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab-btn.active {
+  background: var(--white);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-btn:hover:not(.active) {
+  background: var(--gray-200);
+  color: var(--gray-700);
+}
+
+.rewards-tab-content {
+  display: none;
+  margin-top: var(--spacing-6);
+}
+
+.rewards-tab-content.active {
+  display: block;
+}
+
+/* Claimed Rewards Table */
+.claimed-rewards-table-container {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-100);
+  overflow: hidden;
+}
+
+.claimed-rewards-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.claimed-rewards-table th,
+.claimed-rewards-table td {
+  padding: var(--spacing-4);
+  text-align: left;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.claimed-rewards-table th {
+  background: var(--gray-50);
+  font-weight: 600;
+  color: var(--gray-700);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.claimed-rewards-table td {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+}
+
+.claimed-rewards-table tbody tr:hover {
+  background: var(--gray-25);
+}
+
+.reward-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.reward-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-pink) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 0.875rem;
+}
+
+/* Criteria Section */
+.criteria-section {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-100);
+  overflow: hidden;
+}
+
+.criteria-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-6);
+  border-bottom: 1px solid var(--gray-100);
+  background: var(--gray-50);
+}
+
+.criteria-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.criteria-list {
+  padding: var(--spacing-6);
+}
+
+.criteria-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-4);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-3);
+  background: var(--white);
+  transition: all var(--transition-fast);
+}
+
+.criteria-item:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.criteria-info h4 {
+  margin: 0 0 var(--spacing-1) 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.criteria-info p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+.criteria-points {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.criteria-actions {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+/* Additional Mobile Responsiveness for New Components */
+@media (max-width: 768px) {
+  .section-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-4);
+  }
+
+  .search-controls {
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  .search-box {
+    max-width: none;
+  }
+
+  .action-buttons {
+    justify-content: space-between;
+  }
+
+  .rewards-tabs {
+    flex-direction: column;
+    gap: var(--spacing-1);
+  }
+
+  .tab-btn {
+    justify-content: center;
+  }
+
+  .criteria-header {
+    flex-direction: column;
+    gap: var(--spacing-3);
+    align-items: stretch;
+  }
+
+  .criteria-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-3);
+  }
+
+  .criteria-actions {
+    justify-content: center;
+  }
+
+  /* Table responsiveness */
+  .customers-table-container,
+  .claimed-rewards-table-container {
+    overflow-x: auto;
+  }
+
+  .customers-table,
+  .claimed-rewards-table {
+    min-width: 600px;
+  }
+
+  /* Rewards grid mobile */
+  .rewards-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+  }
+
+  .reward-card-actions {
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+
+  .reward-card-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .customer-actions {
+    flex-direction: column;
+    gap: var(--spacing-1);
   }
 }

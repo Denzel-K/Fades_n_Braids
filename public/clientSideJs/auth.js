@@ -10,9 +10,29 @@ function initializeAuth() {
 // Handle logout forms
 function handleLogoutForms() {
     const logoutForms = document.querySelectorAll('.logout-form');
+    console.log(`Found ${logoutForms.length} logout forms`);
     logoutForms.forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
+
+            // Determine redirect URL based on form action
+            let redirectUrl = '/customer/login'; // Default to customer login
+            if (this.action.includes('/business/')) {
+                redirectUrl = '/business/login';
+            }
+
+            console.log(`Logout initiated for: ${this.action}, redirecting to: ${redirectUrl}`);
+
+            // Disable the logout button to prevent multiple clicks
+            const logoutButton = this.querySelector('button[type="submit"]');
+            if (!logoutButton) {
+                console.error('Logout button not found');
+                return;
+            }
+
+            const originalButtonContent = logoutButton.innerHTML;
+            logoutButton.disabled = true;
+            logoutButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span class="btn-text">Logging out...</span>';
 
             fetch(this.action, {
                 method: 'POST',
@@ -25,16 +45,29 @@ function handleLogoutForms() {
             .then(data => {
                 if (data.success) {
                     showNotification('Logged out successfully', 'success');
+                    logoutButton.innerHTML = '<i class="fas fa-check"></i> <span class="btn-text">Success!</span>';
+
+                    // Use server-provided redirect URL if available, otherwise use fallback
+                    const finalRedirectUrl = data.redirectUrl || redirectUrl;
                     setTimeout(() => {
-                        window.location.href = '/';
+                        window.location.href = finalRedirectUrl;
                     }, 1000);
                 } else {
                     showNotification('Logout failed', 'error');
+                    // Restore button state on failure
+                    logoutButton.disabled = false;
+                    logoutButton.innerHTML = originalButtonContent;
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 showNotification('Network error during logout', 'error');
+
+                // Even on error, redirect to login page after a delay
+                logoutButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i> <span class="btn-text">Error</span>';
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000);
             });
         });
     });
@@ -281,13 +314,13 @@ function showPasswordStrength(inputElement, strengthElement) {
     inputElement.addEventListener('input', function() {
         const password = this.value;
         const strength = checkPasswordStrength(password);
-        
+
         const strengthLevels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
         const strengthColors = ['#ef4444', '#f59e0b', '#eab308', '#22c55e', '#10b981'];
-        
+
         strengthElement.textContent = strengthLevels[strength.score] || 'Very Weak';
         strengthElement.style.color = strengthColors[strength.score] || strengthColors[0];
-        
+
         if (strength.feedback.length > 0) {
             strengthElement.title = 'Missing: ' + strength.feedback.join(', ');
         }

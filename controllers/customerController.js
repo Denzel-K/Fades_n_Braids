@@ -149,7 +149,8 @@ const logoutCustomer = (req, res) => {
   res.clearCookie('customerToken');
   res.json({
     success: true,
-    message: 'Logout successful'
+    message: 'Logout successful',
+    redirectUrl: '/customer/login'
   });
 };
 

@@ -188,18 +188,31 @@
 
                 <div class="customers-section">
                     <div class="section-actions">
-                        <button class="btn btn-primary" onclick="showAddCustomerForm()">
-                            <i class="fas fa-user-plus"></i>
-                            <span class="btn-text">Add Customer</span>
-                        </button>
-                        <button class="btn btn-outline" onclick="exportCustomers()">
-                            <i class="fas fa-download"></i>
-                            <span class="btn-text">Export</span>
-                        </button>
+                        <div class="search-controls">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="customer-search" placeholder="Search customers..." class="form-input">
+                            </div>
+                            <select id="customer-filter" class="form-select">
+                                <option value="all">All Customers</option>
+                                <option value="active">Active Only</option>
+                                <option value="inactive">Inactive Only</option>
+                            </select>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="showAddCustomerModal()">
+                                <i class="fas fa-user-plus"></i>
+                                <span class="btn-text">Add Customer</span>
+                            </button>
+                            <button class="btn btn-outline" onclick="exportCustomers()">
+                                <i class="fas fa-download"></i>
+                                <span class="btn-text">Export</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="customers-grid">
-                        <div id="customers-list" class="loading">
+                    <div class="customers-table-container">
+                        <div id="customers-table" class="loading">
                             <div class="loading-spinner"></div>
                             <span>Loading customers...</span>
                         </div>
@@ -218,21 +231,68 @@
                 </div>
 
                 <div class="rewards-section">
+                    <!-- Rewards Management Actions -->
                     <div class="section-actions">
-                        <button class="btn btn-primary" onclick="showAddRewardForm()">
-                            <i class="fas fa-plus"></i>
-                            <span class="btn-text">Add Reward</span>
-                        </button>
-                        <button class="btn btn-outline" onclick="showAwardPointsForm()">
-                            <i class="fas fa-star"></i>
-                            <span class="btn-text">Award Points</span>
-                        </button>
+                        <div class="rewards-tabs">
+                            <button class="tab-btn active" data-tab="available-rewards">
+                                <i class="fas fa-gift"></i>
+                                Available Rewards
+                            </button>
+                            <button class="tab-btn" data-tab="claimed-rewards">
+                                <i class="fas fa-history"></i>
+                                Claimed Rewards
+                            </button>
+                            <button class="tab-btn" data-tab="reward-criteria">
+                                <i class="fas fa-cogs"></i>
+                                Reward Criteria
+                            </button>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="showAddRewardModal()">
+                                <i class="fas fa-plus"></i>
+                                <span class="btn-text">Add Reward</span>
+                            </button>
+                            <button class="btn btn-outline" onclick="showAwardPointsModal()">
+                                <i class="fas fa-star"></i>
+                                <span class="btn-text">Award Points</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="rewards-grid">
-                        <div id="rewards-list" class="loading">
-                            <div class="loading-spinner"></div>
-                            <span>Loading rewards...</span>
+                    <!-- Available Rewards -->
+                    <div id="available-rewards" class="rewards-tab-content active">
+                        <div class="rewards-grid">
+                            <div id="rewards-list" class="loading">
+                                <div class="loading-spinner"></div>
+                                <span>Loading rewards...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claimed Rewards -->
+                    <div id="claimed-rewards" class="rewards-tab-content">
+                        <div class="claimed-rewards-table-container">
+                            <div id="claimed-rewards-table" class="loading">
+                                <div class="loading-spinner"></div>
+                                <span>Loading claimed rewards...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reward Criteria -->
+                    <div id="reward-criteria" class="rewards-tab-content">
+                        <div class="criteria-section">
+                            <div class="criteria-header">
+                                <h3>Point Earning Criteria</h3>
+                                <button class="btn btn-primary" onclick="showAddCriteriaModal()">
+                                    <i class="fas fa-plus"></i>
+                                    Add Criteria
+                                </button>
+                            </div>
+                            <div id="criteria-list" class="loading">
+                                <div class="loading-spinner"></div>
+                                <span>Loading criteria...</span>
+                            </div>
                         </div>
                     </div>
                 </div>

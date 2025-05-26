@@ -88,6 +88,7 @@ function loadCustomersContent() {
 // Load rewards tab content
 function loadRewardsContent() {
     console.log('Loading rewards content');
+    setupRewardsTab();
     loadRewardsList();
 }
 
@@ -419,16 +420,22 @@ function displayRecentActivitySummary(visits) {
 
 // Load customers list for customers tab
 function loadCustomersList() {
-    const container = document.getElementById('customers-list');
-    if (!container) return;
+    console.log('Loading customers list...');
+    const container = document.getElementById('customers-table');
+    if (!container) {
+        console.error('customers-table container not found');
+        return;
+    }
 
     Utils.showLoading(container, 'Loading customers...');
 
     Utils.apiRequest('/api/business/customers')
         .then(data => {
+            console.log('Customers API response:', data);
             if (data.success) {
-                displayCustomersList(data.data.customers);
+                displayCustomersTable(data.data.customers);
             } else {
+                console.warn('No customers found or API returned error:', data);
                 container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-users"></i></div><div class="empty-state-title">No customers found</div></div>';
             }
         })
@@ -438,42 +445,213 @@ function loadCustomersList() {
         });
 }
 
-// Display customers list
-function displayCustomersList(customers) {
-    const container = document.getElementById('customers-list');
+// Display customers table
+function displayCustomersTable(customers) {
+    console.log('Displaying customers table with data:', customers);
+    const container = document.getElementById('customers-table');
 
-    if (!customers || customers.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-users"></i></div><div class="empty-state-title">No customers yet</div></div>';
+    if (!container) {
+        console.error('customers-table container not found in displayCustomersTable');
         return;
     }
 
-    const html = customers.map(customer => `
-        <div class="customer-list-card" data-animate="fade-in">
-            <div class="customer-list-header">
-                <div class="customer-list-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="customer-list-info">
-                    <h4>${customer.firstName} ${customer.lastName}</h4>
-                    <p><i class="fas fa-phone"></i> ${customer.phone}</p>
-                    <p><i class="fas fa-calendar-plus"></i> Joined ${Utils.formatDateOnly(customer.joinDate)}</p>
-                </div>
-                <div class="customer-list-stats">
-                    <div class="stat-badge">
-                        <i class="fas fa-coins"></i>
-                        ${Utils.formatPoints(customer.availablePoints)} pts
-                    </div>
-                    <div class="stat-badge">
-                        <i class="fas fa-calendar-check"></i>
-                        ${customer.totalVisits} visits
-                    </div>
-                </div>
+    if (!customers || customers.length === 0) {
+        console.log('No customers to display');
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon"><i class="fas fa-users"></i></div>
+                <div class="empty-state-title">No customers yet</div>
+                <div class="empty-state-description">Start building your customer base by adding your first customer.</div>
+                <button class="btn btn-primary" onclick="showAddCustomerModal()">
+                    <i class="fas fa-user-plus"></i>
+                    Add First Customer
+                </button>
             </div>
-        </div>
-    `).join('');
+        `;
+        return;
+    }
+
+    const html = `
+        <table class="customers-table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                    <th>Total Points</th>
+                    <th>Available Points</th>
+                    <th>Visits</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${customers.map(customer => `
+                    <tr>
+                        <td>
+                            <div class="customer-info">
+                                <div class="customer-avatar">
+                                    ${customer.firstName.charAt(0)}${customer.lastName.charAt(0)}
+                                </div>
+                                <div class="customer-details">
+                                    <h4>${customer.firstName} ${customer.lastName}</h4>
+                                    <p>ID: ${customer.phone}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <div>${customer.phone}</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-500);">
+                                    ${customer.email || 'No email'}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge ${customer.isActive ? 'active' : 'inactive'}">
+                                ${customer.isActive ? 'Active' : 'Inactive'}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="points-display">${Utils.formatPoints(customer.totalPoints || 0)}</span>
+                        </td>
+                        <td>
+                            <span class="points-display">${Utils.formatPoints(customer.availablePoints || 0)}</span>
+                        </td>
+                        <td>${customer.totalVisits || 0}</td>
+                        <td>
+                            <div class="customer-actions">
+                                <button class="action-btn edit" onclick="viewCustomer('${customer._id}')" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn" onclick="awardPointsToCustomer('${customer._id}', '${customer.firstName} ${customer.lastName}')" title="Award Points">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="action-btn edit" onclick="editCustomer('${customer._id}')" title="Edit Customer">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="deleteCustomer('${customer._id}')" title="Delete Customer">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
 
     container.innerHTML = html;
+    setupCustomerSearch(customers);
     Animations.initializeAnimations();
+}
+
+// Setup customer search and filter functionality
+function setupCustomerSearch(customers) {
+    const searchInput = document.getElementById('customer-search');
+    const filterSelect = document.getElementById('customer-filter');
+
+    if (!searchInput || !filterSelect) {
+        console.warn('Search input or filter select not found');
+        return;
+    }
+
+    // Store original customers data
+    window.originalCustomersData = customers;
+
+    function filterCustomers() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filterValue = filterSelect.value;
+
+        let filteredCustomers = window.originalCustomersData;
+
+        // Apply search filter
+        if (searchTerm) {
+            filteredCustomers = filteredCustomers.filter(customer =>
+                customer.firstName.toLowerCase().includes(searchTerm) ||
+                customer.lastName.toLowerCase().includes(searchTerm) ||
+                customer.phone.includes(searchTerm) ||
+                (customer.email && customer.email.toLowerCase().includes(searchTerm))
+            );
+        }
+
+        // Apply status filter
+        if (filterValue !== 'all') {
+            filteredCustomers = filteredCustomers.filter(customer => {
+                if (filterValue === 'active') return customer.isActive;
+                if (filterValue === 'inactive') return !customer.isActive;
+                return true;
+            });
+        }
+
+        displayCustomersTable(filteredCustomers);
+    }
+
+    // Remove existing event listeners to prevent duplicates
+    searchInput.removeEventListener('input', filterCustomers);
+    filterSelect.removeEventListener('change', filterCustomers);
+
+    // Add event listeners
+    searchInput.addEventListener('input', filterCustomers);
+    filterSelect.addEventListener('change', filterCustomers);
+}
+
+// Setup rewards tab functionality
+function setupRewardsTab() {
+    const tabButtons = document.querySelectorAll('.rewards-tabs .tab-btn');
+    const tabContents = document.querySelectorAll('.rewards-tab-content');
+
+    if (tabButtons.length === 0) {
+        console.warn('No rewards tab buttons found');
+        return;
+    }
+
+    tabButtons.forEach(button => {
+        // Remove existing event listeners to prevent duplicates
+        button.removeEventListener('click', handleRewardsTabClick);
+        button.addEventListener('click', handleRewardsTabClick);
+    });
+}
+
+// Handle rewards tab click
+function handleRewardsTabClick(event) {
+    const button = event.currentTarget;
+    const targetTab = button.getAttribute('data-tab');
+
+    if (!targetTab) {
+        console.warn('No data-tab attribute found on button');
+        return;
+    }
+
+    // Update active tab button
+    document.querySelectorAll('.rewards-tabs .tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    button.classList.add('active');
+
+    // Update active tab content
+    document.querySelectorAll('.rewards-tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+
+    const targetContent = document.getElementById(targetTab);
+    if (targetContent) {
+        targetContent.classList.add('active');
+
+        // Load content based on tab
+        switch(targetTab) {
+            case 'available-rewards':
+                loadRewardsList();
+                break;
+            case 'claimed-rewards':
+                loadClaimedRewards();
+                break;
+            case 'reward-criteria':
+                loadRewardCriteria();
+                break;
+        }
+    } else {
+        console.warn(`Target content element not found: ${targetTab}`);
+    }
 }
 
 // Load rewards list for rewards tab
@@ -502,40 +680,74 @@ function displayRewardsList(rewards) {
     const container = document.getElementById('rewards-list');
 
     if (!rewards || rewards.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-gift"></i></div><div class="empty-state-title">No rewards yet</div></div>';
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon"><i class="fas fa-gift"></i></div>
+                <div class="empty-state-title">No rewards yet</div>
+                <div class="empty-state-description">Create your first reward to start offering incentives to customers.</div>
+                <button class="btn btn-primary" onclick="showAddRewardModal()">
+                    <i class="fas fa-plus"></i>
+                    Add First Reward
+                </button>
+            </div>
+        `;
         return;
     }
 
     const html = rewards.map(reward => `
-        <div class="reward-list-card" data-animate="fade-in">
-            <div class="reward-list-header">
-                <div class="reward-list-icon">
+        <div class="business-reward-card" data-animate="fade-in">
+            <div class="reward-card-header">
+                <div class="reward-icon">
                     <i class="fas fa-gift"></i>
                 </div>
-                <div class="reward-list-info">
-                    <h4>${reward.title}</h4>
-                    <p class="reward-description">${reward.description}</p>
-                    <div class="reward-meta">
-                        <span class="reward-category">
+                <div class="reward-status-badge ${reward.isActive ? 'active' : 'inactive'}">
+                    <i class="fas fa-${reward.isActive ? 'check-circle' : 'pause-circle'}"></i>
+                    ${reward.isActive ? 'Active' : 'Inactive'}
+                </div>
+            </div>
+
+            <div class="reward-card-content">
+                <h3 class="reward-title">${reward.title}</h3>
+                <p class="reward-description">${reward.description}</p>
+
+                <div class="reward-details">
+                    <div class="reward-detail-item">
+                        <span class="detail-label">Category</span>
+                        <span class="detail-value">
                             <i class="fas fa-tag"></i>
                             ${reward.category.replace('_', ' ')}
                         </span>
-                        <span class="reward-value">
+                    </div>
+                    <div class="reward-detail-item">
+                        <span class="detail-label">Value</span>
+                        <span class="detail-value">
                             <i class="fas fa-dollar-sign"></i>
                             ${reward.value}
                         </span>
                     </div>
-                </div>
-                <div class="reward-list-points">
-                    <div class="points-badge">
-                        <i class="fas fa-coins"></i>
-                        ${reward.pointsRequired} pts
-                    </div>
-                    <div class="reward-status ${reward.isActive ? 'active' : 'inactive'}">
-                        <i class="fas fa-${reward.isActive ? 'check-circle' : 'pause-circle'}"></i>
-                        ${reward.isActive ? 'Active' : 'Inactive'}
+                    <div class="reward-detail-item">
+                        <span class="detail-label">Points Required</span>
+                        <span class="detail-value points-required">
+                            <i class="fas fa-coins"></i>
+                            ${reward.pointsRequired} pts
+                        </span>
                     </div>
                 </div>
+            </div>
+
+            <div class="reward-card-actions">
+                <button class="btn btn-outline btn-sm" onclick="editReward('${reward._id}')" title="Edit Reward">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="toggleRewardStatus('${reward._id}')" title="Toggle Status">
+                    <i class="fas fa-${reward.isActive ? 'pause' : 'play'}"></i>
+                    ${reward.isActive ? 'Deactivate' : 'Activate'}
+                </button>
+                <button class="btn btn-outline btn-sm delete-btn" onclick="deleteReward('${reward._id}')" title="Delete Reward">
+                    <i class="fas fa-trash"></i>
+                    Delete
+                </button>
             </div>
         </div>
     `).join('');
@@ -711,7 +923,152 @@ window.BusinessDashboard = {
     stopRealTimeUpdates
 };
 
+// Load claimed rewards
+function loadClaimedRewards() {
+    const container = document.getElementById('claimed-rewards-table');
+    if (!container) return;
+
+    Utils.showLoading(container, 'Loading claimed rewards...');
+
+    Utils.apiRequest('/api/business/claimed-rewards')
+        .then(data => {
+            if (data.success) {
+                displayClaimedRewards(data.data.claims);
+            } else {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-history"></i></div><div class="empty-state-title">No claimed rewards</div></div>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading claimed rewards:', error);
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-exclamation-triangle"></i></div><div class="empty-state-title">Error loading claimed rewards</div></div>';
+        });
+}
+
+// Display claimed rewards table
+function displayClaimedRewards(claims) {
+    const container = document.getElementById('claimed-rewards-table');
+
+    if (!claims || claims.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-history"></i></div><div class="empty-state-title">No claimed rewards yet</div></div>';
+        return;
+    }
+
+    const html = `
+        <table class="claimed-rewards-table">
+            <thead>
+                <tr>
+                    <th>Reward</th>
+                    <th>Customer</th>
+                    <th>Points Used</th>
+                    <th>Date Claimed</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${claims.map(claim => `
+                    <tr>
+                        <td>
+                            <div class="reward-info">
+                                <div class="reward-icon">
+                                    <i class="fas fa-gift"></i>
+                                </div>
+                                <div>
+                                    <h4>${claim.reward.name}</h4>
+                                    <p>${claim.reward.description}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <div>${claim.customer.firstName} ${claim.customer.lastName}</div>
+                                <div style="font-size: 0.75rem; color: var(--gray-500);">
+                                    ${claim.customer.phone}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="points-display">${Utils.formatPoints(claim.pointsUsed)}</span>
+                        </td>
+                        <td>${Utils.formatDate(claim.claimedAt)}</td>
+                        <td>
+                            <span class="status-badge active">Claimed</span>
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+
+    container.innerHTML = html;
+}
+
+// Load reward criteria
+function loadRewardCriteria() {
+    const container = document.getElementById('criteria-list');
+    if (!container) return;
+
+    Utils.showLoading(container, 'Loading criteria...');
+
+    Utils.apiRequest('/api/business/criteria')
+        .then(data => {
+            if (data.success) {
+                displayRewardCriteria(data.data.criteria);
+            } else {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-cogs"></i></div><div class="empty-state-title">No criteria found</div></div>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading criteria:', error);
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-exclamation-triangle"></i></div><div class="empty-state-title">Error loading criteria</div></div>';
+        });
+}
+
+// Display reward criteria
+function displayRewardCriteria(criteria) {
+    const container = document.getElementById('criteria-list');
+
+    if (!criteria || criteria.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon"><i class="fas fa-cogs"></i></div>
+                <div class="empty-state-title">No criteria set</div>
+                <div class="empty-state-description">Set up point earning criteria for your customers.</div>
+                <button class="btn btn-primary" onclick="showAddCriteriaModal()">
+                    <i class="fas fa-plus"></i>
+                    Add First Criteria
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    const html = criteria.map(criterion => `
+        <div class="criteria-item">
+            <div class="criteria-info">
+                <h4>${criterion.name}</h4>
+                <p>${criterion.description}</p>
+            </div>
+            <div class="criteria-points">
+                +${criterion.points}
+            </div>
+            <div class="criteria-actions">
+                <button class="action-btn edit" onclick="editCriteria('${criterion._id}')" title="Edit Criteria">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="action-btn delete" onclick="deleteCriteria('${criterion._id}')" title="Delete Criteria">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+
+    container.innerHTML = html;
+}
+
 // Make functions globally available
 window.initializeBusinessDashboard = initializeBusinessDashboard;
 window.refreshDashboard = refreshDashboard;
 window.refreshCodes = refreshCodes;
+window.setupRewardsTab = setupRewardsTab;
+window.loadClaimedRewards = loadClaimedRewards;
+window.loadRewardCriteria = loadRewardCriteria;

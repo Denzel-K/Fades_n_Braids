@@ -27,7 +27,7 @@ function loadRewards() {
         });
 }
 
-// Display rewards with FontAwesome icons
+// Display rewards with FontAwesome icons (Customer Dashboard)
 function displayRewards(rewards) {
     const container = document.getElementById('rewards-grid');
     if (!rewards || rewards.length === 0) {
@@ -43,24 +43,24 @@ function displayRewards(rewards) {
     };
 
     const html = rewards.map(reward => `
-        <div class="reward-card" data-animate="fade-in">
-            <div class="reward-header">
-                <span class="reward-category">
+        <div class="customer-reward-card" data-animate="fade-in">
+            <div class="customer-reward-header">
+                <span class="customer-reward-category">
                     <i class="${categoryIcons[reward.category] || 'fas fa-gift'}"></i>
                     ${reward.category.replace('_', ' ')}
                 </span>
-                <span class="reward-points">
+                <span class="customer-reward-points">
                     <i class="fas fa-coins"></i>
                     ${reward.pointsRequired} pts
                 </span>
             </div>
-            <h3 class="reward-title">${reward.title}</h3>
-            <p class="reward-description">${reward.description}</p>
-            <div class="reward-value">
+            <h3 class="customer-reward-title">${reward.title}</h3>
+            <p class="customer-reward-description">${reward.description}</p>
+            <div class="customer-reward-value">
                 <i class="fas fa-tag"></i>
                 ${reward.value}
             </div>
-            <button class="btn btn-primary btn-full" onclick="redeemReward('${reward._id}')" data-reward-id="${reward._id}">
+            <button class="btn btn-primary customer-reward-btn" onclick="redeemReward('${reward._id}')" data-reward-id="${reward._id}">
                 <i class="fas fa-hand-holding-heart"></i>
                 Redeem Now
             </button>
@@ -68,7 +68,7 @@ function displayRewards(rewards) {
     `).join('');
 
     container.innerHTML = html;
-    
+
     // Initialize animations for new elements
     Animations.initializeAnimations();
 }
@@ -80,7 +80,7 @@ function redeemReward(rewardId) {
         () => {
             const button = document.querySelector(`[data-reward-id="${rewardId}"]`);
             const originalText = button.innerHTML;
-            
+
             // Show loading state
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redeeming...';
             button.disabled = true;
@@ -91,14 +91,14 @@ function redeemReward(rewardId) {
             .then(data => {
                 if (data.success) {
                     showNotification(data.message, 'success');
-                    
+
                     // Update points display immediately
                     updatePointsDisplay(data.data.remainingPoints);
-                    
+
                     // Refresh rewards and claimed rewards
                     loadRewards();
                     updateClaimedRewardsCount();
-                    
+
                     // Show celebration animation
                     showRewardCelebration();
                 } else {
@@ -125,7 +125,7 @@ function updatePointsDisplay(newPoints) {
         // Add update animation
         pointsElement.style.transform = 'scale(1.2)';
         pointsElement.style.color = 'var(--success)';
-        
+
         setTimeout(() => {
             pointsElement.textContent = Utils.formatPoints(newPoints);
             pointsElement.style.transform = 'scale(1)';
@@ -145,7 +145,7 @@ function showRewardCelebration() {
             <p>Congratulations on your redemption!</p>
         </div>
     `;
-    
+
     celebration.style.cssText = `
         position: fixed;
         top: 0;
@@ -159,9 +159,9 @@ function showRewardCelebration() {
         z-index: 10000;
         animation: fadeIn 0.3s ease;
     `;
-    
+
     document.body.appendChild(celebration);
-    
+
     setTimeout(() => {
         celebration.style.animation = 'fadeOut 0.3s ease';
         setTimeout(() => celebration.remove(), 300);
@@ -180,7 +180,7 @@ function showRewardsTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
     });
-    
+
     const targetContent = document.getElementById(`${tabName}-rewards-tab`);
     targetContent.classList.add('active');
 
@@ -216,7 +216,7 @@ function loadClaimedRewards() {
 // Display claimed rewards
 function displayClaimedRewards(claimedRewards) {
     const container = document.getElementById('claimed-rewards-grid');
-    
+
     if (!claimedRewards || claimedRewards.length === 0) {
         container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-gift"></i></div><div class="empty-state-title">No claimed rewards</div><div class="empty-state-description">You haven\'t claimed any rewards yet. Check out the available rewards to start earning!</div></div>';
         return;
@@ -250,7 +250,7 @@ function displayClaimedRewards(claimedRewards) {
     `).join('');
 
     container.innerHTML = html;
-    
+
     // Initialize animations for new elements
     Animations.initializeAnimations();
 }
@@ -323,10 +323,10 @@ function showRewardCriteria() {
             </div>
         </div>
     `;
-    
+
     document.body.appendChild(modal);
     modal.classList.add('show');
-    
+
     // Close on backdrop click
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
