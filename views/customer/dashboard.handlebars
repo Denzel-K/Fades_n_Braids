@@ -88,20 +88,25 @@
         </div>
 
         <!-- Recent Activity Card -->
-        <div class="card">
-            <div class="flex items-center justify-between mb-4">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center">
-                    <div class="w-8 h-8 bg-primary-blue/20 rounded-lg flex items-center justify-center mr-3">
-                        <i class="fas fa-chart-line text-primary-blue"></i>
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary-blue to-primary-purple rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-chart-line text-white text-lg"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+                        <p class="text-sm text-gray-500">Your latest visits and points</p>
+                    </div>
                 </div>
-                <button class="btn btn-sm btn-ghost" onclick="showVisitHistory()">View All</button>
+                <button class="text-sm text-primary-orange hover:text-primary-pink transition-colors font-medium flex items-center" onclick="showVisitHistory()">
+                    View All <i class="fas fa-arrow-right ml-1"></i>
+                </button>
             </div>
-            <div id="recent-activity" class="space-y-3 max-h-48 overflow-y-auto">
+            <div id="recent-activity" class="space-y-2 max-h-48 overflow-y-auto">
                 <div class="flex items-center justify-center py-6">
-                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-orange mr-2"></div>
-                    <span class="text-sm text-gray-600">Loading activity...</span>
+                    <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-orange mr-2"></div>
+                    <span class="text-xs text-gray-600">Loading activity...</span>
                 </div>
             </div>
         </div>
@@ -156,27 +161,7 @@
             </div>
         </div>
 
-        <!-- Available Rewards Preview -->
-        <div class="mb-6">
-            <div class="card">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 bg-primary-pink/20 rounded-lg flex items-center justify-center mr-3">
-                            <i class="fas fa-gift text-primary-pink"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900">Available Rewards</h3>
-                    </div>
-                    <span class="text-sm text-gray-500">You have <span class="font-bold text-primary-orange" data-customer-points="{{customer.points}}">{{customer.points}}</span> points</span>
-                </div>
-                <div id="rewards-preview" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <!-- Loading state -->
-                    <div class="flex items-center justify-center py-6 col-span-full">
-                        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-pink mr-2"></div>
-                        <span class="text-sm text-gray-600">Loading rewards...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <!-- Rewards Tabs -->
         <div class="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg">

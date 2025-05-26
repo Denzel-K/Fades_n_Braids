@@ -91,7 +91,7 @@ function displayRecentActivity(visits) {
     if (!visits || visits.length === 0) {
         container.innerHTML = `
             <div class="text-center py-8">
-                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-history text-gray-400 text-2xl"></i>
                 </div>
                 <h3 class="text-lg font-medium text-gray-900 mb-2">No recent visits</h3>
@@ -101,23 +101,23 @@ function displayRecentActivity(visits) {
         return;
     }
 
-    const html = visits.map(visit => `
-        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors" data-animate="fade-in">
+    const html = visits.map((visit, index) => `
+        <div class="flex items-center justify-between p-3 bg-gradient-to-r from-white to-gray-50 rounded-lg hover:from-primary-orange/5 hover:to-primary-pink/5 transition-all duration-200 border border-gray-100 hover:border-primary-orange/20" data-animate="fade-in" data-delay="${index * 50}">
             <div class="flex items-center">
-                <div class="w-10 h-10 bg-primary-green/20 rounded-full flex items-center justify-center mr-3">
-                    <i class="fas fa-check-circle text-primary-green"></i>
+                <div class="w-8 h-8 bg-gradient-to-br from-primary-green to-emerald-500 rounded-full flex items-center justify-center mr-3 shadow-sm">
+                    <i class="fas fa-check text-white text-xs"></i>
                 </div>
                 <div>
-                    <p class="font-medium text-gray-900">Salon Visit</p>
-                    <p class="text-sm text-gray-500 flex items-center">
-                        <i class="fas fa-clock mr-1"></i>
+                    <p class="font-medium text-gray-900 text-sm mb-0.5">Visit</p>
+                    <p class="text-xs text-gray-500 flex items-center">
+                        <i class="fas fa-clock mr-1 text-gray-400"></i>
                         ${formatTimeAgo(visit.visitDate)}
                     </p>
                 </div>
             </div>
-            <div class="text-right">
-                <p class="font-bold text-primary-orange">+${visit.pointsEarned}</p>
-                <p class="text-xs text-gray-500">points</p>
+            <div class="flex items-center bg-gradient-to-r from-primary-orange to-primary-pink text-white px-2 py-1 rounded-full text-xs font-semibold">
+                <i class="fas fa-plus mr-1" style="font-size: 10px;"></i>
+                ${visit.pointsEarned}
             </div>
         </div>
     `).join('');

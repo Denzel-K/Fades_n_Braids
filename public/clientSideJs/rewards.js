@@ -179,19 +179,31 @@ function showRewardCelebration() {
 
 // Rewards tab switching
 function showRewardsTab(tabName) {
-    // Update tab buttons
-    document.querySelectorAll('.rewards-tabs .tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.getElementById(`${tabName}-tab`).classList.add('active');
+    console.log('Switching to rewards tab:', tabName);
 
-    // Update tab content with animation
+    // Update tab buttons with Tailwind classes
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-white', 'text-primary-orange', 'shadow-sm');
+        btn.classList.add('text-gray-600', 'hover:text-gray-900');
+    });
+
+    const activeButton = document.getElementById(`${tabName}-tab`);
+    if (activeButton) {
+        activeButton.classList.add('active', 'bg-white', 'text-primary-orange', 'shadow-sm');
+        activeButton.classList.remove('text-gray-600', 'hover:text-gray-900');
+    }
+
+    // Update tab content with proper hiding/showing
     document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
         content.classList.remove('active');
     });
 
     const targetContent = document.getElementById(`${tabName}-rewards-tab`);
-    targetContent.classList.add('active');
+    if (targetContent) {
+        targetContent.classList.remove('hidden');
+        targetContent.classList.add('active');
+    }
 
     // Load content if needed
     if (tabName === 'claimed') {
@@ -206,19 +218,41 @@ function loadClaimedRewards() {
     const container = document.getElementById('claimed-rewards-grid');
     if (!container) return;
 
-    Utils.showLoading(container, 'Loading claimed rewards...');
+    // Show loading state with Tailwind classes
+    container.innerHTML = `
+        <div class="flex items-center justify-center py-12 col-span-full">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-orange mr-3"></div>
+            <span class="text-gray-600">Loading claimed rewards...</span>
+        </div>
+    `;
 
     Utils.apiRequest('/api/customers/rewards/claimed')
         .then(data => {
             if (data.success) {
                 displayClaimedRewards(data.data.claimedRewards);
             } else {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-gift"></i></div><div class="empty-state-title">No claimed rewards</div><div class="empty-state-description">You haven\'t claimed any rewards yet. Check out the available rewards to start earning!</div></div>';
+                container.innerHTML = `
+                    <div class="text-center py-12 col-span-full">
+                        <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-gift text-gray-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">No claimed rewards</h3>
+                        <p class="text-gray-600">Redeem your first reward to see it here!</p>
+                    </div>
+                `;
             }
         })
         .catch(error => {
             console.error('Error loading claimed rewards:', error);
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-exclamation-triangle"></i></div><div class="empty-state-title">Error loading rewards</div><div class="empty-state-description">Please try again later.</div></div>';
+            container.innerHTML = `
+                <div class="text-center py-12 col-span-full">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-exclamation-triangle text-red-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Error loading rewards</h3>
+                    <p class="text-gray-600">Please try again later.</p>
+                </div>
+            `;
         });
 }
 
@@ -227,7 +261,15 @@ function displayClaimedRewards(claimedRewards) {
     const container = document.getElementById('claimed-rewards-grid');
 
     if (!claimedRewards || claimedRewards.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-gift"></i></div><div class="empty-state-title">No claimed rewards</div><div class="empty-state-description">You haven\'t claimed any rewards yet. Check out the available rewards to start earning!</div></div>';
+        container.innerHTML = `
+            <div class="text-center py-12 col-span-full">
+                <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-gift text-gray-400 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No claimed rewards</h3>
+                <p class="text-gray-600">You haven't claimed any rewards yet. Check out the available rewards to start earning!</p>
+            </div>
+        `;
         return;
     }
 

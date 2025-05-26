@@ -292,34 +292,23 @@ function displayRecentClaims(claims) {
         return;
     }
 
-    const html = claims.map(claim => `
-        <div class="claim-card" data-animate="fade-in">
-            <div class="claim-header">
-                <div class="claim-customer">
-                    <i class="fas fa-user"></i>
-                    <span>${claim.customer.firstName} ${claim.customer.lastName}</span>
+    const html = claims.slice(0, 6).map((claim, index) => `
+        <div class="flex items-center justify-between p-2.5 bg-gradient-to-r from-white to-gray-50 rounded-lg hover:from-primary-orange/5 hover:to-primary-pink/5 transition-all duration-200 border border-gray-100 hover:border-primary-orange/20" data-animate="fade-in" data-delay="${index * 50}">
+            <div class="flex items-center">
+                <div class="w-7 h-7 bg-gradient-to-br from-primary-orange to-primary-pink rounded-full flex items-center justify-center mr-3 shadow-sm">
+                    <i class="fas fa-gift text-white text-xs"></i>
                 </div>
-                <div class="claim-date">
-                    <i class="fas fa-clock"></i>
-                    ${Utils.formatDateOnly(claim.redeemedAt)}
-                </div>
-            </div>
-            <div class="claim-reward">
-                <div class="reward-info">
-                    <h4>${claim.reward.title}</h4>
-                    <p class="reward-value">
-                        <i class="fas fa-tag"></i>
-                        ${claim.reward.value}
+                <div>
+                    <p class="font-medium text-gray-900 text-sm mb-0.5">${claim.customer.firstName} ${claim.customer.lastName}</p>
+                    <p class="text-xs text-gray-500 flex items-center">
+                        <i class="fas fa-clock mr-1 text-gray-400"></i>
+                        ${Utils.formatTimeAgo(claim.redeemedAt)}
                     </p>
                 </div>
-                <div class="points-used">
-                    <i class="fas fa-coins"></i>
-                    ${claim.pointsUsed} pts
-                </div>
             </div>
-            <div class="claim-contact">
-                <i class="fas fa-phone"></i>
-                ${claim.customer.phone}
+            <div class="flex items-center bg-gradient-to-r from-primary-orange to-primary-pink text-white px-2 py-1 rounded-full text-xs font-semibold">
+                <i class="fas fa-minus mr-1" style="font-size: 10px;"></i>
+                ${claim.pointsUsed}
             </div>
         </div>
     `).join('');
@@ -388,34 +377,42 @@ function displayRecentActivitySummary(visits) {
         return;
     }
 
-    const recentVisits = visits.slice(0, 5); // Show only 5 most recent
+    const recentVisits = visits.slice(0, 6); // Show only 6 most recent for compact view
     const html = `
-        <div class="activity-summary-list">
-            ${recentVisits.map(visit => `
-                <div class="activity-summary-item">
-                    <div class="activity-summary-icon">
-                        <i class="fas fa-user-check"></i>
+        <div class="space-y-2">
+            ${recentVisits.map((visit, index) => `
+                <div class="flex items-center justify-between p-2.5 bg-gradient-to-r from-white to-gray-50 rounded-lg hover:from-primary-purple/5 hover:to-primary-blue/5 transition-all duration-200 border border-gray-100 hover:border-primary-purple/20" data-animate="fade-in" data-delay="${index * 50}">
+                    <div class="flex items-center">
+                        <div class="w-7 h-7 bg-gradient-to-br from-primary-purple to-primary-blue rounded-full flex items-center justify-center mr-3 shadow-sm">
+                            <i class="fas fa-user text-white text-xs"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-900 text-sm mb-0.5">${visit.customer.firstName} ${visit.customer.lastName}</p>
+                            <p class="text-xs text-gray-500 flex items-center">
+                                <i class="fas fa-clock mr-1 text-gray-400"></i>
+                                ${Utils.formatTimeAgo(visit.visitDate)}
+                            </p>
+                        </div>
                     </div>
-                    <div class="activity-summary-content">
-                        <div class="activity-summary-title">${visit.customer.firstName} ${visit.customer.lastName}</div>
-                        <div class="activity-summary-time">${Utils.formatTimeAgo(visit.visitDate)}</div>
-                    </div>
-                    <div class="activity-summary-points">
-                        <i class="fas fa-plus"></i>
+                    <div class="flex items-center bg-gradient-to-r from-primary-purple to-primary-blue text-white px-2 py-1 rounded-full text-xs font-semibold">
+                        <i class="fas fa-plus mr-1" style="font-size: 10px;"></i>
                         ${visit.pointsEarned}
                     </div>
                 </div>
             `).join('')}
         </div>
-        <div class="activity-summary-footer">
-            <button class="btn btn-outline btn-small" onclick="showDashboardTab('analytics')">
-                <i class="fas fa-chart-line"></i>
-                View All Activity
+        <div class="mt-4 text-center">
+            <button class="btn btn-outline btn-sm text-xs" onclick="showDashboardTab('analytics')">
+                <i class="fas fa-chart-line mr-1"></i>
+                View Analytics
             </button>
         </div>
     `;
 
     container.innerHTML = html;
+    if (typeof Animations !== 'undefined') {
+        Animations.initializeAnimations();
+    }
 }
 
 // Load customers list for customers tab

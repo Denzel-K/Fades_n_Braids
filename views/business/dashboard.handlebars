@@ -490,10 +490,10 @@
                             View All
                         </button>
                     </div>
-                    <div id="recent-visits" class="max-h-48 overflow-y-auto">
-                        <div class="flex items-center justify-center py-6">
-                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-purple mr-2"></div>
-                            <span class="text-sm text-gray-600">Loading activity...</span>
+                    <div id="recent-visits" class="max-h-40 overflow-y-auto">
+                        <div class="flex items-center justify-center py-4">
+                            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-purple mr-2"></div>
+                            <span class="text-xs text-gray-600">Loading activity...</span>
                         </div>
                     </div>
                 </div>
@@ -510,10 +510,10 @@
                             View All
                         </button>
                     </div>
-                    <div id="recent-claims" class="max-h-48 overflow-y-auto">
-                        <div class="flex items-center justify-center py-6">
-                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-orange mr-2"></div>
-                            <span class="text-sm text-gray-600">Loading claims...</span>
+                    <div id="recent-claims" class="max-h-40 overflow-y-auto">
+                        <div class="flex items-center justify-center py-4">
+                            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-orange mr-2"></div>
+                            <span class="text-xs text-gray-600">Loading claims...</span>
                         </div>
                     </div>
                 </div>
@@ -774,20 +774,24 @@
     function initializeRewardsSubTabs() {
         const rewardsTabButtons = document.querySelectorAll('.rewards-tab-btn');
         rewardsTabButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const tabName = this.getAttribute('data-tab');
-                showRewardsSubTab(tabName);
-            });
+            // Remove existing listeners to prevent duplicates
+            button.removeEventListener('click', handleRewardsSubTabClick);
+            button.addEventListener('click', handleRewardsSubTabClick);
         });
 
         // Show available rewards by default
         showRewardsSubTab('available-rewards');
     }
 
+    function handleRewardsSubTabClick(event) {
+        const tabName = event.currentTarget.getAttribute('data-tab');
+        showRewardsSubTab(tabName);
+    }
+
     function showRewardsSubTab(tabName) {
         console.log('Switching to rewards sub-tab:', tabName);
 
-        // Remove active class from all sub-tab buttons
+        // Remove active class from all sub-tab buttons with proper Tailwind classes
         document.querySelectorAll('.rewards-tab-btn').forEach(btn => {
             btn.classList.remove('bg-white', 'text-primary', 'shadow-sm');
             btn.classList.add('text-gray-600', 'hover:text-gray-900');
@@ -796,6 +800,7 @@
         // Hide all sub-tab content
         document.querySelectorAll('.rewards-tab-content').forEach(content => {
             content.classList.add('hidden');
+            content.classList.remove('block');
         });
 
         // Show selected sub-tab content
@@ -804,6 +809,7 @@
 
         if (activeContent) {
             activeContent.classList.remove('hidden');
+            activeContent.classList.add('block');
         }
 
         if (activeButton) {
@@ -936,19 +942,23 @@
             return;
         }
 
-        const html = claims.map(claim => `
-            <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
+        const html = claims.slice(0, 6).map((claim, index) => `
+            <div class="flex items-center justify-between p-2.5 bg-gradient-to-r from-white to-gray-50 rounded-lg hover:from-primary-orange/5 hover:to-primary-pink/5 transition-all duration-200 border border-gray-100 hover:border-primary-orange/20 mb-2" data-animate="fade-in" data-delay="${index * 50}">
                 <div class="flex items-center">
-                    <div class="w-8 h-8 bg-primary-orange/20 rounded-full flex items-center justify-center mr-3">
-                        <i class="fas fa-gift text-primary-orange text-sm"></i>
+                    <div class="w-7 h-7 bg-gradient-to-br from-primary-orange to-primary-pink rounded-full flex items-center justify-center mr-3 shadow-sm">
+                        <i class="fas fa-gift text-white text-xs"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-gray-900 text-sm">${claim.rewardName || 'Reward'}</p>
-                        <p class="text-xs text-gray-500">${claim.customerName || 'Customer'} • ${formatTimeAgo(claim.claimedAt)}</p>
+                        <p class="font-medium text-gray-900 text-sm mb-0.5">${claim.customerName || 'Customer'}</p>
+                        <p class="text-xs text-gray-500 flex items-center">
+                            <i class="fas fa-clock mr-1 text-gray-400"></i>
+                            ${formatTimeAgo(claim.claimedAt)}
+                        </p>
                     </div>
                 </div>
-                <div class="text-right">
-                    <p class="text-sm font-medium text-primary-orange">${claim.pointsCost || 0} pts</p>
+                <div class="flex items-center bg-gradient-to-r from-primary-orange to-primary-pink text-white px-2 py-1 rounded-full text-xs font-semibold">
+                    <i class="fas fa-minus mr-1" style="font-size: 10px;"></i>
+                    ${claim.pointsCost || 0}
                 </div>
             </div>
         `).join('');
@@ -1193,33 +1203,16 @@
         // This could integrate with Chart.js or similar library
     }
 
-    function sortTopCustomers(metric) {
-        if (!window.topCustomersData) {
-            loadTopCustomers();
-            return;
-        }
 
-        const customers = [...window.topCustomersData];
-
-        customers.sort((a, b) => {
-            switch(metric) {
-                case 'visits':
-                    return (b.totalVisits || 0) - (a.totalVisits || 0);
-                case 'points':
-                    return (b.totalPoints || 0) - (a.totalPoints || 0);
-                case 'spending':
-                    return (b.totalSpending || 0) - (a.totalSpending || 0);
-                default:
-                    return (b.totalVisits || 0) - (a.totalVisits || 0);
-            }
-        });
-
-        displayTopCustomers(customers);
-    }
 
     function formatDate(dateString) {
         if (!dateString) return 'Unknown';
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
     }
+
+    // Make functions globally accessible
+    window.sortTopCustomers = sortTopCustomers;
+    window.showRewardsSubTab = showRewardsSubTab;
+    window.refreshRewardsData = refreshRewardsData;
 </script>
