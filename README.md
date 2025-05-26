@@ -92,87 +92,87 @@
 ## 🛠️ Technology Stack
 
 ### 🖥️ Backend
-- 🟢 **Node.js** with Express.js framework
-- 🍃 **MongoDB** with Mongoose ODM
-- 🔐 **JWT** for authentication and session management
-- 🔒 **bcrypt** for password hashing
-- 📄 **Handlebars (hbs)** for server-side templating
+- **Node.js** with Express.js framework
+- **MongoDB** with Mongoose ODM
+- **JWT** for authentication and session management
+- **bcrypt** for password hashing
+- **Handlebars (hbs)** for server-side templating
 
 ### 🎨 Frontend
-- ⚡ **Vanilla JavaScript** for client-side functionality
-- 🎨 **CSS3** with custom properties and responsive design
-- 🎯 **Font Awesome** for icons
-- 📱 **Mobile-first** responsive design approach
+- **Vanilla JavaScript** for client-side functionality
+- **CSS3** with custom properties and responsive design
+- **Font Awesome** for icons
+- **Mobile-first** responsive design approach
 
 ### 🔧 Development Tools
-- 🔄 **nodemon** for development server
-- 🌍 **dotenv** for environment variable management
-- 🛡️ **express-rate-limit** for API rate limiting
+- **nodemon** for development server
+- **dotenv** for environment variable management
+- **express-rate-limit** for API rate limiting
 
 ## 📁 Project Structure
 
 ```
 fades-n-braids-loyalty/
 ├── 📁 config/
-│   ├── 🗄️ database.js          # MongoDB connection
-│   └── ⚙️ env.js              # Environment configuration
+│   ├── database.js          # MongoDB connection
+│   └── env.js              # Environment configuration
 ├── 📁 controllers/
-│   ├── 🏢 businessController.js
-│   ├── 👤 customerController.js
-│   ├── 📲 checkinController.js
-│   └── 🎁 rewardController.js
+│   ├── businessController.js
+│   ├── customerController.js
+│   ├── checkinController.js
+│   └── rewardController.js
 ├── 📁 middleware/
-│   ├── 🔐 auth.js             # Authentication middleware
-│   └── ✅ validation.js       # Input validation
+│   ├── auth.js             # Authentication middleware
+│   └── validation.js       # Input validation
 ├── 📁 models/
-│   ├── 🏢 Business.js
-│   ├── 👤 Customer.js
-│   ├── 🔢 CheckInCode.js
-│   └── 🎁 Reward.js
+│   ├── Business.js
+│   ├── Customer.js
+│   ├── CheckInCode.js
+│   └── Reward.js
 ├── 📁 public/
-│   ├── 🎨 css/                # Stylesheets
-│   ├── ⚡ clientSideJs/       # Client-side JavaScript
-│   └── 🖼️ images/             # Static images & screenshots
+│   ├── css/                # Stylesheets
+│   ├── clientSideJs/       # Client-side JavaScript
+│   └── images/             # Static images & screenshots
 ├── 📁 routes/
-│   ├── 🔗 api/                # API routes
-│   ├── 🏢 business.js         # Business dashboard routes
-│   └── 👤 customer.js         # Customer routes
+│   ├── api/                # API routes
+│   ├── business.js         # Business dashboard routes
+│   └── customer.js         # Customer routes
 ├── 📁 views/
-│   ├── 📄 layout/             # Handlebars layouts
-│   ├── 🏢 business/           # Business templates
+│   ├── layout/             # Handlebars layouts
+│   ├── business/           # Business templates
 │   └── 👤 customer/           # Customer templates
-├── 🚀 server.js               # Main server file
-├── 📦 package.json
-└── 🔧 .env.example           # Environment variables template
+├── server.js               # Main server file
+├── package.json
+└── .env.example           # Environment variables template
 ```
 
 ## 🔗 API Routes
 
 ### 🔐 Authentication
-- `POST /api/customers/register` - 👤 Customer registration
-- `POST /api/customers/login` - 🔑 Customer login
-- `POST /api/customers/logout` - 🚪 Customer logout
-- `POST /api/business/login` - 🏢 Business login
-- `POST /api/business/logout` - 🚪 Business logout
+- `POST /api/customers/register` - Customer registration
+- `POST /api/customers/login` - Customer login
+- `POST /api/customers/logout` - Customer logout
+- `POST /api/business/login` - Business login
+- `POST /api/business/logout` - Business logout
 
 ### 👤 Customer Features
-- `GET /api/customers/profile` - 📋 Get customer profile
-- `POST /api/customers/checkin` - 📲 Check-in with code
-- `GET /api/customers/rewards` - 🎁 Get available rewards
-- `GET /api/customers/rewards/claimed` - 🏆 Get claimed rewards
-- `POST /api/customers/redeem` - ✨ Redeem a reward
+- `GET /api/customers/profile` - Get customer profile
+- `POST /api/customers/checkin` - Check-in with code
+- `GET /api/customers/rewards` - Get available rewards
+- `GET /api/customers/rewards/claimed` - Get claimed rewards
+- `POST /api/customers/redeem` - Redeem a reward
 
 ### 🏢 Business Features
-- `GET /api/business/customers` - 👥 Get all customers
-- `GET /api/business/stats` - 📊 Get business statistics
-- `POST /api/business/rewards` - ➕ Create new reward
-- `PUT /api/business/rewards/:id` - ✏️ Update reward
-- `DELETE /api/business/rewards/:id` - 🗑️ Delete reward
-- `POST /api/business/award-points` - ⭐ Award points to customer
+- `GET /api/business/customers` - Get all customers
+- `GET /api/business/stats` - Get business statistics
+- `POST /api/business/rewards` - Create new reward
+- `PUT /api/business/rewards/:id` - Update reward
+- `DELETE /api/business/rewards/:id` - Delete reward
+- `POST /api/business/award-points` - Award points to customer
 
 ### 📲 Check-in System
-- `GET /api/checkin/current-code` - 🔢 Get current check-in code
-- `POST /api/checkin/validate` - ✅ Validate check-in code
+- `GET /api/checkin/current-code` - Get current check-in code
+- `POST /api/checkin/validate` - Validate check-in code
 
 ## 🎨 Design System
 
@@ -200,32 +200,32 @@ fades-n-braids-loyalty/
 </div>
 
 ### 🎯 Design Principles
-- 📱 **Mobile-First**: Responsive design optimized for mobile devices
-- 🎨 **Gradient Backgrounds**: Beautiful gradient overlays for visual appeal
-- ⚡ **Smooth Animations**: Subtle transitions and hover effects
-- 🔤 **Typography**: Clean, readable fonts with proper hierarchy
-- 🎯 **Accessibility**: High contrast ratios and semantic HTML
+- **Mobile-First**: Responsive design optimized for mobile devices
+- **Gradient Backgrounds**: Beautiful gradient overlays for visual appeal
+- **Smooth Animations**: Subtle transitions and hover effects
+- **Typography**: Clean, readable fonts with proper hierarchy
+- **Accessibility**: High contrast ratios and semantic HTML
 
 ## ⚙️ Environment Variables
 
 Create a `.env` file based on `.env.example`:
 
 ```env
-# 🗄️ Database Configuration
+# Database Configuration
 MONGODB_URI=mongodb://localhost:27017/fades-n-braids
 
-# 🔐 JWT Security
+# JWT Security
 JWT_SECRET=your-super-secret-jwt-key
 
-# 🚀 Server Configuration
+# Server Configuration
 PORT=3000
 NODE_ENV=development
 
-# 🏢 Business Account
+# Business Account
 BUSINESS_EMAIL=admin@fadesbraids.com
 BUSINESS_PASSWORD=admin123
 
-# 🎯 Points System
+# Points System
 POINTS_PER_VISIT=10
 WELCOME_BONUS_POINTS=50
 ```
@@ -482,36 +482,36 @@ This section documents the structured development approach used to build the Fad
 ## 📝 Development Notes
 
 ### 🎯 Key Design Decisions
-1. 📱 **Phone-based Authentication**: Simplified customer registration using phone numbers instead of email
-2. 🔐 **JWT with HTTP-only Cookies**: Secure token storage to prevent XSS attacks
-3. 🏢 **Separate Customer/Business Interfaces**: Clear separation of concerns and user experiences
-4. 📱 **Mobile-first Design**: Optimized for salon customers using mobile devices
-5. ⏰ **Real-time Check-in Codes**: 5-minute TTL codes for secure and timely check-ins
+1. **Phone-based Authentication**: Simplified customer registration using phone numbers instead of email
+2. **JWT with HTTP-only Cookies**: Secure token storage to prevent XSS attacks
+3. **Separate Customer/Business Interfaces**: Clear separation of concerns and user experiences
+4. **Mobile-first Design**: Optimized for salon customers using mobile devices
+5. **Real-time Check-in Codes**: 5-minute TTL codes for secure and timely check-ins
 
 ### 🔒 Security Considerations
-- 🔐 Password hashing with bcrypt
-- 🎫 JWT token expiration and refresh
-- 🛡️ Rate limiting on authentication endpoints
-- ✅ Input validation and sanitization
-- 🌐 CORS configuration for API security
+- Password hashing with bcrypt
+- JWT token expiration and refresh
+- Rate limiting on authentication endpoints
+- Input validation and sanitization
+- CORS configuration for API security
 
 ### ⚡ Performance Optimizations
-- 📊 Database indexing on frequently queried fields
-- 🔄 Efficient aggregation pipelines for statistics
-- 💾 Client-side caching of static assets
-- 🚀 Optimized CSS and JavaScript delivery
+- Database indexing on frequently queried fields
+- Efficient aggregation pipelines for statistics
+- Client-side caching of static assets
+- Optimized CSS and JavaScript delivery
 
 ### 🎨 UI/UX Features
-- 📱 Responsive design with mobile-first approach
-- 🎨 Beautiful gradient backgrounds and smooth animations
-- 🎯 Intuitive navigation and user flows
-- 📊 Real-time updates and live statistics
-- 🎁 Interactive rewards system with visual feedback
+- Responsive design with mobile-first approach
+- Beautiful gradient backgrounds and smooth animations
+- Intuitive navigation and user flows
+- Real-time updates and live statistics
+- Interactive rewards system with visual feedback
 
 ---
 
 <div align="center">
   <p><strong>Built with ❤️ for Fades n Braids</strong></p>
-  <p>© 2024 Fades n Braids Loyalty System</p>
+  <p>© 2025 Fades n Braids Loyalty System</p>
 </div>
 
