@@ -1,0 +1,303 @@
+// Landing Page Styles
+
+// Hero Section
+.hero {
+  @include gradient-primary;
+  padding: $spacing-20 0;
+  min-height: 80vh;
+  @include flex-center;
+  position: relative;
+  overflow: hidden;
+
+  @include mobile-only {
+    padding: $spacing-16 0;
+    min-height: 70vh;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($white, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-12;
+    align-items: center;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+      gap: $spacing-8;
+      text-align: center;
+    }
+  }
+
+  .hero-text {
+    color: $white;
+  }
+
+  .hero-title {
+    @include heading-1;
+    color: $white;
+    margin-bottom: $spacing-6;
+
+    .brand-highlight {
+      @include text-gradient;
+      background: linear-gradient(135deg, $white 0%, rgba($white, 0.8) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  .hero-description {
+    font-size: $font-size-xl;
+    line-height: $line-height-relaxed;
+    margin-bottom: $spacing-8;
+    opacity: 0.9;
+
+    @include mobile-only {
+      font-size: $font-size-lg;
+    }
+  }
+
+  .hero-features {
+    display: grid;
+    gap: $spacing-6;
+    margin-bottom: $spacing-10;
+
+    @include desktop-up {
+      grid-template-columns: repeat(3, 1fr);
+      gap: $spacing-4;
+    }
+  }
+
+  .feature {
+    @include flex-center;
+    gap: $spacing-4;
+    padding: $spacing-4;
+    background: rgba($white, 0.1);
+    border-radius: $border-radius-xl;
+    backdrop-filter: blur(10px);
+
+    @include mobile-only {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    @include desktop-up {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  .feature-icon {
+    font-size: $font-size-3xl;
+    margin-bottom: $spacing-2;
+  }
+
+  .feature-text h3 {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $spacing-1;
+  }
+
+  .feature-text p {
+    font-size: $font-size-sm;
+    opacity: 0.8;
+  }
+
+  .hero-actions {
+    @include flex-center;
+    gap: $spacing-4;
+    flex-wrap: wrap;
+
+    @include mobile-only {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  .points-display {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+    margin-top: $spacing-4;
+    padding: $spacing-3 $spacing-6;
+    background: rgba($white, 0.2);
+    border-radius: $border-radius-full;
+    backdrop-filter: blur(10px);
+  }
+
+  .hero-image {
+    @include flex-center;
+
+    .hero-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: $border-radius-2xl;
+      box-shadow: $shadow-2xl;
+    }
+  }
+}
+
+// How It Works Section
+.how-it-works {
+  padding: $spacing-20 0;
+  background: $gray-50;
+
+  @include mobile-only {
+    padding: $spacing-16 0;
+  }
+
+  .section-title {
+    @include heading-2;
+    text-align: center;
+    margin-bottom: $spacing-16;
+  }
+
+  .steps {
+    display: grid;
+    gap: $spacing-8;
+
+    @include desktop-up {
+      grid-template-columns: repeat(4, 1fr);
+      gap: $spacing-6;
+    }
+  }
+
+  .step {
+    text-align: center;
+    position: relative;
+
+    &:not(:last-child)::after {
+      @include desktop-up {
+        content: '→';
+        position: absolute;
+        top: 2rem;
+        right: -3rem;
+        font-size: $font-size-2xl;
+        color: $primary;
+        font-weight: $font-weight-bold;
+      }
+    }
+  }
+
+  .step-number {
+    @include flex-center;
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto $spacing-6;
+    @include gradient-primary;
+    color: $white;
+    border-radius: $border-radius-full;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+  }
+
+  .step-content h3 {
+    @include heading-3;
+    margin-bottom: $spacing-3;
+  }
+
+  .step-content p {
+    color: $gray-600;
+    line-height: $line-height-relaxed;
+  }
+}
+
+// Benefits Section
+.benefits {
+  padding: $spacing-20 0;
+
+  @include mobile-only {
+    padding: $spacing-16 0;
+  }
+
+  .section-title {
+    @include heading-2;
+    text-align: center;
+    margin-bottom: $spacing-16;
+  }
+
+  .benefits-grid {
+    display: grid;
+    gap: $spacing-8;
+
+    @include tablet-up {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include desktop-up {
+      grid-template-columns: repeat(4, 1fr);
+      gap: $spacing-6;
+    }
+  }
+
+  .benefit-card {
+    @include card;
+    text-align: center;
+    transition: all $transition-normal;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-xl;
+    }
+  }
+
+  .benefit-icon {
+    font-size: $font-size-4xl;
+    margin-bottom: $spacing-4;
+  }
+
+  .benefit-card h3 {
+    @include heading-3;
+    margin-bottom: $spacing-3;
+  }
+
+  .benefit-card p {
+    color: $gray-600;
+    line-height: $line-height-relaxed;
+  }
+}
+
+// CTA Section
+.cta {
+  @include gradient-secondary;
+  padding: $spacing-20 0;
+  text-align: center;
+
+  @include mobile-only {
+    padding: $spacing-16 0;
+  }
+
+  .cta-content {
+    color: $white;
+  }
+
+  .cta-content h2 {
+    @include heading-2;
+    color: $white;
+    margin-bottom: $spacing-6;
+  }
+
+  .cta-content p {
+    font-size: $font-size-xl;
+    margin-bottom: $spacing-8;
+    opacity: 0.9;
+
+    @include mobile-only {
+      font-size: $font-size-lg;
+    }
+  }
+}

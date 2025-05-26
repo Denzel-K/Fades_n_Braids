@@ -374,30 +374,7 @@ function showRewardsTab(tabName) {
 // Customer action functions - these are handled by dashboard.js
 // Removed duplicate functions to avoid conflicts
 
-function redeemReward(rewardId) {
-    if (confirm('Are you sure you want to redeem this reward?')) {
-        fetch(`/api/customers/rewards/${rewardId}/redeem`, {
-            method: 'POST',
-            credentials: 'include'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showNotification(data.message, 'success');
-                loadAvailableRewards();
-                loadClaimedRewards();
-                // Refresh page to update points
-                setTimeout(() => window.location.reload(), 1500);
-            } else {
-                showNotification(data.message, 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error redeeming reward:', error);
-            showNotification('Failed to redeem reward', 'error');
-        });
-    }
-}
+// Remove duplicate redeemReward function - handled in rewards.js
 
 // Check-in form handler is now handled in dashboard.js to avoid conflicts
 

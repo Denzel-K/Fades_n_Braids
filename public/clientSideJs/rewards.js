@@ -2,8 +2,13 @@
 
 // Initialize rewards functionality
 function initializeRewards() {
+    console.log('Initializing rewards system...');
     loadRewards();
+    updateClaimedRewardsCount();
     initializeRewardTabs();
+
+    // Ensure the available tab is shown by default
+    showRewardsTab('available');
 }
 
 // Load available rewards
@@ -108,6 +113,14 @@ function redeemReward(rewardId) {
                     loadRewards();
                     updateClaimedRewardsCount();
 
+                    // If we're currently viewing claimed rewards, refresh that too
+                    const claimedTab = document.getElementById('claimed-rewards-tab');
+                    if (claimedTab && !claimedTab.classList.contains('hidden')) {
+                        setTimeout(() => {
+                            loadClaimedRewards();
+                        }, 1000); // Small delay to allow backend to process
+                    }
+
                     // Show celebration animation
                     showRewardCelebration();
                 } else {
@@ -191,6 +204,9 @@ function showRewardsTab(tabName) {
     if (activeButton) {
         activeButton.classList.add('active', 'bg-white', 'text-primary-orange', 'shadow-sm');
         activeButton.classList.remove('text-gray-600', 'hover:text-gray-900');
+        console.log('Activated button:', activeButton.id);
+    } else {
+        console.warn('Button not found:', `${tabName}-tab`);
     }
 
     // Update tab content with proper hiding/showing
@@ -203,12 +219,17 @@ function showRewardsTab(tabName) {
     if (targetContent) {
         targetContent.classList.remove('hidden');
         targetContent.classList.add('active');
+        console.log('Activated content:', targetContent.id);
+    } else {
+        console.warn('Content not found:', `${tabName}-rewards-tab`);
     }
 
     // Load content if needed
     if (tabName === 'claimed') {
+        console.log('Loading claimed rewards...');
         loadClaimedRewards();
     } else if (tabName === 'available') {
+        console.log('Loading available rewards...');
         loadRewards();
     }
 }
@@ -216,7 +237,12 @@ function showRewardsTab(tabName) {
 // Load claimed rewards
 function loadClaimedRewards() {
     const container = document.getElementById('claimed-rewards-grid');
-    if (!container) return;
+    if (!container) {
+        console.error('claimed-rewards-grid container not found!');
+        return;
+    }
+
+    console.log('Loading claimed rewards...');
 
     // Show loading state with Tailwind classes
     container.innerHTML = `
@@ -228,9 +254,23 @@ function loadClaimedRewards() {
 
     Utils.apiRequest('/api/customers/rewards/claimed')
         .then(data => {
-            if (data.success) {
+            console.log('=== CLAIMED REWARDS API RESPONSE ===');
+            console.log('Full response:', data);
+            console.log('Success:', data.success);
+            console.log('Data object:', data.data);
+
+            if (data.data && data.data.claimedRewards) {
+                console.log('Claimed rewards array:', data.data.claimedRewards);
+                console.log('Number of claimed rewards:', data.data.claimedRewards.length);
+                console.log('Total claimed count:', data.data.totalClaimed);
+            }
+
+            if (data.success && data.data && data.data.claimedRewards && data.data.claimedRewards.length > 0) {
+                console.log('Displaying claimed rewards...');
                 displayClaimedRewards(data.data.claimedRewards);
             } else {
+                console.log('No claimed rewards to display');
+                console.log('Reasons: success =', data.success, ', data =', !!data.data, ', claimedRewards =', data.data?.claimedRewards, ', length =', data.data?.claimedRewards?.length);
                 container.innerHTML = `
                     <div class="text-center py-12 col-span-full">
                         <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -258,9 +298,20 @@ function loadClaimedRewards() {
 
 // Display claimed rewards
 function displayClaimedRewards(claimedRewards) {
+    console.log('=== DISPLAY CLAIMED REWARDS ===');
+    console.log('Received claimedRewards:', claimedRewards);
+    console.log('Type:', typeof claimedRewards);
+    console.log('Is array:', Array.isArray(claimedRewards));
+    console.log('Length:', claimedRewards?.length);
+
     const container = document.getElementById('claimed-rewards-grid');
+    if (!container) {
+        console.error('claimed-rewards-grid container not found in displayClaimedRewards!');
+        return;
+    }
 
     if (!claimedRewards || claimedRewards.length === 0) {
+        console.log('No claimed rewards to display - showing empty state');
         container.innerHTML = `
             <div class="text-center py-12 col-span-full">
                 <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -273,8 +324,12 @@ function displayClaimedRewards(claimedRewards) {
         return;
     }
 
-    const html = claimedRewards.map(reward => `
-        <div class="bg-white rounded-xl border border-gray-200 p-6 relative" data-animate="fade-in">
+    console.log('Processing', claimedRewards.length, 'claimed rewards for display');
+
+    const html = claimedRewards.map((reward, index) => {
+        console.log(`Processing reward ${index}:`, reward);
+        return `
+        <div class="bg-white rounded-xl border border-gray-200 p-6 relative hover:shadow-md transition-shadow" data-animate="fade-in" data-delay="${index * 100}">
             <div class="absolute top-4 right-4">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                     <i class="fas fa-check-circle mr-1"></i>
@@ -290,32 +345,49 @@ function displayClaimedRewards(claimedRewards) {
             <h3 class="text-xl font-semibold text-gray-900 mb-3">${reward.title}</h3>
             <p class="text-gray-600 text-sm leading-relaxed mb-4">${reward.description}</p>
             <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                <div class="flex items-center text-success font-semibold">
-                    <i class="fas fa-tag mr-2"></i>
-                    ${reward.value}
+                <div class="flex items-center text-gray-600">
+                    <i class="fas fa-tag mr-2 text-gray-400"></i>
+                    <span class="text-sm font-medium">${reward.category ? reward.category.replace('_', ' ') : 'General'}</span>
                 </div>
                 <div class="flex items-center text-primary-orange font-semibold">
                     <i class="fas fa-coins mr-2"></i>
                     ${reward.pointsUsed} points used
                 </div>
             </div>
+            <div class="mt-4 pt-4 border-t border-gray-100">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">Reward Value:</span>
+                    <span class="text-lg font-bold text-green-600">${reward.value}</span>
+                </div>
+            </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
+
+    console.log('Generated HTML length:', html.length);
+    console.log('Setting innerHTML...');
 
     container.innerHTML = html;
 
+    console.log('HTML set successfully. Container now has', container.children.length, 'children');
+
     // Initialize animations for new elements
-    Animations.initializeAnimations();
+    if (typeof Animations !== 'undefined' && Animations.initializeAnimations) {
+        Animations.initializeAnimations();
+    }
 }
 
 // Update claimed rewards count
 function updateClaimedRewardsCount() {
     Utils.apiRequest('/api/customers/rewards/claimed')
         .then(data => {
-            if (data.success) {
+            console.log('Claimed rewards count API response:', data);
+            if (data.success && data.data) {
                 const countElement = document.getElementById('claimed-count');
                 if (countElement) {
-                    countElement.textContent = data.data.totalClaimed;
+                    const count = data.data.totalClaimed || 0;
+                    countElement.textContent = count;
+                    console.log('Updated claimed count to:', count);
                 }
             }
         })

@@ -1,0 +1,161 @@
+// Auth Pages Styles
+.auth-page {
+  min-height: 100vh;
+  @include flex-center;
+  background: linear-gradient(135deg, $gray-50 0%, $gray-100 100%);
+  padding: $spacing-8 0;
+
+  .auth-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0 $spacing-4;
+  }
+}
+
+.auth-card {
+  background: $white;
+  border-radius: $border-radius-2xl;
+  box-shadow: $shadow-xl;
+  padding: $spacing-10;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    @include gradient-primary;
+  }
+
+  .auth-logo {
+    text-align: center;
+    margin-bottom: $spacing-8;
+
+    img {
+      height: 3rem;
+      width: auto;
+    }
+  }
+
+  .auth-header {
+    text-align: center;
+    margin-bottom: $spacing-8;
+
+    .auth-title {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $gray-900;
+      margin-bottom: $spacing-2;
+    }
+
+    .auth-subtitle {
+      color: $gray-600;
+      font-size: $font-size-base;
+    }
+  }
+
+  .auth-form {
+    .form-group {
+      margin-bottom: $spacing-6;
+    }
+
+    .form-actions {
+      margin-top: $spacing-8;
+      margin-bottom: $spacing-6;
+    }
+  }
+
+  .auth-divider {
+    text-align: center;
+    margin: $spacing-6 0;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: $gray-200;
+    }
+
+    span {
+      background: $white;
+      color: $gray-500;
+      padding: 0 $spacing-4;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .auth-footer {
+    text-align: center;
+    padding-top: $spacing-6;
+    border-top: 1px solid $gray-200;
+
+    p {
+      color: $gray-600;
+      margin-bottom: $spacing-2;
+    }
+
+    a {
+      color: $primary;
+      text-decoration: none;
+      font-weight: $font-weight-medium;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Welcome message
+.welcome-message {
+  background: linear-gradient(135deg, $primary-orange 0%, $primary-pink 100%);
+  color: $white;
+  padding: $spacing-4;
+  border-radius: $border-radius-lg;
+  margin-bottom: $spacing-6;
+  text-align: center;
+
+  .welcome-points {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    margin-top: $spacing-2;
+  }
+}
+
+// Error messages
+.auth-error {
+  background: rgba($error, 0.1);
+  color: $error;
+  padding: $spacing-4;
+  border-radius: $border-radius-lg;
+  margin-bottom: $spacing-6;
+  border: 1px solid rgba($error, 0.2);
+
+  .error-title {
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing-2;
+  }
+
+  .error-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: $spacing-1;
+      font-size: $font-size-sm;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

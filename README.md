@@ -1,175 +1,236 @@
 # Fades n Braids Loyalty System
 
-A comprehensive loyalty program system for Fades n Braids salon that allows customers to earn points with every visit and redeem rewards.
+<div align="center">
+  <img src="public/images/fades-n-braids-logo.svg" alt="Fades n Braids Logo" width="200"/>
 
-## Features
+  <p><strong>A comprehensive loyalty program system for Fades n Braids salon that allows customers to earn points with every visit and redeem rewards.</strong></p>
 
-### Customer Features
-- **Registration & Login**: Phone number-based authentication
-- **Points System**: Earn 10 points per visit + 50 welcome bonus
-- **QR/Digit Code Check-in**: Quick check-in system
-- **Rewards Catalog**: Browse and redeem available rewards
-- **Visit History**: Track all visits and points earned
-- **Mobile-Responsive**: Optimized for mobile devices
+  <img src="public/images/fades-n-braids-illustration.png" alt="Fades n Braids Illustration" width="400"/>
+</div>
 
-### Business Features
-- **Dashboard**: Overview of customers, visits, and statistics
-- **Customer Management**: View and manage customer accounts
-- **Rewards Management**: Create, edit, and manage reward offerings
-- **Check-in Codes**: Display QR codes and digit codes for customer check-ins
-- **Points Management**: Award bonus points to customers
-- **Settings**: Configure points per visit, welcome bonus, etc.
+## 📱 Screenshots
 
-## Setup Instructions
+### Landing Page
+<img src="public/images/landing_page.png" alt="Landing Page" width="600"/>
 
-### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB (local or cloud instance)
+### Customer Dashboard
+<img src="public/images/customer_dash.png" alt="Customer Dashboard" width="600"/>
 
-### Quick Start
+### Business Dashboard
+<img src="public/images/business_dashboard.png" alt="Business Dashboard" width="600"/>
 
-1. **Install dependencies**
+### Check-in Codes Display
+<img src="public/images/checkin_codes_page.png" alt="Check-in Codes Page" width="600"/>
+
+## 📋 Table of Contents
+
+- [📱 Screenshots](#-screenshots)
+- [✨ Features](#-features)
+- [🚀 Quick Start](#-quick-start)
+- [🛠️ Technology Stack](#️-technology-stack)
+- [📁 Project Structure](#-project-structure)
+- [🔗 API Routes](#-api-routes)
+- [🎨 Design System](#-design-system)
+- [⚙️ Environment Variables](#️-environment-variables)
+- [🧪 Testing Scenarios](#-testing-scenarios)
+- [📝 Development Notes](#-development-notes)
+
+## ✨ Features
+
+### 👤 Customer Features
+- 📱 **Registration & Login**: Phone number-based authentication
+- 🎯 **Points System**: Earn 10 points per visit + 50 welcome bonus
+- 📲 **QR/Digit Code Check-in**: Quick check-in system with real-time codes
+- 🎁 **Rewards Catalog**: Browse and redeem available rewards
+- 📊 **Visit History**: Track all visits and points earned
+- 📱 **Mobile-Responsive**: Optimized for mobile devices
+
+### 🏢 Business Features
+- 📈 **Dashboard**: Overview of customers, visits, and statistics
+- 👥 **Customer Management**: View and manage customer accounts
+- 🎁 **Rewards Management**: Create, edit, and manage reward offerings
+- 🔢 **Check-in Codes**: Display QR codes and digit codes for customer check-ins
+- ⭐ **Points Management**: Award bonus points to customers
+- ⚙️ **Settings**: Configure points per visit, welcome bonus, etc.
+
+## 🚀 Quick Start
+
+### 📋 Prerequisites
+- 🟢 **Node.js** (v14 or higher)
+- 🍃 **MongoDB** (local or cloud instance)
+
+### ⚡ Installation Steps
+
+1. **📦 Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Create environment file**
+2. **🔧 Create environment file**
    ```bash
    cp .env.example .env
    ```
 
-   Edit `.env` with your MongoDB connection string and other settings.
+   📝 Edit `.env` with your MongoDB connection string and other settings.
 
-3. **Initialize the database**
+3. **🗄️ Initialize the database**
    ```bash
    npm run init
    ```
 
-4. **Start the development server**
+4. **🚀 Start the development server**
    ```bash
    npm run dev
    ```
 
-5. **Access the application**
-   - Main site: http://localhost:3000
-   - Business login: http://localhost:3000/business/login (admin@fadesbraids.com / admin123)
+5. **🌐 Access the application**
+   - 🏠 **Main site**: http://localhost:3000
+   - 🏢 **Business login**: http://localhost:3000/business/login
+     - 📧 Email: `admin@fadesbraids.com`
+     - 🔑 Password: `admin123`
 
-## Technology Stack
+## 🛠️ Technology Stack
 
-### Backend
-- **Node.js** with Express.js framework
-- **MongoDB** with Mongoose ODM
-- **JWT** for authentication and session management
-- **bcrypt** for password hashing
-- **Handlebars (hbs)** for server-side templating
+### 🖥️ Backend
+- 🟢 **Node.js** with Express.js framework
+- 🍃 **MongoDB** with Mongoose ODM
+- 🔐 **JWT** for authentication and session management
+- 🔒 **bcrypt** for password hashing
+- 📄 **Handlebars (hbs)** for server-side templating
 
-### Frontend
-- **Vanilla JavaScript** for client-side functionality
-- **CSS3** with custom properties and responsive design
-- **Font Awesome** for icons
-- **Mobile-first** responsive design approach
+### 🎨 Frontend
+- ⚡ **Vanilla JavaScript** for client-side functionality
+- 🎨 **CSS3** with custom properties and responsive design
+- 🎯 **Font Awesome** for icons
+- 📱 **Mobile-first** responsive design approach
 
-### Development Tools
-- **nodemon** for development server
-- **dotenv** for environment variable management
-- **express-rate-limit** for API rate limiting
+### 🔧 Development Tools
+- 🔄 **nodemon** for development server
+- 🌍 **dotenv** for environment variable management
+- 🛡️ **express-rate-limit** for API rate limiting
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 fades-n-braids-loyalty/
-├── config/
-│   ├── database.js          # MongoDB connection
-│   └── env.js              # Environment configuration
-├── controllers/
-│   ├── businessController.js
-│   ├── customerController.js
-│   ├── checkinController.js
-│   └── rewardController.js
-├── middleware/
-│   ├── auth.js             # Authentication middleware
-│   └── validation.js       # Input validation
-├── models/
-│   ├── Business.js
-│   ├── Customer.js
-│   ├── CheckInCode.js
-│   └── Reward.js
-├── public/
-│   ├── css/                # Stylesheets
-│   ├── clientSideJs/       # Client-side JavaScript
-│   └── images/             # Static images
-├── routes/
-│   ├── api/                # API routes
-│   ├── business.js         # Business dashboard routes
-│   └── customer.js         # Customer routes
-├── views/
-│   ├── layout/             # Handlebars layouts
-│   ├── business/           # Business templates
-│   └── customer/           # Customer templates
-├── server.js               # Main server file
-├── package.json
-└── .env.example           # Environment variables template
+├── 📁 config/
+│   ├── 🗄️ database.js          # MongoDB connection
+│   └── ⚙️ env.js              # Environment configuration
+├── 📁 controllers/
+│   ├── 🏢 businessController.js
+│   ├── 👤 customerController.js
+│   ├── 📲 checkinController.js
+│   └── 🎁 rewardController.js
+├── 📁 middleware/
+│   ├── 🔐 auth.js             # Authentication middleware
+│   └── ✅ validation.js       # Input validation
+├── 📁 models/
+│   ├── 🏢 Business.js
+│   ├── 👤 Customer.js
+│   ├── 🔢 CheckInCode.js
+│   └── 🎁 Reward.js
+├── 📁 public/
+│   ├── 🎨 css/                # Stylesheets
+│   ├── ⚡ clientSideJs/       # Client-side JavaScript
+│   └── 🖼️ images/             # Static images & screenshots
+├── 📁 routes/
+│   ├── 🔗 api/                # API routes
+│   ├── 🏢 business.js         # Business dashboard routes
+│   └── 👤 customer.js         # Customer routes
+├── 📁 views/
+│   ├── 📄 layout/             # Handlebars layouts
+│   ├── 🏢 business/           # Business templates
+│   └── 👤 customer/           # Customer templates
+├── 🚀 server.js               # Main server file
+├── 📦 package.json
+└── 🔧 .env.example           # Environment variables template
 ```
 
-## API Routes
+## 🔗 API Routes
 
-### Authentication
-- `POST /api/customers/register` - Customer registration
-- `POST /api/customers/login` - Customer login
-- `POST /api/customers/logout` - Customer logout
-- `POST /api/business/login` - Business login
-- `POST /api/business/logout` - Business logout
+### 🔐 Authentication
+- `POST /api/customers/register` - 👤 Customer registration
+- `POST /api/customers/login` - 🔑 Customer login
+- `POST /api/customers/logout` - 🚪 Customer logout
+- `POST /api/business/login` - 🏢 Business login
+- `POST /api/business/logout` - 🚪 Business logout
 
-### Customer Features
-- `GET /api/customers/profile` - Get customer profile
-- `POST /api/customers/checkin` - Check-in with code
-- `GET /api/customers/rewards` - Get available rewards
-- `POST /api/customers/redeem` - Redeem a reward
+### 👤 Customer Features
+- `GET /api/customers/profile` - 📋 Get customer profile
+- `POST /api/customers/checkin` - 📲 Check-in with code
+- `GET /api/customers/rewards` - 🎁 Get available rewards
+- `GET /api/customers/rewards/claimed` - 🏆 Get claimed rewards
+- `POST /api/customers/redeem` - ✨ Redeem a reward
 
-### Business Features
-- `GET /api/business/customers` - Get all customers
-- `GET /api/business/stats` - Get business statistics
-- `POST /api/business/rewards` - Create new reward
-- `PUT /api/business/rewards/:id` - Update reward
-- `DELETE /api/business/rewards/:id` - Delete reward
-- `POST /api/business/award-points` - Award points to customer
+### 🏢 Business Features
+- `GET /api/business/customers` - 👥 Get all customers
+- `GET /api/business/stats` - 📊 Get business statistics
+- `POST /api/business/rewards` - ➕ Create new reward
+- `PUT /api/business/rewards/:id` - ✏️ Update reward
+- `DELETE /api/business/rewards/:id` - 🗑️ Delete reward
+- `POST /api/business/award-points` - ⭐ Award points to customer
 
-### Check-in System
-- `GET /api/checkin/current-code` - Get current check-in code
-- `POST /api/checkin/validate` - Validate check-in code
+### 📲 Check-in System
+- `GET /api/checkin/current-code` - 🔢 Get current check-in code
+- `POST /api/checkin/validate` - ✅ Validate check-in code
 
-## Color Scheme
+## 🎨 Design System
 
-- Primary Orange: #ee752a
-- Primary Pink: #e45462
-- Primary Purple: #b95087
-- Primary Violet: #7b5690
-- Primary Blue: #44547c
-- Primary Dark: #2f4858
+### 🌈 Color Palette
 
-## Environment Variables
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0;">
+  <div style="background: #ee752a; color: white; padding: 10px; border-radius: 5px; min-width: 120px;">
+    <strong>#ee752a</strong><br>Primary Orange
+  </div>
+  <div style="background: #e45462; color: white; padding: 10px; border-radius: 5px; min-width: 120px;">
+    <strong>#e45462</strong><br>Primary Pink
+  </div>
+  <div style="background: #b95087; color: white; padding: 10px; border-radius: 5px; min-width: 120px;">
+    <strong>#b95087</strong><br>Primary Purple
+  </div>
+  <div style="background: #7b5690; color: white; padding: 10px; border-radius: 5px; min-width: 120px;">
+    <strong>#7b5690</strong><br>Primary Violet
+  </div>
+  <div style="background: #44547c; color: white; padding: 10px; border-radius: 5px; min-width: 120px;">
+    <strong>#44547c</strong><br>Primary Blue
+  </div>
+  <div style="background: #2f4858; color: white; padding: 10px; border-radius: 5px; min-width: 120px;">
+    <strong>#2f4858</strong><br>Primary Dark
+  </div>
+</div>
+
+### 🎯 Design Principles
+- 📱 **Mobile-First**: Responsive design optimized for mobile devices
+- 🎨 **Gradient Backgrounds**: Beautiful gradient overlays for visual appeal
+- ⚡ **Smooth Animations**: Subtle transitions and hover effects
+- 🔤 **Typography**: Clean, readable fonts with proper hierarchy
+- 🎯 **Accessibility**: High contrast ratios and semantic HTML
+
+## ⚙️ Environment Variables
 
 Create a `.env` file based on `.env.example`:
 
 ```env
-# Database
+# 🗄️ Database Configuration
 MONGODB_URI=mongodb://localhost:27017/fades-n-braids
 
-# JWT
+# 🔐 JWT Security
 JWT_SECRET=your-super-secret-jwt-key
 
-# Server
+# 🚀 Server Configuration
 PORT=3000
 NODE_ENV=development
 
-# Business Account
+# 🏢 Business Account
 BUSINESS_EMAIL=admin@fadesbraids.com
 BUSINESS_PASSWORD=admin123
 
-# Points System
+# 🎯 Points System
 POINTS_PER_VISIT=10
 WELCOME_BONUS_POINTS=50
 ```
+
+> **⚠️ Security Note**: Never commit your actual `.env` file to version control. Always use strong, unique values for production environments.
 
 ## Project Development Prompts
 
@@ -329,9 +390,9 @@ This section documents the structured development approach used to build the Fad
 - Updated `README.md`.
 - Verified working routes (no 404/500 errors).
 
-## Testing Scenarios
+## 🧪 Testing Scenarios
 
-### Customer Registration & Login
+### 👤 Customer Registration & Login
 1. **Register New Customer**
    ```bash
    POST /api/customers/register
@@ -356,13 +417,13 @@ This section documents the structured development approach used to build the Fad
    }
    ```
 
-### Check-in Process
-1. **Get Current Check-in Code**
+### 📲 Check-in Process
+1. **🔢 Get Current Check-in Code**
    ```bash
    GET /api/checkin/current-code
    ```
 
-2. **Customer Check-in**
+2. **✅ Customer Check-in**
    ```bash
    POST /api/customers/checkin
    Content-Type: application/json
@@ -373,14 +434,14 @@ This section documents the structured development approach used to build the Fad
    }
    ```
 
-### Rewards System
-1. **Get Available Rewards**
+### 🎁 Rewards System
+1. **📋 Get Available Rewards**
    ```bash
    GET /api/customers/rewards
    Authorization: Bearer <customer-token>
    ```
 
-2. **Redeem Reward**
+2. **✨ Redeem Reward**
    ```bash
    POST /api/customers/redeem
    Content-Type: application/json
@@ -391,7 +452,7 @@ This section documents the structured development approach used to build the Fad
    }
    ```
 
-### Business Operations
+### 🏢 Business Operations
 1. **Business Login**
    ```bash
    POST /api/business/login
@@ -418,25 +479,39 @@ This section documents the structured development approach used to build the Fad
    }
    ```
 
-## Development Notes
+## 📝 Development Notes
 
-### Key Design Decisions
-1. **Phone-based Authentication**: Simplified customer registration using phone numbers instead of email
-2. **JWT with HTTP-only Cookies**: Secure token storage to prevent XSS attacks
-3. **Separate Customer/Business Interfaces**: Clear separation of concerns and user experiences
-4. **Mobile-first Design**: Optimized for salon customers using mobile devices
-5. **Real-time Check-in Codes**: 5-minute TTL codes for secure and timely check-ins
+### 🎯 Key Design Decisions
+1. 📱 **Phone-based Authentication**: Simplified customer registration using phone numbers instead of email
+2. 🔐 **JWT with HTTP-only Cookies**: Secure token storage to prevent XSS attacks
+3. 🏢 **Separate Customer/Business Interfaces**: Clear separation of concerns and user experiences
+4. 📱 **Mobile-first Design**: Optimized for salon customers using mobile devices
+5. ⏰ **Real-time Check-in Codes**: 5-minute TTL codes for secure and timely check-ins
 
-### Security Considerations
-- Password hashing with bcrypt
-- JWT token expiration and refresh
-- Rate limiting on authentication endpoints
-- Input validation and sanitization
-- CORS configuration for API security
+### 🔒 Security Considerations
+- 🔐 Password hashing with bcrypt
+- 🎫 JWT token expiration and refresh
+- 🛡️ Rate limiting on authentication endpoints
+- ✅ Input validation and sanitization
+- 🌐 CORS configuration for API security
 
-### Performance Optimizations
-- Database indexing on frequently queried fields
-- Efficient aggregation pipelines for statistics
-- Client-side caching of static assets
-- Optimized CSS and JavaScript delivery
+### ⚡ Performance Optimizations
+- 📊 Database indexing on frequently queried fields
+- 🔄 Efficient aggregation pipelines for statistics
+- 💾 Client-side caching of static assets
+- 🚀 Optimized CSS and JavaScript delivery
+
+### 🎨 UI/UX Features
+- 📱 Responsive design with mobile-first approach
+- 🎨 Beautiful gradient backgrounds and smooth animations
+- 🎯 Intuitive navigation and user flows
+- 📊 Real-time updates and live statistics
+- 🎁 Interactive rewards system with visual feedback
+
+---
+
+<div align="center">
+  <p><strong>Built with ❤️ for Fades n Braids</strong></p>
+  <p>© 2024 Fades n Braids Loyalty System</p>
+</div>
 

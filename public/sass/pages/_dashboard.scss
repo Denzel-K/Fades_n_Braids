@@ -1,0 +1,249 @@
+// Dashboard Pages Styles
+.dashboard-page {
+  padding: $spacing-8 0;
+  background: $gray-50;
+  min-height: calc(100vh - 200px);
+
+  .container {
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding: 0 $container-padding;
+
+    @media (min-width: #{$breakpoint-sm}) {
+      padding: 0 $spacing-6;
+    }
+
+    @media (min-width: #{$breakpoint-md}) {
+      padding: 0 $spacing-8;
+    }
+  }
+}
+
+.dashboard-header {
+  margin-bottom: $spacing-8;
+
+  .dashboard-title {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $gray-900;
+    margin-bottom: $spacing-2;
+
+    @media (min-width: #{$breakpoint-md}) {
+      font-size: $font-size-4xl;
+    }
+  }
+
+  .dashboard-subtitle {
+    color: $gray-600;
+    font-size: $font-size-lg;
+  }
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: $spacing-6;
+
+  @media (min-width: #{$breakpoint-md}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: #{$breakpoint-lg}) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.dashboard-card {
+  background: $white;
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow;
+  padding: $spacing-6;
+  transition: all $transition-normal;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-4;
+
+    .card-title {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+      color: $gray-900;
+    }
+
+    .card-icon {
+      font-size: $font-size-2xl;
+      color: $primary;
+    }
+  }
+
+  .card-content {
+    .stat-number {
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-bold;
+      color: $primary;
+      margin-bottom: $spacing-2;
+    }
+
+    .stat-label {
+      color: $gray-600;
+      font-size: $font-size-sm;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+}
+
+.dashboard-section {
+  margin-bottom: $spacing-12;
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-6;
+
+    .section-title {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-semibold;
+      color: $gray-900;
+    }
+
+    .section-actions {
+      display: flex;
+      gap: $spacing-3;
+    }
+  }
+}
+
+// Customer dashboard specific
+.points-summary {
+  background: linear-gradient(135deg, $primary-orange 0%, $primary-pink 100%);
+  color: $white;
+  border-radius: $border-radius-xl;
+  padding: $spacing-8;
+  text-align: center;
+  margin-bottom: $spacing-8;
+
+  .points-number {
+    font-size: $font-size-5xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-2;
+  }
+
+  .points-label {
+    font-size: $font-size-lg;
+    opacity: 0.9;
+  }
+
+  .points-actions {
+    margin-top: $spacing-6;
+    display: flex;
+    gap: $spacing-4;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+.recent-activity {
+  .activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      padding: $spacing-4;
+      border-bottom: 1px solid $gray-200;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .activity-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: $border-radius-full;
+        background: $primary;
+        color: $white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: $spacing-4;
+        font-size: $font-size-sm;
+      }
+
+      .activity-content {
+        flex: 1;
+
+        .activity-title {
+          font-weight: $font-weight-medium;
+          color: $gray-900;
+          margin-bottom: $spacing-1;
+        }
+
+        .activity-date {
+          color: $gray-500;
+          font-size: $font-size-sm;
+        }
+      }
+
+      .activity-points {
+        font-weight: $font-weight-bold;
+        color: $primary;
+      }
+    }
+  }
+}
+
+// Business dashboard specific
+.stats-grid {
+  display: grid;
+  gap: $spacing-6;
+  margin-bottom: $spacing-8;
+
+  @media (min-width: #{$breakpoint-sm}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: #{$breakpoint-lg}) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.checkin-display {
+  background: $white;
+  border-radius: $border-radius-xl;
+  padding: $spacing-8;
+  text-align: center;
+  box-shadow: $shadow;
+
+  .qr-code {
+    margin-bottom: $spacing-6;
+
+    img {
+      max-width: 200px;
+      height: auto;
+      border-radius: $border-radius-lg;
+    }
+  }
+
+  .digit-code {
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    color: $primary;
+    margin-bottom: $spacing-4;
+    letter-spacing: 0.1em;
+  }
+
+  .code-info {
+    color: $gray-600;
+    font-size: $font-size-sm;
+  }
+}

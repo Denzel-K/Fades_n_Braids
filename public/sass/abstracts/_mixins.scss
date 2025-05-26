@@ -1,0 +1,246 @@
+// Media Query Mixins
+@mixin mobile-only {
+  @media (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: #{$breakpoint-sm}) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: #{$breakpoint-md}) {
+    @content;
+  }
+}
+
+@mixin large-desktop-up {
+  @media (min-width: #{$breakpoint-lg}) {
+    @content;
+  }
+}
+
+@mixin xl-desktop-up {
+  @media (min-width: #{$breakpoint-xl}) {
+    @content;
+  }
+}
+
+// Flexbox Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// Card Mixins
+@mixin card {
+  background: $white;
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow;
+  padding: $spacing-6;
+  transition: all $transition-normal;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+  }
+}
+
+// Form Mixins
+@mixin form-input {
+  width: 100%;
+  padding: $spacing-4;
+  border: 2px solid $gray-200;
+  border-radius: $border-radius-lg;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  transition: all $transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+  }
+
+  &::placeholder {
+    color: $gray-400;
+  }
+
+  &:invalid {
+    border-color: $error;
+  }
+}
+
+@mixin form-label {
+  display: block;
+  margin-bottom: $spacing-2;
+  font-weight: $font-weight-medium;
+  color: $gray-700;
+  font-size: $font-size-sm;
+}
+
+// Button Mixins
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-3 $spacing-6;
+  border: none;
+  border-radius: $border-radius-lg;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-base;
+  line-height: $line-height-tight;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all $transition-fast;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background: linear-gradient(135deg, $primary-orange 0%, $primary-pink 100%);
+  color: $white;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, darken($primary-orange, 5%) 0%, darken($primary-pink, 5%) 100%);
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background: linear-gradient(135deg, $primary-purple 0%, $primary-violet 100%);
+  color: $white;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, darken($primary-purple, 5%) 0%, darken($primary-violet, 5%) 100%);
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+}
+
+@mixin button-outline {
+  @include button-base;
+  background: transparent;
+  color: $primary;
+  border: 2px solid $primary;
+
+  &:hover:not(:disabled) {
+    background: $primary;
+    color: $white;
+    transform: translateY(-1px);
+  }
+}
+
+@mixin button-ghost {
+  @include button-base;
+  background: transparent;
+  color: $gray-600;
+
+  &:hover:not(:disabled) {
+    background: $gray-100;
+    color: $gray-800;
+  }
+}
+
+// Container Mixin
+@mixin container {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+
+  @media (min-width: #{$breakpoint-sm}) {
+    padding: 0 $spacing-6;
+  }
+
+  @media (min-width: #{$breakpoint-md}) {
+    padding: 0 $spacing-8;
+  }
+}
+
+// Gradient Mixins
+@mixin gradient-primary {
+  background: linear-gradient(135deg, $primary-orange 0%, $primary-pink 100%);
+}
+
+@mixin gradient-secondary {
+  background: linear-gradient(135deg, $primary-purple 0%, $primary-violet 100%);
+}
+
+@mixin gradient-accent {
+  background: linear-gradient(135deg, $primary-violet 0%, $primary-blue 100%);
+}
+
+// Text Mixins
+@mixin text-gradient {
+  background: linear-gradient(135deg, $primary-orange 0%, $primary-pink 50%, $primary-purple 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin heading-1 {
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $gray-900;
+
+  @media (min-width: #{$breakpoint-md}) {
+    font-size: $font-size-5xl;
+  }
+}
+
+@mixin heading-2 {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $gray-900;
+
+  @media (min-width: #{$breakpoint-md}) {
+    font-size: $font-size-4xl;
+  }
+}
+
+@mixin heading-3 {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-snug;
+  color: $gray-900;
+
+  @media (min-width: #{$breakpoint-md}) {
+    font-size: $font-size-3xl;
+  }
+}

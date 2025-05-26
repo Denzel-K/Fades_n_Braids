@@ -1,0 +1,47 @@
+// Button Components
+.btn {
+  @include button-base;
+
+  &.btn-primary {
+    @include button-primary;
+  }
+
+  &.btn-secondary {
+    @include button-secondary;
+  }
+
+  &.btn-outline {
+    @include button-outline;
+  }
+
+  &.btn-ghost {
+    @include button-ghost;
+  }
+
+  &.btn-large {
+    padding: $spacing-4 $spacing-8;
+    font-size: $font-size-lg;
+  }
+
+  &.btn-small {
+    padding: $spacing-2 $spacing-4;
+    font-size: $font-size-sm;
+  }
+
+  &.btn-full {
+    width: 100%;
+  }
+
+  // Icon buttons
+  &.btn-icon {
+    padding: $spacing-3;
+
+    &.btn-large {
+      padding: $spacing-4;
+    }
+
+    &.btn-small {
+      padding: $spacing-2;
+    }
+  }
+}
