@@ -40,7 +40,7 @@
                             Go to Dashboard
                         </a>
                         <div class="points-display">
-                            You have <strong>{{formatPoints customer.availablePoints}} points</strong> available!
+                            You have <strong>{{formatPoints (safeValue customer.availablePoints 0)}} points</strong> available!
                         </div>
                     {{else}}
                         <a href="/customer/register" class="btn btn-primary btn-large">

@@ -8,7 +8,8 @@
 }
 
 .business-dashboard {
-  background: var(--white);
+  background: var(--gray-50);
+  min-height: 100vh;
 }
 
 .dashboard-header {
@@ -23,11 +24,18 @@
   font-weight: 700;
   color: var(--gray-900);
   margin-bottom: var(--spacing-2);
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+}
+
+.dashboard-title .title-text {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  line-height: 1.2;
 }
 
 @media (min-width: 768px) {
@@ -365,6 +373,67 @@
   color: var(--gray-500);
 }
 
+/* Recent Activity Styles */
+.activity-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: var(--spacing-2);
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-item:hover {
+  background: var(--gray-50);
+}
+
+.activity-icon {
+  width: 2rem;
+  height: 2rem;
+  background: var(--success);
+  color: var(--white);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-title {
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-1);
+}
+
+.activity-date {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+}
+
+.activity-points {
+  font-weight: 600;
+  color: var(--success);
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
 /* Loading States */
 .loading {
   display: flex;
@@ -506,6 +575,201 @@
 
 .tab-icon {
   font-size: 1.125rem;
+}
+
+/* Reward Cards */
+.rewards-grid {
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.reward-card {
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-5);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.reward-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-pink) 100%);
+  transform: scaleX(0);
+  transition: transform var(--transition-normal);
+}
+
+.reward-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.reward-card:hover::before {
+  transform: scaleX(1);
+}
+
+.reward-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-3);
+}
+
+.reward-category {
+  background: var(--gray-100);
+  color: var(--gray-700);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.reward-points {
+  background: var(--primary);
+  color: var(--white);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.reward-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-2);
+}
+
+.reward-description {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: var(--spacing-3);
+}
+
+.reward-value {
+  color: var(--success);
+  font-weight: 600;
+  margin-bottom: var(--spacing-4);
+}
+
+.reward-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Claimed Rewards */
+.claimed-rewards-grid {
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.claimed-reward-card {
+  background: var(--gray-50);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-5);
+  position: relative;
+  overflow: hidden;
+}
+
+.claimed-reward-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--success);
+}
+
+.reward-points-used {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Reward Criteria */
+.reward-criteria-info {
+  margin-bottom: var(--spacing-6);
+}
+
+.criteria-card {
+  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-pink) 100%);
+  color: var(--white);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-5);
+  position: relative;
+  overflow: hidden;
+}
+
+.criteria-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.criteria-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+  position: relative;
+  z-index: 2;
+}
+
+.criteria-header h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.criteria-content {
+  position: relative;
+  z-index: 2;
+  margin-bottom: var(--spacing-4);
+}
+
+.criteria-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+  font-size: 0.875rem;
+}
+
+.criteria-item:last-child {
+  margin-bottom: 0;
+}
+
+.criteria-card .btn {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--white);
+  backdrop-filter: blur(10px);
+}
+
+.criteria-card .btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .tab-badge {
