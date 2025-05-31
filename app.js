@@ -4,10 +4,11 @@ const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 // Import database connection
-const connectDB = require('./utils/db');
+// const connectDB = require('./utils/db');
 
 // Import routes
 const pageRoutes = require('./routes/pageRoutes');
@@ -17,8 +18,27 @@ const businessRoutes = require('./routes/businessRoutes');
 // Initialize Express app
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
 // Connect to database
-connectDB();
+const startApplication = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
+
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+
+  } catch (error) {
+    console.error('Database connection error:', error.message);
+    process.exit(1);
+  }
+};
+
+startApplication();
 
 // Handlebars configuration
 app.engine('handlebars', engine({
@@ -145,13 +165,6 @@ app.use((err, req, res, next) => {
     message,
     layout: 'main'
   });
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 module.exports = app;
