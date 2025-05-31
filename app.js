@@ -29,7 +29,6 @@ const startApplication = async () => {
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
-      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
     });
 
   } catch (error) {
@@ -37,8 +36,6 @@ const startApplication = async () => {
     process.exit(1);
   }
 };
-
-startApplication();
 
 // Handlebars configuration
 app.engine('handlebars', engine({
@@ -80,10 +77,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Middleware
 app.use(morgan('dev'));
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
@@ -166,5 +160,7 @@ app.use((err, req, res, next) => {
     layout: 'main'
   });
 });
+
+startApplication();
 
 module.exports = app;
