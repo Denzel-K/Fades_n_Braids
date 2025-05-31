@@ -19,7 +19,7 @@ const businessRoutes = require('./routes/businessRoutes');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-console.log('MONGODB_URI:', process.env.MONGODB_URI);
+
 // Connect to database and start application
 const startApplication = async () => {
   try {

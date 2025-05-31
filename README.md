@@ -1,4 +1,5 @@
 # Fades n Braids Loyalty System
+### Live Site -> [fades-n-braids.onrender.com](https://fades-n-braids.onrender.com/)
 
 <div align="center">
   <img src="public/images/fades-n-braids-logo.svg" alt="Fades n Braids Logo" width="200"/>
@@ -8,7 +9,7 @@
   <img src="public/images/fades-n-braids-illustration.png" alt="Fades n Braids Illustration" width="400"/>
 </div>
 
-## 📱 Screenshots
+## Screenshots
 
 ### Landing Page
 <img src="public/images/landing_page.png" alt="Landing Page" width="600"/>
